@@ -1,0 +1,28 @@
+{
+  "name": "chaveiro-senador-site",
+  "version": "1.0.0",
+  "description": "Site institucional do Chaveiro Senador - Otimizado para SEO local em Santo André e região do ABC",
+  "scripts": {
+    "push": "powershell -ExecutionPolicy Bypass -File ./push-git.ps1",
+    "push:quick": "powershell -ExecutionPolicy Bypass -File ./push-git.ps1",
+    "pull": "powershell -ExecutionPolicy Bypass -File ./pull-git.ps1",
+    "status": "git status",
+    "add": "git add .",
+    "commit": "git commit -m",
+    "log": "git log --oneline -10"
+  },
+  "keywords": [
+    "chaveiro",
+    "santo-andre",
+    "seo",
+    "website",
+    "local-business"
+  ],
+  "author": "Chaveiro Senador",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduabjr/projeto-site-chaveiro-senador.git"
+  }
+}
+
