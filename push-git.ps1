@@ -44,14 +44,32 @@ if ($LASTEXITCODE -eq 0) {
     exit 1
 }
 
+# Verificar e configurar remote se necessario
+Write-Host "Verificando remote..." -ForegroundColor Yellow
+$remoteExists = git remote get-url origin 2>$null
+
+if (-not $remoteExists) {
+    Write-Host "Configurando remote origin..." -ForegroundColor Yellow
+    git remote add origin https://github.com/eduabjr/projeto-site-chaveiro-senador.git
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Erro ao configurar remote!" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# Obter branch atual
+$currentBranch = git rev-parse --abbrev-ref HEAD
+Write-Host "Branch atual: $currentBranch" -ForegroundColor Cyan
+
 # Fazer push
 Write-Host "Fazendo push..." -ForegroundColor Yellow
-git push
+git push -u origin $currentBranch
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Push realizado com sucesso!" -ForegroundColor Green
 } else {
     Write-Host "Erro ao fazer push!" -ForegroundColor Red
+    Write-Host "Verifique se o remote esta configurado corretamente." -ForegroundColor Yellow
     exit 1
 }
 
