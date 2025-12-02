@@ -1,11 +1,34 @@
 <!DOCTYPE html>
+<!-- 
+    ============================================
+    PÁGINA PRINCIPAL - CHAVEIRO SENADOR
+    ============================================
+    Site institucional do Chaveiro Senador em Santo André
+    Desenvolvido com foco em SEO Local e experiência do usuário
+    
+    Estrutura:
+    - Header fixo com menu responsivo
+    - Hero Section com banner principal
+    - Seção Sobre Nós
+    - Seção de Serviços
+    - Seção de Marcas/Montadoras
+    - Seção de Parcerias
+    - Seção de Orçamento
+    - Seção de Localização
+    - Galeria de Imagens
+    - Footer
+    
+    Tecnologias: HTML5, Tailwind CSS, JavaScript, Schema.org
+    ============================================
+-->
 <html lang="pt-BR">
 <head>
+    <!-- Meta Tags Básicas -->
     <meta charset="UTF-8">
     <link rel="icon" type="image/webp" href="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO Meta Tags -->
+    <!-- SEO Meta Tags - Otimizadas para busca local em Santo André e ABC -->
     <title>Chaveiro em Santo André | Chaveiro Senador - Serviços Residenciais e Automotivos</title>
     <meta name="description" content="Chaveiro Senador em Santo André oferece serviços profissionais de chaveiro no ABC. Chaves codificadas, abertura de portas, troca de fechadura, instalação de fechadura, chave automotiva, fechadura digital e carimbos personalizados. Atendemos São Bernardo, Mauá, Diadema e São Caetano. Ligue (11) 4994-2568.">
     <meta name="keywords" content="chaveiro em santo andré, chaveiro senador, chaveiro no abc, chaveiro em são bernardo do campo, chaveiro em mauá, chaveiro em diadema, chaveiro em são caetano do sul, chaveiro em são paulo, chave automotiva santo andré, chave codificada, abertura de portas, troca de fechadura, instalação de fechadura, fechadura digital santo andré, chaveiro comercial santo andré">
@@ -56,18 +79,18 @@
         "longitude": -46.5324
       },
       "telephone": "+55-11-4994-2568",
-      "openingHoursSpecification": [
+          "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
           "opens": "08:00",
-          "closes": "18:00"
+          "closes": "22:00"
         },
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": "Saturday",
           "opens": "08:00",
-          "closes": "12:00"
+          "closes": "16:00"
         }
       ],
       "priceRange": "$$",
@@ -99,7 +122,7 @@
         },
         {
           "@type": "Question",
-          "name": "Onde o Chaveiro Seguro está localizado?",
+          "name": "Onde o Chaveiro Senador está localizado?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Estamos localizados na Rua Senador Flaquer, 561, Centro, Santo André - SP, CEP 09010-060."
@@ -126,90 +149,135 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Container Principal do Site -->
     <div id="root">
-        <!-- Header Fixo com Menu -->
+        <!-- ============================================
+             HEADER FIXO COM MENU DE NAVEGAÇÃO
+             ============================================
+             Menu fixo no topo da página com:
+             - Logo do Chaveiro Senador
+             - Links de navegação (Desktop)
+             - Botão WhatsApp
+             - Menu hamburger para mobile
+             ============================================ -->
         <header class="menu-header fixed top-0 left-0 right-0 z-50 w-full" style="background-color: #2c3e50 !important; background-image: none !important; margin: 0 !important; padding: 0 !important; height: 64px !important; line-height: 64px !important;">
             <div class="w-full h-full px-4 sm:px-6 lg:px-8" style="max-width: 100%; margin: 0 auto; height: 100%;">
                 <div class="flex items-center justify-between h-full w-full" style="height: 100%; align-items: center;">
                     <!-- Logo/Texto à Esquerda -->
                     <div class="flex items-center gap-2 flex-shrink-0" style="height: 100%; align-items: center; margin: 0; padding: 0;">
-                        <img src="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="Chaveiro Senador - Chaveiro em Santo André e região do ABC" class="h-10 w-auto object-contain" style="display: block; margin: 0; padding: 0;">
+                        <a href="index.html">
+                            <img src="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="Chaveiro Senador - Chaveiro em Santo André e região do ABC" class="h-10 w-auto object-contain" style="display: block; margin: 0; padding: 0;">
+                        </a>
                         <span class="font-bold text-2xl whitespace-nowrap" style="color: #FACC15; margin: 0; padding: 0; line-height: 1;">Chaveiro Senador</span>
                     </div>
-                    <!-- Links de Navegação no Meio -->
+                    <!-- Links de Navegação no Meio (Desktop) -->
                     <nav class="hidden lg:flex items-center gap-3 xl:gap-4 flex-1 justify-center px-2" style="height: 100%; align-items: center; margin: 0; padding: 0 8px;">
-                        <a href="#home" class="text-xs xl:text-sm transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Início</a>
-                        <a href="#about" class="text-xs xl:text-sm transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Quem Somos</a>
-                        <a href="#services" class="text-xs xl:text-sm transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Nossos Serviços</a>
-                        <a href="#gallery" class="text-xs xl:text-sm transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Galeria</a>
-                        <a href="#partnerships" class="text-xs xl:text-sm transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Parcerias</a>
-                        <a href="#orcamento" class="text-xs xl:text-sm transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Contato</a>
+                        <a href="index.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Início</a>
+                        <a href="quem-somos.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Quem Somos</a>
+                        <a href="nossos-servicos.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Nossos Serviços</a>
+                        <a href="contato.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Contato</a>
                     </nav>
                     <!-- Botão à Direita -->
-                    <div class="flex items-center flex-shrink-0" style="height: 100%; align-items: center; margin: 0; padding: 0;">
-                        <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-4 py-2 rounded-full text-white font-semibold text-sm transition-all hover:opacity-90 whitespace-nowrap" style="background-color: #22C55E; margin: 0; padding: 8px 16px; line-height: 1;">
+                    <div class="flex items-center gap-2 lg:gap-3 flex-shrink-0" style="height: 100%; align-items: center; margin: 0; padding: 0;">
+                        <!-- Botão WhatsApp -->
+                        <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-white font-semibold text-base sm:text-lg transition-all hover:opacity-90 whitespace-nowrap" style="background-color: #22C55E; margin: 0; padding: 8px 12px; line-height: 1;">
                             <span>Fale Conosco</span>
-                            <i class="ri-whatsapp-fill text-base"></i>
+                            <i class="ri-whatsapp-fill text-base sm:text-lg"></i>
                         </a>
+                        <!-- Botão WhatsApp Mobile (apenas ícone) -->
+                        <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="sm:hidden flex items-center justify-center w-10 h-10 rounded-full text-white font-semibold transition-all hover:opacity-90" style="background-color: #22C55E; margin: 0; padding: 0; line-height: 1;">
+                            <i class="ri-whatsapp-fill text-xl"></i>
+                        </a>
+                        <!-- Botão Menu Mobile (Hamburger) -->
+                        <button id="mobile-menu-button" class="lg:hidden flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors" aria-label="Abrir menu" style="margin: 0; padding: 0;">
+                            <i class="ri-menu-line text-2xl" id="menu-icon"></i>
+                            <i class="ri-close-line text-2xl hidden" id="close-icon"></i>
+                        </button>
             </div>
                 </div>
             </div>
         </header>
+        <!-- Menu Mobile (Dropdown) -->
+        <div id="mobile-menu" class="lg:hidden fixed top-16 left-0 right-0 bg-[#2c3e50] shadow-lg z-[60] max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Início</a>
+                <a href="quem-somos.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Quem Somos</a>
+                <a href="nossos-servicos.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Nossos Serviços</a>
+                <a href="contato.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold">Contato</a>
+            </nav>
+        </div>
+        <!-- Container Principal do Conteúdo (com padding-top para compensar header fixo) -->
         <div class="min-h-screen bg-white" style="padding-top: 64px; margin-top: 0;">
-            <!-- Hero Section -->
-            <section id="home" class="relative min-h-[70vh] flex items-center justify-center bg-cover bg-center py-12" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('imagens/banner/chaveiro-em-santo-andre-banner-principal.webp');">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+            <!-- ============================================
+                 HERO SECTION - BANNER PRINCIPAL
+                 ============================================
+                 Seção principal com:
+                 - Logo do Chaveiro Senador
+                 - Título destacado "46 Anos de Experiência"
+                 - Card de atendimento com informações de contato
+                 - Background com imagem otimizada
+                 ============================================ -->
+            <section id="home" class="relative min-h-[85vh] flex items-center justify-center bg-cover bg-center py-16" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('imagens/banner/chaveiro-em-santo-andre-banner-principal.webp');">
+                <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 xl:gap-16 items-center w-full">
                         <!-- Seção 1: Logo à Esquerda -->
-                        <div class="flex justify-center lg:justify-start items-center">
-                            <img src="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="Chaveiro Senador - Chaveiro em Santo André com 46 anos de experiência" class="w-full max-w-md h-auto object-contain">
-            </div>
+                        <div class="flex justify-center lg:justify-start items-center h-full">
+                            <img src="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="Chaveiro Senador - Chaveiro em Santo André com 46 anos de experiência" class="w-full max-w-md h-auto object-contain" style="aspect-ratio: 901/1264;">
+                        </div>
             
                         <!-- Seção 2: Texto no Centro -->
-                        <div class="text-center">
-                            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                                <span class="block">Chaveiro</span>
-                                <span class="block">com 46 Anos</span>
-                                <span class="block">no mercado</span>
+                        <div class="flex flex-col justify-center items-center text-center px-4 lg:px-8 py-6 lg:py-8 h-full max-w-[600px] mx-auto">
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 lg:mb-8 leading-[0.9] text-yellow-400">
+                                <span class="block whitespace-nowrap">Chaveiro com 46 Anos</span>
+                                <span class="block whitespace-nowrap">no mercado</span>
                             </h1>
-                            <p class="text-xl md:text-2xl text-white mb-8 leading-relaxed">Atendimento Rápido e Confiável</p>
-                            <p class="text-lg text-white/90 max-w-xl mx-auto lg:mx-0 text-justify">Profissionais especializados em chaveiro em Santo André, prontos para resolver suas necessidades com qualidade, segurança e eficiência. Atendemos toda a região do ABC com serviços residenciais, automotivos e comerciais.</p>
+                            <p class="text-2xl md:text-3xl lg:text-4xl text-white mb-6 lg:mb-8 leading-relaxed font-medium whitespace-nowrap">Atendimento Rápido e Confiável</p>
+                            <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">Profissionais especializados em chaveiro em Santo André, prontos para resolver suas necessidades com qualidade, segurança e eficiência. Atendemos toda a região do ABC com serviços residenciais, automotivos e comerciais.</p>
                         </div>
                         
                         <!-- Seção 3: Card de Atendimento à Direita -->
-                        <div class="flex justify-center lg:justify-end">
-                            <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl max-w-md border-4 border-blue-600">
-                                <div class="flex items-center gap-4 mb-6">
-                                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
-                                        <i class="ri-speed-fill text-3xl text-white"></i>
+                        <div class="flex justify-center lg:justify-end items-center h-full">
+                            <div class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl w-full max-w-md border-l-4 border-blue-600 flex flex-col h-full" style="aspect-ratio: 901/1264;">
+                                <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <i class="ri-speed-fill text-lg sm:text-xl text-white"></i>
                                     </div>
-                                    <h3 class="text-3xl font-bold text-gray-900">Atendimento rápido</h3>
+                                    <h3 class="text-lg sm:text-xl font-bold text-gray-900">Atendimento rápido</h3>
                                 </div>
-                                <p class="text-lg text-gray-700 mb-6 leading-relaxed text-justify">Serviços de chaveiro em Santo André com agilidade e conveniência. Atendimento rápido para suas necessidades residenciais, automotivas e comerciais.</p>
-                                <div class="space-y-4 mb-8">
-                                    <div class="flex items-center gap-3">
-                                        <i class="ri-home-4-fill text-2xl text-blue-600"></i>
-                                        <span class="text-gray-800 font-medium">Atendimento Residencial</span>
+                                <p class="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 leading-relaxed text-justify break-words">Serviços de chaveiro em Santo André com agilidade e conveniência. Atendimento rápido para suas necessidades residenciais, automotivas e comerciais. Nossa equipe está sempre pronta para atender você com qualidade e eficiência.</p>
+                                <p class="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 leading-relaxed text-justify break-words">Com 46 anos de experiência no mercado, oferecemos soluções completas para todas as suas necessidades de chaveiro. Atendemos toda a região do ABC incluindo São Bernardo do Campo, Mauá, Diadema e São Caetano do Sul.</p>
+                                <div class="space-y-2 sm:space-y-3 mb-2 flex-grow">
+                                    <div class="flex items-center gap-2 sm:gap-3">
+                                        <i class="ri-home-4-fill text-lg sm:text-xl text-blue-600 flex-shrink-0"></i>
+                                        <span class="text-gray-800 text-xs sm:text-sm font-medium break-words">Atendimento Residencial</span>
                                     </div>
-                                    <div class="flex items-center gap-3">
-                                        <i class="ri-car-fill text-2xl text-blue-600"></i>
-                                        <span class="text-gray-800 font-medium">Atendimento Automotivo</span>
-        </div>
-                                    <div class="flex items-center gap-3">
-                                        <i class="ri-building-fill text-2xl text-blue-600"></i>
-                                        <span class="text-gray-800 font-medium">Atendimento Comercial</span>
-        </div>
-    </div>
-                                <a href="tel:+551149942568" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold flex items-center justify-center gap-3 transition-colors cursor-pointer whitespace-nowrap">
-                                    <i class="ri-phone-fill text-xl"></i>LIGAR AGORA
+                                    <div class="flex items-center gap-2 sm:gap-3">
+                                        <i class="ri-car-fill text-lg sm:text-xl text-blue-600 flex-shrink-0"></i>
+                                        <span class="text-gray-800 text-xs sm:text-sm font-medium break-words">Atendimento Automotivo</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 sm:gap-3">
+                                        <i class="ri-building-fill text-lg sm:text-xl text-blue-600 flex-shrink-0"></i>
+                                        <span class="text-gray-800 text-xs sm:text-sm font-medium break-words">Atendimento Comercial</span>
+                                    </div>
+                                </div>
+                                <a href="tel:+551149942568" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-bold flex items-center justify-center gap-2 sm:gap-3 transition-colors cursor-pointer whitespace-nowrap mt-auto">
+                                    <i class="ri-phone-fill text-base sm:text-lg"></i>LIGAR AGORA
                                 </a>
-            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
     </section>
     
-            <!-- About Section -->
+            <!-- ============================================
+                 SEÇÃO SOBRE NÓS
+                 ============================================
+                 Apresenta a empresa com:
+                 - Imagem do profissional trabalhando
+                 - Texto sobre experiência e qualidade
+                 - Badges com diferenciais (Qualidade, Visita Técnica, etc.)
+                 - Botão de contato
+                 ============================================ -->
             <section id="about" class="py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-16">
@@ -246,41 +314,6 @@
                 </div>
                     </div>
                 </div>
-                    <div class="bg-gradient-to-br from-blue-50 to-white rounded-3xl p-12 shadow-xl">
-                        <div class="text-center mb-12">
-                            <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nossa Visão</h3>
-                            <p class="text-xl text-blue-600 font-semibold">Excelência e Soluções Abrangentes</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-blue-100">
-                                <div class="relative h-32 overflow-hidden">
-                                    <img alt="Chaveiro em Santo André - Excelência em serviços de chaveiro residencial, automotivo e comercial" class="w-full h-full object-cover" src="imagens/nossa-visao/chaveiro-em-santo-andre-excelencia-servicos-chaveiro.jpeg">
-                                </div>
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-3">Excelência em Serviços de Chaveiro</h4>
-                                    <p class="text-gray-700 leading-relaxed text-base text-justify">Com o nosso vasto conhecimento em serviços de chaveiro, garantimos uma resposta rápida e eficiente. Nossos técnicos chegam ao seu local prontos para lidar com qualquer situação, desde perdas ou roubos de chaves até chaves e sistemas de fechaduras eletrônicas. Utilizamos as melhores ferramentas e tecnologias para assegurar um trabalho impecável, com foco na sua segurança e satisfação total.</p>
-                                </div>
-                            </div>
-                            <div class="bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-blue-100">
-                                <div class="relative h-32 overflow-hidden">
-                                    <img alt="Chaveiro em Santo André - Afiação profissional de facas, tesouras e ferramentas" class="w-full h-full object-cover" src="imagens/nossa-visao/chaveiro-em-santo-andre-afiacao-profissional-qualidade.jpeg">
-                                </div>
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-3">Afiação Profissional e de Qualidade</h4>
-                                    <p class="text-gray-700 leading-relaxed text-base text-justify">Nossa equipe de profissionais altamente qualificados e experientes está pronta para afiar suas lâminas, garantindo que elas estejam afiadas e prontas para uso. Seja para facas de cozinha, tesouras, ferramentas de jardinagem ou ferramentas industriais, oferecemos um serviço preciso que prolonga a vida útil de seus instrumentos e melhora sua performance.</p>
-                                </div>
-                            </div>
-                            <div class="bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-blue-100">
-                                <div class="relative h-32 overflow-hidden">
-                                    <img alt="Chaveiro em Santo André - Carimbos personalizados com precisão para empresas e uso pessoal" class="w-full h-full object-cover" src="imagens/nossa-visao/chaveiro-em-santo-andre-carimbos-personalizados-precisao.jpg">
-                                </div>
-                                <div class="p-6">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-3">Carimbos Personalizados com Precisão</h4>
-                                    <p class="text-gray-700 leading-relaxed text-base text-justify">Temos um conhecimento abrangente sobre os diferentes tipos de carimbos e suas aplicações. Seja para uso pessoal ou empresarial, estamos prontos para ajudá-lo a criar carimbos personalizados que atendam às suas necessidades específicas. Oferecemos uma variedade de modelos, tamanhos e designs para garantir que seu carimbo seja único e funcional.</p>
-                    </div>
-                    </div>
-                </div>
-                            </div>
                     <div class="text-center mt-16">
                         <a href="tel:+551149942568" class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-12 py-5 rounded-full text-xl font-bold transition-all transform hover:scale-105 cursor-pointer whitespace-nowrap shadow-xl">
                             <i class="ri-phone-fill text-2xl"></i>Entre em Contato Conosco
@@ -289,8 +322,19 @@
         </div>
     </section>
     
-            <!-- Services Section -->
-            <section id="services" class="py-24 bg-gradient-to-b from-white to-gray-50">
+            <!-- ============================================
+                 SEÇÃO DE SERVIÇOS
+                 ============================================
+                 Cards de serviços com hover effect:
+                 - Abertura de Portas Residencial
+                 - Chave Codificada Automotiva
+                 - Abertura de Veículos
+                 - Reparo de Ignição
+                 - Fechadura Digital
+                 - Troca de Segredo
+                 Cada card tem imagem de fundo que aparece no hover
+                 ============================================ -->
+            <section id="services" class="py-24 bg-gray-100">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-16">
                         <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Nossos Serviços de Chaveiro em Santo André</h2>
@@ -416,13 +460,23 @@
                     </div>
             </section>
 
-            <!-- Brands Section -->
-            <section id="brands" class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('imagens/logo de carro/fundo/chaveiro-em-santo-andre-fundo-montadoras.jpg');">
+            <!-- ============================================
+                 SEÇÃO DE MARCAS/MONTADORAS
+                 ============================================
+                 Carrossel de logos das montadoras atendidas:
+                 - 3 slides com 6 logos cada
+                 - Navegação por setas e indicadores
+                 - Auto-play a cada 6 segundos
+                 - Logos: Toyota, Honda, Renault, Nissan, Peugeot, Citroën,
+                   Volkswagen, Fiat, Chevrolet, Ford, Hyundai, Kia,
+                   Mercedes, Audi, Mitsubishi, BMW, Jeep, Volvo
+                 ============================================ -->
+            <section id="brands" class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('imagens/logo de carro/fundo/chaveiro-em-santo-andre-fundo-montadoras.png');">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-16">
-                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Chaveiro em Santo André - Confiança Comprovada</h2>
-                        <h3 class="text-2xl md:text-3xl font-semibold text-blue-600 mb-4">Atendemos as Maiores Montadoras</h3>
-                        <p class="text-xl text-gray-700 max-w-3xl mx-auto text-justify">Como chaveiro em Santo André, nossa expertise em chave codificada, programação de chave automotiva e sistemas automotivos é reconhecida pelas principais marcas do mercado. Atendemos toda a região do ABC.</p>
+                        <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Chaveiro em Santo André - Confiança Comprovada</h2>
+                        <h3 class="text-2xl md:text-3xl font-semibold text-white mb-4">Atendemos as Maiores Montadoras</h3>
+                        <p class="text-xl text-white max-w-3xl mx-auto text-justify">Como chaveiro em Santo André, nossa expertise em chave codificada, programação de chave automotiva e sistemas automotivos é reconhecida pelas principais marcas do mercado. Atendemos toda a região do ABC.</p>
                     </div>
                     <div class="relative px-16">
                         <!-- Seta Esquerda -->
@@ -569,7 +623,15 @@
                                 </div>
             </section>
 
-            <!-- Partnerships Section -->
+            <!-- ============================================
+                 SEÇÃO DE PARCERIAS
+                 ============================================
+                 Informações sobre parcerias comerciais:
+                 - Imagem de parcerias
+                 - Texto sobre benefícios para empresas
+                 - Cards com tipos de parceiros (Imobiliárias, Condomínios, etc.)
+                 - Formulário de contato para parcerias
+                 ============================================ -->
             <section id="partnerships" class="py-24 bg-gradient-to-b from-white to-gray-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-16">
@@ -647,11 +709,19 @@
         </div>
     </section>
     
-            <!-- Quote Section -->
-            <section id="orcamento" class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('imagens/solicite-seu-orcamento/chaveiro-em-santo-andre-solicite-seu-orcamento.webp');">
+            <!-- ============================================
+                 SEÇÃO DE ORÇAMENTO
+                 ============================================
+                 Formulário de solicitação de orçamento:
+                 - Botões de contato (Telefone e WhatsApp)
+                 - Cards com diferenciais (Qualidade, Segurança, Excelência)
+                 - Formulário de contato completo
+                 - Validação JavaScript em tempo real
+                 ============================================ -->
+            <section id="orcamento" class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), url('imagens/solicite-seu-orcamento/chaveiro-em-santo-andre-solicite-seu-orcamento.webp');">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Solicite Seu Orçamento - Chaveiro em Santo André</h2>
+                        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Solicite Seu Orçamento - Chaveiro em Santo André</h2>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                         <div class="space-y-8">
@@ -731,7 +801,15 @@
         </div>
     </section>
     
-            <!-- Location Section -->
+            <!-- ============================================
+                 SEÇÃO DE LOCALIZAÇÃO
+                 ============================================
+                 Informações de contato e localização:
+                 - Endereço completo
+                 - Telefone e WhatsApp
+                 - Horário de funcionamento
+                 - Mapa do Google Maps integrado
+                 ============================================ -->
             <section id="location" class="py-20 bg-gradient-to-b from-gray-50 to-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-16">
@@ -770,11 +848,12 @@
                                         <i class="ri-time-fill text-2xl text-purple-600"></i>
                                     </div>
                                     <div>
-                                        <h4 class="text-xl font-bold text-gray-900 mb-3">Horário de Funcionamento</h4>
+                                        <h4 class="text-xl font-bold text-gray-900 mb-3">Horário de Funcionamento do Chaveiro em Santo André</h4>
                                         <div class="space-y-2 text-gray-700">
-                                            <p><strong>Segunda a Sexta:</strong> 8h às 18h</p>
-                                            <p><strong>Sábado:</strong> 8h às 12h</p>
-                                            <p><strong>Domingo:</strong> Fechado</p>
+                                            <p><strong>Segunda a Sexta:</strong> 8h às 22h</p>
+                                            <p><strong>Sábado:</strong> 8h às 16h</p>
+                                            <p><strong>Domingo:</strong> Atendimento emergencial</p>
+                                            <p class="text-sm text-gray-600 mt-3">Atendemos durante todo o horário de funcionamento para serviços de chaveiro residencial, automotivo e comercial em Santo André e região do ABC.</p>
                                         </div>
                                     </div>
                         </div>
@@ -793,8 +872,16 @@
         </div>
     </section>
     
-            <!-- Gallery Section -->
-            <section id="gallery" class="py-24 bg-gradient-to-b from-gray-50 to-white">
+            <!-- ============================================
+                 SEÇÃO DE GALERIA
+                 ============================================
+                 Galeria de imagens dos trabalhos realizados:
+                 - Grid responsivo 3 colunas
+                 - Hover effect com overlay
+                 - Imagens otimizadas para SEO
+                 - Alt text descritivo
+                 ============================================ -->
+            <section id="gallery" class="py-24 bg-gray-100">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-16">
                         <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Galeria de Imagens - Chaveiro em Santo André</h2>
@@ -891,7 +978,15 @@
         </div>
     </section>
     
-            <!-- Footer -->
+            <!-- ============================================
+                 FOOTER - RODAPÉ
+                 ============================================
+                 Rodapé com informações da empresa:
+                 - Descrição do Chaveiro Senador
+                 - Links rápidos de navegação
+                 - Informações de contato
+                 - Copyright
+                 ============================================ -->
             <footer class="bg-gray-900 text-white py-8">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -906,12 +1001,12 @@
                         <div>
                             <h3 class="text-xl font-bold mb-3">Links Rápidos</h3>
                             <ul class="grid grid-cols-2 gap-x-4 gap-y-2">
-                                <li><a href="#home" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Início</a></li>
-                                <li><a href="#about" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Quem Somos</a></li>
-                                <li><a href="#services" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Nossos Serviços</a></li>
-                                <li><a href="#gallery" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Galeria</a></li>
-                                <li><a href="#partnerships" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Parcerias</a></li>
-                                <li><a href="#orcamento" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Contato</a></li>
+                                <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Início</a></li>
+                                <li><a href="quem-somos.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Quem Somos</a></li>
+                                <li><a href="nossos-servicos.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Nossos Serviços</a></li>
+                                <li><a href="contato.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Contato</a></li>
+                                <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">FAQ</a></li>
+                                <li><a href="dicas.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Dicas</a></li>
                             </ul>
                         </div>
                         <div>
@@ -937,6 +1032,15 @@
         </div>
     </div>
     
+    <!-- ============================================
+         SCRIPTS JAVASCRIPT
+         ============================================
+         script.js: Contém toda a lógica JavaScript do site:
+         - Menu mobile toggle
+         - Carrossel de marcas
+         - Validação de formulários
+         - Animações e interações
+         ============================================ -->
     <script src="script.js"></script>
 </body>
 </html>

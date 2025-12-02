@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<!-- 
+    ============================================
+    PÁGINA FAQ - PERGUNTAS FREQUENTES
+    ============================================
+    Página com perguntas frequentes sobre os serviços
+    do Chaveiro Senador em formato de accordion.
+    
+    Estrutura:
+    - Header fixo (mesmo do index.html)
+    - Seção FAQ com accordion interativo
+    - Cada pergunta expande/colapsa ao clicar
+    - JavaScript controla a animação do accordion
+    - Footer
+    
+    Tecnologias: HTML5, Tailwind CSS, JavaScript
+    ============================================
+-->
+<html lang="pt-BR">
+<head>
+    <!-- Meta Tags Básicas -->
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/webp" href="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>FAQ - Perguntas Frequentes | Chaveiro Senador - Chaveiro em Santo André</title>
+    <meta name="description" content="Perguntas frequentes sobre os serviços do Chaveiro Senador em Santo André. Tire suas dúvidas sobre chaveiro residencial, automotivo, chaves codificadas e mais.">
+    <meta name="keywords" content="faq chaveiro, perguntas frequentes chaveiro, dúvidas chaveiro santo andré">
+    <meta name="author" content="Chaveiro Senador">
+    <link rel="canonical" href="https://chaveiroseguro.com.br/faq.html">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="root">
+        <!-- Header Fixo com Menu -->
+        <header class="menu-header fixed top-0 left-0 right-0 z-50 w-full" style="background-color: #2c3e50 !important; background-image: none !important; margin: 0 !important; padding: 0 !important; height: 64px !important; line-height: 64px !important;">
+            <div class="w-full h-full px-4 sm:px-6 lg:px-8" style="max-width: 100%; margin: 0 auto; height: 100%;">
+                <div class="flex items-center justify-between h-full w-full" style="height: 100%; align-items: center;">
+                    <!-- Logo/Texto à Esquerda -->
+                    <div class="flex items-center gap-2 flex-shrink-0" style="height: 100%; align-items: center; margin: 0; padding: 0;">
+                        <a href="index.html">
+                            <img src="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="Chaveiro Senador - Chaveiro em Santo André e região do ABC" class="h-10 w-auto object-contain" style="display: block; margin: 0; padding: 0;">
+                        </a>
+                        <span class="font-bold text-2xl whitespace-nowrap" style="color: #FACC15; margin: 0; padding: 0; line-height: 1;">Chaveiro Senador</span>
+                    </div>
+                    <!-- Links de Navegação no Meio (Desktop) -->
+                    <nav class="hidden lg:flex items-center gap-3 xl:gap-4 flex-1 justify-center px-2" style="height: 100%; align-items: center; margin: 0; padding: 0 8px;">
+                        <a href="index.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Início</a>
+                        <a href="quem-somos.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Quem Somos</a>
+                        <a href="nossos-servicos.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Nossos Serviços</a>
+                        <a href="contato.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Contato</a>
+                    </nav>
+                    <!-- Botão à Direita -->
+                    <div class="flex items-center gap-2 lg:gap-3 flex-shrink-0" style="height: 100%; align-items: center; margin: 0; padding: 0;">
+                        <!-- Botão WhatsApp -->
+                        <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-white font-semibold text-base sm:text-lg transition-all hover:opacity-90 whitespace-nowrap" style="background-color: #22C55E; margin: 0; padding: 8px 12px; line-height: 1;">
+                            <span>Fale Conosco</span>
+                            <i class="ri-whatsapp-fill text-base sm:text-lg"></i>
+                        </a>
+                        <!-- Botão Menu Mobile (Hamburger) -->
+                        <button id="mobile-menu-button" class="lg:hidden flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors" aria-label="Abrir menu" style="margin: 0; padding: 0;">
+                            <i class="ri-menu-line text-2xl" id="menu-icon"></i>
+                            <i class="ri-close-line text-2xl hidden" id="close-icon"></i>
+                        </button>
+            </div>
+                </div>
+            </div>
+        </header>
+        <!-- Menu Mobile (Dropdown) -->
+        <div id="mobile-menu" class="lg:hidden fixed top-16 left-0 right-0 bg-[#2c3e50] shadow-lg z-[60] max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Início</a>
+                <a href="quem-somos.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Quem Somos</a>
+                <a href="nossos-servicos.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Nossos Serviços</a>
+                <a href="contato.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold">Contato</a>
+            </nav>
+        </div>
+        <div class="min-h-screen bg-white" style="padding-top: 64px; margin-top: 0;">
+            <!-- Banner FAQ -->
+            <section class="relative w-full h-[400px] md:h-[500px] overflow-hidden bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), url('imagens/banner/chaveiro-em-santo-andre-banner-principal.webp');">
+                <div class="relative w-full h-full flex items-center">
+                    <div class="relative flex items-center pl-8 md:pl-12 pr-8">
+                        <div class="text-white z-10">
+                            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4">Perguntas Frequentes</h1>
+                            <p class="text-xl md:text-2xl text-white/90">Tire suas dúvidas sobre o Chaveiro Senador em Santo André</p>
+                        </div>
+                        <!-- Linha Amarela Vertical Separadora -->
+                        <div class="absolute right-0 top-0 bottom-0 w-1 bg-yellow-400 z-20"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- FAQ Section -->
+            <section id="faq" class="py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Perguntas Frequentes</h2>
+                        <h3 class="text-2xl md:text-3xl font-semibold text-blue-600 mb-4">Tire suas dúvidas sobre nossos serviços</h3>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Encontre respostas para as principais perguntas sobre nossos serviços de chaveiro em Santo André e região do ABC.</p>
+                    </div>
+                    
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <!-- FAQ Item 1 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">O Chaveiro Senador atende em quais cidades?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">O Chaveiro Senador atende em Santo André e toda a região do ABC, incluindo São Bernardo do Campo, Mauá, Diadema, São Caetano do Sul e também São Paulo.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Qual a importância da profissão chaveiro nos dias atuais?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed mb-4">A profissão de chaveiro é uma das mais antigas e essenciais da sociedade moderna. Em grandes centros urbanos como Santo André e toda a região do ABC, o chaveiro profissional desempenha um papel fundamental na segurança e no dia a dia das pessoas.</p>
+                                <p class="text-gray-700 leading-relaxed mb-4">O chaveiro moderno vai muito além de simplesmente fazer cópias de chaves. Com o avanço tecnológico e o aumento das preocupações com segurança, esse profissional se tornou indispensável para:</p>
+                                <ul class="text-gray-700 leading-relaxed space-y-2 list-disc list-inside mb-4">
+                                    <li>Resolver situações de emergência (abertura de portas e veículos)</li>
+                                    <li>Oferecer soluções especializadas em segurança residencial, comercial e automotiva</li>
+                                    <li>Dominar tecnologias avançadas como chaves codificadas, fechaduras digitais e sistemas biométricos</li>
+                                    <li>Garantir a segurança de residências, empresas e veículos</li>
+                                </ul>
+                                <p class="text-gray-700 leading-relaxed mb-4">Com o surgimento de tecnologias avançadas de segurança, como fechaduras digitais, chaves com chip eletrônico, sistemas biométricos e controles de acesso, o chaveiro profissional precisou se qualificar constantemente para atender às novas demandas do mercado.</p>
+                                <p class="text-gray-700 leading-relaxed">O <strong>Chaveiro Senador</strong>, com profissionais qualificados e equipamentos de última geração, representa a evolução da profissão de chaveiro em Santo André e região do ABC, oferecendo serviços completos e especializados para garantir sua segurança.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Quais serviços de chaveiro vocês oferecem?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed mb-4">O <strong>Chaveiro Senador</strong> oferece uma ampla gama de serviços especializados em Santo André e região do ABC. Nossos principais serviços incluem:</p>
+                                <ul class="text-gray-700 leading-relaxed space-y-2 list-disc list-inside">
+                                    <li>Abertura de Portas Residencial</li>
+                                    <li>Chave Codificada Automotiva</li>
+                                    <li>Abertura de Veículos</li>
+                                    <li>Reparo de Ignição</li>
+                                    <li>Fechadura Digital</li>
+                                    <li>Troca de Segredo</li>
+                                    <li>Instalação de Fechaduras</li>
+                                    <li>Conserto de Fechaduras</li>
+                                    <li>Abertura de Cofre</li>
+                                    <li>Serviços Comerciais</li>
+                                    <li>Serviços Residenciais</li>
+                                    <li>Confecção de Chaves</li>
+                                    <li>Venda e Codificação de Controle de Portão</li>
+                                    <li>Instalação de Olho Mágico</li>
+                                    <li>Venda de Bateria e Cadeados</li>
+                                </ul>
+                                <p class="text-gray-700 leading-relaxed mt-4">Para mais detalhes sobre cada serviço, visite nossa página de <a href="nossos-servicos.html" class="text-blue-600 hover:text-blue-700 font-semibold underline">Nossos Serviços</a>.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 4 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Onde o Chaveiro Senador está localizado?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Estamos localizados na Rua Senador Flaquer, 561, Centro, Santo André - SP, CEP 09010-060.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Vocês fazem abertura de portas sem danos?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Sim, nossa equipe é especializada em abertura de portas sem causar danos à fechadura ou à porta. Utilizamos técnicas profissionais e ferramentas adequadas para garantir que sua propriedade não seja danificada durante o processo.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 6 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Qual o horário de funcionamento do chaveiro?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">O <strong>Chaveiro Senador</strong> em Santo André está aberto de <strong>segunda a sexta-feira, das 8h às 22h, e aos sábados das 8h às 16h</strong>. Oferecemos serviços de chaveiro residencial, automotivo e comercial durante todo o horário de funcionamento.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 7 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Vocês trabalham com todas as marcas de veículos?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Sim, trabalhamos com todas as principais marcas de veículos, incluindo Toyota, Honda, Volkswagen, Fiat, Chevrolet, Ford, Hyundai, Kia, Mercedes-Benz, BMW, Audi e muitas outras. Nossa expertise abrange desde modelos mais antigos até os mais modernos.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 8 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Como saber se vocês fazem chave codificada para o meu carro?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>No <strong>Chaveiro Senador</strong>, fazemos chaves codificadas, cópias de chave automotiva, chave canivete, chave presencial (keyless) e programação de imobilizador para a maioria dos veículos comercializados no Brasil.</p>
+                                    
+                                    <p>Atendemos clientes de <strong>Santo André, São Bernardo, São Caetano, Diadema, Mauá, São Paulo, ABC e Grande ABC</strong>.</p>
+                                    
+                                    <p>Trabalhamos com modelos <strong>Fiat, Volkswagen, Chevrolet, Ford, Hyundai, Renault, Toyota, Honda, Mitsubishi, Nissan, Citroën, Peugeot, CAOA Chery, Volvo, Kia, Land Rover, Iveco, JAC, Suzuki, Jeep</strong> e muitas outras marcas.</p>
+                                    
+                                    <p class="font-semibold text-gray-900">Veja abaixo alguns modelos para os quais fazemos chave codificada automotiva (consulte para outros modelos):</p>
+                                    
+                                    <div class="space-y-4 mt-6">
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Fiat</p>
+                                            <p class="text-gray-700">Toro, Argo, Mobi, Cronos, Doblo, Ducato, Fiorino, Idea, Linea, Palio, Punto, Siena, Strada, Uno.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Volkswagen</p>
+                                            <p class="text-gray-700">T-Cross, Nivus, Polo, Virtus, Amarok, Tiguan, Passat, Parati, Kombi, CrossFox, Fox, Gol, Golf, Jetta, Saveiro, SpaceFox, Up, Voyage.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Chevrolet</p>
+                                            <p class="text-gray-700">Tracker, S10, Equinox, Camaro, Corvette, Silverado, Corsa, Vectra, Astra, Agile, D10/D20, Celta, Classic, Cobalt, Cruze, Montana, Onix / Onix Plus, Prisma, Spin.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Ford</p>
+                                            <p class="text-gray-700">F1000, F250, Courier, EcoSport, Edge, Fiesta, Focus, Fusion, Ka, Ranger.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Hyundai</p>
+                                            <p class="text-gray-700">Elantra, Creta, HR, HB20, HB20S, i30, ix35, Santa Fé, Tucson, Veloster, Vera Cruz.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Renault</p>
+                                            <p class="text-gray-700">Captur, Oroch, Kwid, Master, Kangoo, Clio, Duster, Fluence, Logan, Mégane, Sandero, Scénic.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Toyota</p>
+                                            <p class="text-gray-700">Corolla, Etios, Fielder, Hilux, RAV4, Yaris.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Honda</p>
+                                            <p class="text-gray-700">City, Civic, CR-V, Fit, HR-V, WR-V, Accord.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Mitsubishi</p>
+                                            <p class="text-gray-700">ASX, L200, Eclipse, Lancer, Outlander, Pajero.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Nissan</p>
+                                            <p class="text-gray-700">Frontier, Livina, March, Kicks, Sentra, Tiida, Versa.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Citroën</p>
+                                            <p class="text-gray-700">Aircross, C3, C4, C4 Cactus.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Peugeot</p>
+                                            <p class="text-gray-700">206/207, 208/307, 308/408, 2008/3008, Hoggar, Boxer, Partner.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para CAOA Chery</p>
+                                            <p class="text-gray-700">Tiggo, Arrizo, QQ.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Volvo</p>
+                                            <p class="text-gray-700">XC40, S60, XC60, S90.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Kia</p>
+                                            <p class="text-gray-700">Sportage, Cerato, Rio, Sorento, Carnival, Besta, K2500.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Land Rover</p>
+                                            <p class="text-gray-700">Defender, Evoque, Discovery, Velar, Range Rover.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Outras Marcas</p>
+                                            <p class="text-gray-700">Iveco Daily, JAC T40, T50, T60, T80, V-260, Troller T4.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="font-bold text-gray-900 mb-2">🔑 Chave Codificada para Suzuki e Jeep</p>
+                                            <p class="text-gray-700">Swift, S-Cross, Jimny, Vitara, Compass, Wrangler, Cherokee.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 9 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Como escolher a fechadura ideal para portas de madeira, aço e vidro?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>A fechadura é um dos principais elementos de segurança de qualquer imóvel. Por isso, escolher o modelo correto faz toda a diferença na proteção do ambiente, na durabilidade da porta e até no conforto do uso diário. Cada tipo de porta — madeira, aço ou vidro — possui características próprias, e instalar a fechadura errada pode comprometer tanto a segurança quanto o funcionamento da estrutura.</p>
+                                    
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que é tão importante escolher a fechadura certa?</h5>
+                                        <p class="mb-2">Optar pelo modelo correto impacta diretamente:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>A resistência do imóvel contra invasões</li>
+                                            <li>A vida útil da porta</li>
+                                            <li>O alinhamento e a fluidez da abertura</li>
+                                            <li>A praticidade no dia a dia</li>
+                                            <li>O conforto e a sensação de segurança</li>
+                                        </ul>
+                                        <p class="mt-2">Quando a escolha é inadequada, surgem problemas comuns como chave quebrada, porta desalinhada, travamentos frequentes e vulnerabilidade a arrombamentos.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Melhores fechaduras para portas de madeira</h5>
+                                        <p class="mb-2">As portas de madeira são as mais comuns em casas, apartamentos e estabelecimentos comerciais, oferecendo excelente compatibilidade com diversos tipos de fechaduras.</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Fechaduras de embutir</strong><br>São as mais utilizadas, ideais para portas internas e externas. Têm boa estética, instalação simples e grande variedade de modelos.</li>
+                                            <li><strong>Fechaduras reforçadas</strong><br>Indicadas especialmente para portas externas. Possuem cilindros mais resistentes, travas robustas e versões multiponto para proteção extra.</li>
+                                            <li><strong>Fechaduras digitais</strong><br>Uma das opções mais modernas para portas de madeira. Contam com senha, biometria, cartão de acesso e até aplicativo, unindo segurança e praticidade.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Melhores fechaduras para portas de aço</h5>
+                                        <p class="mb-2">Portas de aço são comuns em comércios, depósitos e residências que exigem maior robustez.</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Fechaduras de sobrepor reforçadas</strong><br>Muito resistentes e fáceis de instalar, são amplamente usadas em portas externas de aço.</li>
+                                            <li><strong>Fechaduras multiponto</strong><br>Oferecem travamento simultâneo em vários pontos da porta, aumentando significativamente a proteção contra invasão.</li>
+                                            <li><strong>Fechaduras com cilindro europeu</strong><br>Modelos altamente seguros, com tecnologias anti-bumping, anti-ganzua, anti-extrator e anti-perfuração. Perfeitas para ambientes de alto risco.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Melhores fechaduras para portas de vidro</h5>
+                                        <p class="mb-2">Portas de vidro exigem modelos específicos para evitar danos durante a instalação e garantir segurança.</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Fechaduras de sobrepor para vidro</strong><br>Muito usadas em lojas e escritórios. Evitam perfurações profundas e se adaptam bem a diferentes espessuras de vidro.</li>
+                                            <li><strong>Fechaduras tipo boca de lobo</strong><br>Clássicas em estabelecimentos comerciais. Garantem encaixe firme e funcionamento resistente, além de suportarem grande fluxo de pessoas.</li>
+                                            <li><strong>Fechaduras digitais para vidro</strong><br>Modelos modernos que combinam segurança e elegância, com opções de senha, biometria e cartão RFID.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Como analisar o nível de segurança da fechadura</h5>
+                                        <p class="mb-2">Antes de comprar, observe:</p>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Resistência do cilindro</strong> – dê preferência a modelos com proteção anti-arrombamento</li>
+                                            <li><strong>Quantidade de travas</strong> – fechaduras multiponto oferecem mais segurança</li>
+                                            <li><strong>Material da estrutura</strong> – aço inox, zamac reforçado e ligas duráveis são mais confiáveis</li>
+                                            <li><strong>Certificações</strong> – ABNT, ISO e padrões europeus garantem maior qualidade e resistência</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Erros comuns ao escolher fechaduras (e como evitar)</h5>
+                                        <p class="mb-2">Estudos mostram que mais de 70% dos arrombamentos acontecem em portas com fechaduras inadequadas ou mal instaladas. Os erros mais comuns são:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Escolher um modelo incompatível com o tipo de porta</li>
+                                            <li>Instalação mal executada</li>
+                                            <li>Utilizar fechaduras simples em portas externas</li>
+                                            <li>Comprar fechadura digital sem verificar compatibilidade</li>
+                                            <li>Optar por modelos inferiores achando que são marcas premium</li>
+                                            <li>Tentar instalar sem auxílio profissional</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que contar com um chaveiro profissional faz diferença?</h5>
+                                        <p class="mb-2">Um chaveiro especializado, como o <strong>Chaveiro Senador</strong> em Santo André, garante:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Instalação correta e sem danos</li>
+                                            <li>Avaliação técnica do tipo de porta</li>
+                                            <li>Indicação do modelo mais seguro e compatível</li>
+                                            <li>Alinhamento perfeito da porta</li>
+                                            <li>Menor risco de arrombamento</li>
+                                            <li>Garantia de qualidade no serviço</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>A fechadura ideal depende do tipo de porta, do nível de proteção desejado e do ambiente onde será instalada. Portas de madeira, aço e vidro possuem necessidades específicas, e escolher o modelo certo garante segurança, durabilidade e tranquilidade.</p>
+                                        <p class="mt-2">Se você está em Santo André ou na região do ABC e precisa instalar, trocar ou modernizar suas fechaduras, o <strong>Chaveiro Senador</strong> oferece atendimento especializado e orientação completa para ajudar na escolha do modelo ideal. Entre em contato e proteja seu imóvel com segurança e qualidade profissional.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 10 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Por que trocar a fechadura ao se mudar para uma nova casa?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>A mudança para um novo lar — seja alugado ou adquirido — é acompanhada de muita expectativa e organização. Entre caixas, transporte de móveis e documentação, há um detalhe essencial que não pode ser ignorado: a troca da fechadura da porta principal.</p>
+                                    
+                                    <p>Muita gente não percebe, mas substituir a fechadura logo na mudança é uma das formas mais simples e eficazes de garantir segurança no novo endereço.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que a troca da fechadura deve ser prioridade na mudança?</h5>
+                                        <p class="mb-2">Ao chegar em um novo imóvel, não é possível saber quantas cópias das chaves anteriores ainda estão em circulação. Antigos proprietários, inquilinos, zeladores, prestadores de serviço e até visitantes podem ter tido acesso ao imóvel em algum momento.</p>
+                                        <p class="mb-2">Por isso, substituir imediatamente a fechadura traz vários benefícios importantes:</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Garantia de segurança total do imóvel</strong><br>Instalando uma nova fechadura, você elimina qualquer possibilidade de alguém entrar sem autorização. A fechadura antiga pode ter diversas cópias que você nunca saberá onde estão.</li>
+                                            <li><strong>Mais tranquilidade para sua família</strong><br>Saber que somente você possui as novas chaves aumenta a sensação de proteção e torna o novo lar mais seguro desde o primeiro dia.</li>
+                                            <li><strong>Prevenção contra furtos e invasões</strong><br>Dados do Fórum Brasileiro de Segurança Pública mostram que furtos em residências continuam frequentes em grandes centros urbanos. Fechaduras antigas ou frágeis facilitam a ação de criminosos — e muitos casos ocorrem sem sinais de arrombamento, justamente pelo uso de chaves antigas.</li>
+                                            <li><strong>Oportunidade de modernizar o sistema de segurança</strong><br>A mudança é o momento ideal para instalar uma fechadura mais resistente ou tecnológica, como modelos tetra, digitais ou biométricos.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Riscos de não trocar a fechadura ao se mudar</h5>
+                                        <p class="mb-2">Manter a fechadura antiga pode causar problemas sérios:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Pessoas desconhecidas podem ter cópias da chave</li>
+                                            <li>Fechaduras antigas são mais suscetíveis a violação</li>
+                                            <li>Aumenta o risco de invasão e prejuízo financeiro</li>
+                                            <li>Pode dificultar o acionamento do seguro residencial, já que muitas seguradoras recomendam ou exigem a troca</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quando realizar a troca da fechadura?</h5>
+                                        <p>O ideal é fazer o serviço antes da mudança ou no mesmo dia. Assim, sua casa já estará protegida desde o momento em que você entrar com seus pertences.</p>
+                                        <p class="mt-2">Se você está na região do ABC, o <strong>Chaveiro Senador</strong> oferece atendimento rápido e agendado, facilitando todo o processo.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Modelos de fechaduras mais recomendados ao se mudar</h5>
+                                        <p class="mb-2">A escolha depende do tipo de porta e do nível de segurança desejado. Entre as opções mais indicadas:</p>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Fechadura tetra:</strong> Quatro pinos internos e alta resistência contra arrombamentos. Ótima para portas principais.</li>
+                                            <li><strong>Fechadura eletrônica com senha:</strong> Dispensa chaves e permite criar códigos temporários, ideal para diaristas ou prestadores de serviços.</li>
+                                            <li><strong>Fechadura biométrica:</strong> Máxima segurança e praticidade, com abertura por impressão digital.</li>
+                                            <li><strong>Fechadura de sobrepor reforçada:</strong> Excelente como segunda camada de proteção em portas externas.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Como é feita a troca da fechadura?</h5>
+                                        <p class="mb-2">A instalação profissional garante que a porta não será danificada e que a fechadura funcionará perfeitamente. O processo inclui:</p>
+                                        <ol class="list-decimal list-inside space-y-1 ml-4">
+                                            <li>Avaliação da porta e da fechadura atual</li>
+                                            <li>Remoção cuidadosa do modelo antigo</li>
+                                            <li>Instalação da nova fechadura no padrão correto</li>
+                                            <li>Testes completos de funcionamento</li>
+                                            <li>Entrega das novas chaves ao morador</li>
+                                        </ol>
+                                        <p class="mt-2">Somente um profissional garante alinhamento perfeito, travamento correto e total segurança.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que contratar um chaveiro especializado?</h5>
+                                        <p class="mb-2">Optar por um profissional como o <strong>Chaveiro Senador</strong>, em Santo André, oferece vantagens como:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Atendimento rápido e seguro</li>
+                                            <li>Instalação técnica sem danificar sua porta</li>
+                                            <li>Orientação para escolher a fechadura ideal</li>
+                                            <li>Garantia e nota fiscal</li>
+                                            <li>Profissionais experientes com décadas de atuação no ABC</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Dicas extras para reforçar a segurança ao se mudar</h5>
+                                        <p class="mb-2">Além de trocar a fechadura, você também pode:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Alterar o código do portão eletrônico</li>
+                                            <li>Melhorar a iluminação externa</li>
+                                            <li>Instalar olho mágico</li>
+                                            <li>Considerar alarmes ou câmeras de monitoramento</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Trocar a fechadura ao se mudar é um passo simples, mas essencial para garantir tranquilidade e proteção desde o primeiro dia no novo lar. É um cuidado que evita riscos, fortalece a segurança e protege sua família e seu patrimônio.</p>
+                                        <p class="mt-2">Se você está na região do ABC, pode contar com o <strong>Chaveiro Senador</strong> para realizar a troca com segurança, agilidade e total confiança.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 11 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Fechaduras digitais: vale a pena investir?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>A segurança é um dos pilares mais importantes para qualquer residência ou comércio em Santo André e região do ABC. Em cidades tão movimentadas, as soluções tradicionais de proteção já não são suficientes para garantir a tranquilidade de famílias e empresários. Nesse cenário, cresce o interesse pelas fechaduras digitais, que unem praticidade, tecnologia e segurança reforçada.</p>
+                                    
+                                    <p>Mas afinal, vale a pena investir em fechaduras digitais? Para responder essa pergunta, vamos explorar neste artigo as principais vantagens, desvantagens, custos, tipos de fechaduras digitais e como elas se comparam às fechaduras convencionais.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">O que são fechaduras digitais?</h5>
+                                        <p class="mb-2">As fechaduras digitais substituem as fechaduras tradicionais e permitem a abertura da porta sem o uso de chaves físicas. Elas podem funcionar por diferentes sistemas:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li><strong>Senha numérica:</strong> Códigos que liberam o acesso</li>
+                                            <li><strong>Cartão de proximidade (RFID):</strong> Muito usado em hotéis e empresas</li>
+                                            <li><strong>Biometria:</strong> Impressão digital ou até reconhecimento facial</li>
+                                            <li><strong>Aplicativos móveis:</strong> Controle remoto via smartphone</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vantagens das fechaduras digitais</h5>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li><strong>Mais segurança:</strong> Dificultam cópias não autorizadas de chaves</li>
+                                            <li><strong>Praticidade:</strong> Acesso rápido, sem depender de chaves</li>
+                                            <li><strong>Controle de acesso:</strong> Permite identificar quem entrou e quando</li>
+                                            <li><strong>Design moderno:</strong> Valorizam imóveis residenciais e comerciais</li>
+                                            <li><strong>Integração com automação:</strong> Podem se conectar a sistemas de câmeras e alarmes</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Desvantagens a considerar</h5>
+                                        <p class="mb-2">Apesar dos benefícios, há pontos de atenção:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Dependem de energia elétrica ou baterias</li>
+                                            <li>Custam mais do que as fechaduras convencionais</li>
+                                            <li>Podem falhar em caso de mau uso ou falta de manutenção</li>
+                                            <li>Instalação exige um chaveiro profissional</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Comparativo: fechadura tradicional x fechadura digital</h5>
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full border-collapse border border-gray-300 mt-2">
+                                                <thead>
+                                                    <tr class="bg-gray-100">
+                                                        <th class="border border-gray-300 px-4 py-2 text-left">Critério</th>
+                                                        <th class="border border-gray-300 px-4 py-2 text-left">Fechadura tradicional</th>
+                                                        <th class="border border-gray-300 px-4 py-2 text-left">Fechadura digital</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2"><strong>Segurança</strong></td>
+                                                        <td class="border border-gray-300 px-4 py-2">Média – risco de cópias</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Alta – biometria/senha</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2"><strong>Praticidade</strong></td>
+                                                        <td class="border border-gray-300 px-4 py-2">Exige chave física</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Acesso rápido</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2"><strong>Preço inicial</strong></td>
+                                                        <td class="border border-gray-300 px-4 py-2">Baixo</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Médio a alto</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2"><strong>Manutenção</strong></td>
+                                                        <td class="border border-gray-300 px-4 py-2">Simples</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Técnica especializada</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2"><strong>Durabilidade</strong></td>
+                                                        <td class="border border-gray-300 px-4 py-2">Longa</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Longa (com cuidados)</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p class="mt-2">Esse comparativo mostra que, embora mais caras, as fechaduras digitais oferecem um pacote superior em termos de segurança e praticidade, justificando o investimento, especialmente em Santo André e região do ABC.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quanto custa investir em fechaduras digitais?</h5>
+                                        <p class="mb-2">O preço varia conforme a tecnologia:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Modelos básicos com senha: R$ 600 a R$ 900</li>
+                                            <li>Biométricas: R$ 1.000 a R$ 2.500</li>
+                                            <li>Conectadas à automação: R$ 3.000 ou mais</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vale a pena investir em fechaduras digitais para residências?</h5>
+                                        <p>Sim, principalmente em apartamentos e casas em bairros movimentados de Santo André e região do ABC. Além de oferecer maior segurança, elas eliminam a necessidade de cópias de chaves, que muitas vezes acabam em mãos erradas.</p>
+                                        <p class="mt-2">Exemplo prático: uma família em Santo André trocou as fechaduras tradicionais por modelos digitais com biometria. Resultado: mais controle sobre quem acessa a casa e eliminação da preocupação com chaves perdidas.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vale a pena investir em fechaduras digitais para comércios?</h5>
+                                        <p>Para comércios, escritórios e empresas, o investimento em fechaduras digitais também é altamente recomendado. Além de reforçar a segurança, permitem restringir áreas específicas a funcionários autorizados.</p>
+                                        <p class="mt-2">Exemplo prático: um escritório na região do ABC adotou fechaduras digitais com senha individual para cada colaborador. Assim, ficou fácil identificar acessos e restringir entradas fora do horário comercial.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">O que dizem os especialistas sobre fechaduras digitais?</h5>
+                                        <p>A procura por fechaduras digitais cresceu mais de 40% nos últimos anos, principalmente em grandes cidades. O motivo principal é a busca por segurança moderna e prática. Em Santo André e região do ABC, essa tendência também está em alta.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Dicas para escolher a fechadura digital ideal</h5>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Defina se o uso será residencial ou comercial</li>
+                                            <li>Prefira modelos com dupla autenticação (senha + biometria)</li>
+                                            <li>Avalie a autonomia da bateria</li>
+                                            <li>Verifique se há assistência técnica em Santo André e região do ABC</li>
+                                            <li>Sempre contrate instalação com um chaveiro profissional</li>
+                                        </ul>
+                                        <p class="mt-2">No <strong>Chaveiro Senador</strong> você encontra suporte completo para instalação de fechadura digital.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Se você ainda tem dúvidas se vale a pena investir em fechaduras digitais, a resposta é clara: sim. Esse tipo de tecnologia garante mais segurança, praticidade e valorização para imóveis residenciais e comerciais em Santo André e região do ABC.</p>
+                                        <p class="mt-2">Embora o custo inicial seja mais alto do que o das fechaduras tradicionais, os benefícios justificam o investimento. E com a instalação feita por um chaveiro especializado como o <strong>Chaveiro Senador</strong>, você garante o funcionamento correto e maior durabilidade.</p>
+                                        <p class="mt-2">Entre em contato com o <strong>Chaveiro Senador</strong> e descubra como instalar sua fechadura digital em Santo André e região do ABC com segurança e praticidade.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 12 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Quanto tempo demora para um chaveiro abrir uma porta?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>Em situações de emergência, como perder a chave, trancar-se do lado de fora ou enfrentar uma fechadura danificada, é comum surgir a dúvida: quanto tempo demora para um chaveiro abrir uma porta?</p>
+                                    
+                                    <p>A resposta depende de alguns fatores importantes, como o tipo da fechadura, a experiência do profissional e o acesso ao local.</p>
+
+                                    <p>Neste artigo, vamos explicar tudo o que influencia nesse tempo e por que é importante contar com um chaveiro profissional, como o <strong>Chaveiro Senador</strong>, referência no atendimento rápido em Santo André e região do ABC.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Tempo médio para abrir uma porta</h5>
+                                        <p class="mb-2">Em geral, o tempo médio que um chaveiro leva para abrir uma porta varia entre <strong>5 e 30 minutos</strong>. No entanto, isso pode mudar conforme os seguintes fatores:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Tipo da fechadura</li>
+                                            <li>Condições da porta</li>
+                                            <li>Localização e urgência</li>
+                                            <li>Se houve tentativa de arrombamento prévia</li>
+                                            <li>Se a porta está trancada ou apenas encostada</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Tipos de fechaduras e níveis de dificuldade</h5>
+                                        <p class="mb-2">A complexidade do sistema de travamento é o principal fator que influencia no tempo necessário.</p>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Fechadura simples (residencial padrão):</strong> Tempo médio de 5 a 10 minutos. Técnica: abertura com ferramentas específicas, sem danos.</li>
+                                            <li><strong>Fechadura multiponto ou blindada:</strong> Tempo médio de 15 a 30 minutos. Motivo: mais camadas de segurança exigem técnicas avançadas.</li>
+                                            <li><strong>Fechaduras eletrônicas ou de alta segurança:</strong> Tempo médio de até 40 minutos. Pode envolver redefinição de senha, análise eletrônica ou abertura mecânica assistida.</li>
+                                        </ul>
+                                        <p class="mt-2">Chaveiros experientes identificam rapidamente o tipo de fechadura e usam a técnica mais adequada, reduzindo o tempo e evitando danos.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">A porta está trancada ou apenas encostada?</h5>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li><strong>Porta encostada:</strong> Pode ser aberta em segundos</li>
+                                            <li><strong>Porta trancada:</strong> Exige mais cuidado, especialmente para preservar a fechadura</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Tentativas de arrombamento aumentam o tempo</h5>
+                                        <p>Se alguém tentou forçar a fechadura antes da chegada do profissional, o mecanismo pode estar danificado. Isso:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Aumenta o tempo de serviço</li>
+                                            <li>Pode tornar necessária a troca da fechadura</li>
+                                        </ul>
+                                        <p class="mt-2">Por isso, evite improvisar com cartões, facas ou outros objetos.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quanto tempo leva para o chaveiro chegar?</h5>
+                                        <p>Outra dúvida comum é: "Em quanto tempo o chaveiro chega até o local?"</p>
+                                        <p class="mt-2">Em Santo André e região do ABC, o <strong>Chaveiro Senador</strong> geralmente leva 15 a 30 minutos, dependendo da região e do horário. A empresa trabalha com equipes posicionadas estrategicamente para atendimentos durante o horário de funcionamento: de segunda a sexta-feira, das 8h às 22h, e aos sábados das 8h às 16h.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vantagens de chamar um chaveiro profissional</h5>
+                                        <p class="mb-2">Ao contratar um chaveiro especializado, você garante:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Atendimento rápido e seguro</li>
+                                            <li>Abertura sem danificar a porta</li>
+                                            <li>Diagnóstico preciso para reparos e trocas</li>
+                                            <li>Suporte para fechaduras simples, blindadas ou eletrônicas</li>
+                                            <li>Atendimento em horário estendido, inclusive aos sábados</li>
+                                        </ul>
+                                        <p class="mt-2">O <strong>Chaveiro Senador</strong> é referência em Santo André e região do ABC para emergências residenciais, comerciais e automotivas.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">O que dizem os especialistas</h5>
+                                        <p>Segundo a ABNT, fechaduras certificadas e bem instaladas reduzem drasticamente problemas de segurança — reforçando a importância de contar com profissionais capacitados.</p>
+                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Então, quanto tempo demora para um chaveiro abrir uma porta? Depende da fechadura e da situação, mas geralmente de <strong>5 a 30 minutos</strong>.</p>
+                                        <p class="mt-2">Com um profissional experiente como o <strong>Chaveiro Senador</strong>, o atendimento é rápido, seguro e eficiente em Santo André e região do ABC.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 13 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Quanto custa um serviço de chaveiro no ABC?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>Se você está procurando quanto custa um serviço de chaveiro no ABC, como em Santo André, São Bernardo ou São Caetano, este guia vai esclarecer tudo o que influencia o preço e ajudar você a evitar surpresas.</p>
+                                    
+                                    <p>Os valores podem variar bastante conforme o tipo de serviço, o nível de urgência, o tipo de fechadura e a experiência do profissional. A seguir, veja os fatores que realmente determinam quanto um chaveiro cobra e a média de preços na região do ABC.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">O que influencia o preço de um chaveiro no ABC?</h5>
+                                        <p class="mb-2">Para entender quanto custa um serviço de chaveiro em Santo André, São Bernardo ou São Caetano, é preciso considerar alguns pontos fundamentais:</p>
+                                        
+                                        <div class="mt-3">
+                                            <h6 class="font-semibold text-gray-900 mb-2">1. Tipo de serviço realizado</h6>
+                                            <p class="mb-2">Cada serviço tem um preço diferente. Serviços simples exigem menos tempo e ferramentas; já fechaduras de alta segurança elevam o custo.</p>
+                                            <p class="mb-2"><strong>Principais serviços:</strong></p>
+                                            <ul class="list-disc list-inside space-y-1 ml-4">
+                                                <li>Cópia de chave simples</li>
+                                                <li>Troca de fechadura</li>
+                                                <li>Abertura de porta trancada</li>
+                                                <li>Troca de segredo</li>
+                                                <li>Instalação de fechaduras eletrônicas</li>
+                                                <li>Abertura de cofre</li>
+                                                <li>Serviços automotivos no ABC</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <h6 class="font-semibold text-gray-900 mb-2">2. Localização e deslocamento</h6>
+                                            <p>Regiões mais afastadas dentro do ABC podem ter uma taxa de deslocamento.</p>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <h6 class="font-semibold text-gray-900 mb-2">3. Tipo e marca da fechadura</h6>
+                                            <p>Fechaduras digitais, tetra, multiponto e modelos de alta segurança exigem ferramentas específicas e mais tempo, influenciando o preço.</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quanto custa um chaveiro no ABC? (Valores médios)</h5>
+                                        <p class="mb-2">Aqui estão os preços médios praticados em Santo André, São Bernardo e São Caetano:</p>
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full border-collapse border border-gray-300 mt-2">
+                                                <thead>
+                                                    <tr class="bg-gray-100">
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Serviço</th>
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Preço Médio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2">Cópia de chave simples</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 10 a R$ 25</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2">Abertura de porta residencial</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 120 a R$ 250</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2">Troca de fechadura comum</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 150 a R$ 350</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2">Troca de segredo</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 200 a R$ 400</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2">Instalação de fechadura eletrônica</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 300 a R$ 600</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2">Abertura de cofre</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 300 a R$ 800</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2">Serviço automotivo (abrir carro)</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 120 a R$ 300</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2">Programação de chave automotiva</td>
+                                                        <td class="border border-gray-300 px-4 py-2">R$ 250 a R$ 900</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p class="mt-2 text-sm text-gray-600"><strong>Observação:</strong> valores podem variar conforme o bairro e a complexidade.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que escolher o Chaveiro Senador no ABC?</h5>
+                                        <p class="mb-2">Ao pesquisar chaveiro no ABC, é normal encontrar preços muito diferentes. Mas contratar o mais barato pode causar:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4 mb-3">
+                                            <li>Danos na porta</li>
+                                            <li>Falta de garantia</li>
+                                            <li>Peças de baixa qualidade</li>
+                                            <li>Risco à segurança do imóvel</li>
+                                        </ul>
+                                        <p class="mb-2">Com o <strong>Chaveiro Senador</strong>, você garante:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Técnicos experientes</li>
+                                            <li>Orçamento transparente</li>
+                                            <li>Serviço seguro e profissional</li>
+                                            <li>Atendimento rápido no ABC</li>
+                                            <li>Especialistas em fechaduras residenciais, comerciais e automotivas</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vale a pena buscar o preço mais barato?</h5>
+                                        <p class="mb-2">Não. Economia exagerada pode gerar prejuízos bem maiores depois.</p>
+                                        <p class="mb-2">Segundo a PROTESTE, contratar profissionais não certificados aumenta o risco de:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Danos permanentes na fechadura ou porta</li>
+                                            <li>Falhas de segurança</li>
+                                            <li>Necessidade de retrabalho</li>
+                                        </ul>
+                                        <p class="mt-2">Optar por um chaveiro profissional e bem recomendado, como o <strong>Chaveiro Senador</strong>, garante segurança e durabilidade no serviço.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão: quanto custa um serviço de chaveiro no ABC?</h5>
+                                        <p class="mb-2">O valor depende de:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Tipo de serviço</li>
+                                            <li>Complexidade</li>
+                                            <li>Tipo de fechadura</li>
+                                            <li>Bairro dentro do ABC</li>
+                                        </ul>
+                                        <p class="mt-2">Mas com as médias acima, você já sabe exatamente quanto esperar.</p>
+                                        <p class="mt-2">Se você busca chaveiro em Santo André, São Bernardo ou São Caetano, com preço justo e serviço profissional, o <strong>Chaveiro Senador</strong> é a melhor opção da região.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 14 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Qual a diferença entre o serviço de chaveiro residencial e comercial?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>Os serviços de um chaveiro são essenciais tanto para residências quanto para estabelecimentos comerciais. Porém, as necessidades de uma casa e de uma empresa são totalmente diferentes. Enquanto um proprietário pode precisar de uma simples troca de fechadura ou cópia de chaves, uma empresa costuma exigir soluções mais avançadas, como fechaduras eletrônicas, cofres e sistemas de controle de acesso.</p>
+                                    
+                                    <p>Se você procura entender as diferenças entre chaveiro residencial e chaveiro comercial, este guia vai explicar tudo — e mostrar por que contar com o <strong>Chaveiro Senador</strong>, referência no ABC (Santo André, São Bernardo e São Caetano), é a escolha mais segura.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">O que faz um chaveiro residencial?</h5>
+                                        <p class="mb-2">O chaveiro residencial atende casas, apartamentos e condomínios, focado especialmente na segurança familiar. O objetivo é garantir que os moradores tenham acesso seguro ao imóvel e que as fechaduras ofereçam proteção real contra invasões.</p>
+                                        <p class="mb-2"><strong>Principais serviços residenciais:</strong></p>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Troca de fechaduras:</strong> Ideal em mudanças, perda de chaves ou para reforçar a segurança da casa.</li>
+                                            <li><strong>Troca de segredo da fechadura:</strong> Mantém a fechadura original, mas altera o código interno para uma chave nova.</li>
+                                            <li><strong>Abertura de portas residenciais:</strong> Quando a porta emperra, tranca ou a chave é perdida.</li>
+                                            <li><strong>Cópia de chaves:</strong> Para moradores que precisam de chaves extras.</li>
+                                            <li><strong>Instalação de fechaduras digitais:</strong> Mais praticidade e segurança para portas de entrada.</li>
+                                        </ul>
+                                        <p class="mt-2">Esses serviços são pensados para quem busca segurança residencial no ABC com praticidade no dia a dia.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">O que faz um chaveiro comercial?</h5>
+                                        <p class="mb-2">O chaveiro comercial atende empresas, escritórios, lojas e estabelecimentos que precisam de sistemas de segurança mais robustos. O foco é proteger patrimônio, controlar acesso de colaboradores e garantir a segurança de documentos, equipamentos e valores.</p>
+                                        <p class="mb-2"><strong>Principais serviços comerciais:</strong></p>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Instalação de fechaduras de alta segurança:</strong> Como fechaduras multiponto, travas especiais e cilindros reforçados.</li>
+                                            <li><strong>Controle e cópias de chaves corporativas:</strong> Ideal para empresas com muitos funcionários.</li>
+                                            <li><strong>Sistemas de controle de acesso:</strong> Senha, cartão RFID ou biometria para entrada de colaboradores.</li>
+                                            <li><strong>Troca de segredo após mudanças de funcionários:</strong> Evita riscos internos.</li>
+                                            <li><strong>Abertura e manutenção de cofres:</strong> Muito utilizado em lojas, mercados, escritórios e instituições.</li>
+                                        </ul>
+                                        <p class="mt-2">Esses serviços são indicados para quem busca segurança comercial no ABC com soluções técnicas avançadas.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Diferenças entre chaveiro residencial e comercial</h5>
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full border-collapse border border-gray-300 mt-2">
+                                                <thead>
+                                                    <tr class="bg-gray-100">
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Aspecto</th>
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Chaveiro Residencial</th>
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Chaveiro Comercial</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2 font-semibold">Objetivo principal</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Segurança familiar e comodidade</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Proteção patrimonial e controle de acesso</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2 font-semibold">Tipos de fechaduras</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Comuns, digitais, cilindros simples</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Alta segurança, biométricas, cofres</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2 font-semibold">Abertura de portas</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Casas, apartamentos, portões</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Empresas, lojas, escritórios</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2 font-semibold">Nível de segurança necessário</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Proteção contra invasão</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Proteção de bens e controle de funcionários</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2 font-semibold">Manutenção</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Simples e preventiva</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Soluções avançadas e técnicas</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p class="mt-2">Enquanto a área residencial busca praticidade + segurança da família, o setor comercial precisa de controle, proteção reforçada e sistemas inteligentes.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que contratar o Chaveiro Senador?</h5>
+                                        <p class="mb-2">Seja residencial ou comercial, contratar um chaveiro profissional confiável é essencial. O <strong>Chaveiro Senador</strong>, especialista no ABC, oferece:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Técnicos qualificados</li>
+                                            <li>Equipamentos profissionais</li>
+                                            <li>Instalação sem danos à porta</li>
+                                            <li>Soluções personalizadas</li>
+                                            <li>Atendimento rápido em Santo André, São Bernardo e São Caetano</li>
+                                        </ul>
+                                        <p class="mt-2">O <strong>Chaveiro Senador</strong> atende tanto moradores quanto empresas, oferecendo desde serviços simples até sistemas completos de segurança.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>O serviço de um chaveiro residencial é focado em proteger moradores, enquanto o chaveiro comercial é voltado para segurança patrimonial e controle de acesso empresarial.</p>
+                                        <p class="mt-2">Independentemente da necessidade, o <strong>Chaveiro Senador</strong> é especialista em ambos, atuando em todo o ABC com seriedade, experiência e soluções modernas.</p>
+                                        <p class="mt-2">Precisa de segurança para sua casa ou empresa? Fale com o <strong>Chaveiro Senador</strong> e receba atendimento rápido e profissional no ABC.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Footer -->
+            <footer class="bg-gray-900 text-white py-8">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Chaveiro Senador</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">Chaveiro em Santo André com 46 anos de experiência. Qualidade, Segurança e Eficiência em Serviços de Chaveiro Residencial, Automotivo e Comercial. Atendemos toda a região do ABC incluindo São Bernardo do Campo, Mauá, Diadema e São Caetano do Sul.</p>
+                            <div class="flex items-start gap-3">
+                                <i class="ri-map-pin-fill text-blue-500 text-lg mt-1"></i>
+                                <span class="text-gray-400 text-sm">Rua Senador Flaquer, 561 - Centro - Santo André - SP<br>CEP: 09010-060</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Links Rápidos</h3>
+                            <ul class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Início</a></li>
+                                <li><a href="quem-somos.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Quem Somos</a></li>
+                                <li><a href="nossos-servicos.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Nossos Serviços</a></li>
+                                <li><a href="contato.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Contato</a></li>
+                                <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">FAQ</a></li>
+                                <li><a href="dicas.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Dicas</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Contato</h3>
+                            <div class="space-y-3">
+                                <a href="tel:+551149942568" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-full text-base font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-105 cursor-pointer whitespace-nowrap shadow-lg">
+                                    <i class="ri-phone-fill text-xl"></i>(11) 4994-2568
+                                </a>
+                                <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full text-base font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-105 cursor-pointer whitespace-nowrap shadow-lg">
+                                    <i class="ri-whatsapp-fill text-xl"></i>(11) 99977-6208
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-800 pt-6">
+                        <div class="text-center">
+                            <p class="text-gray-400 text-sm">Copyright © 2025 Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os direitos reservados.</p>
+                </div>
+                    </div>
+        </div>
+    </footer>
+    
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('.faq-icon');
+                    const isOpen = !answer.classList.contains('hidden');
+                    
+                    // Close all other FAQs
+                    document.querySelectorAll('.faq-answer').forEach(ans => {
+                        ans.classList.add('hidden');
+                    });
+                    document.querySelectorAll('.faq-icon').forEach(ic => {
+                        ic.classList.remove('rotate-180');
+                    });
+                    
+                    // Toggle current FAQ
+                    if (isOpen) {
+                        answer.classList.add('hidden');
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        answer.classList.remove('hidden');
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

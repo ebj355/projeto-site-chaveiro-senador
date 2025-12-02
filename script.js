@@ -1,4 +1,31 @@
-// Variáveis globais
+/**
+ * ============================================
+ * SCRIPT.JS - JAVASCRIPT PRINCIPAL DO SITE
+ * ============================================
+ * 
+ * Este arquivo contém toda a lógica JavaScript do site Chaveiro Senador:
+ * 
+ * Funcionalidades principais:
+ * - Menu mobile (toggle, abrir/fechar)
+ * - Carrossel de marcas/montadoras (auto-play, navegação)
+ * - Validação de formulários (tempo real, máscaras)
+ * - Accordion FAQ/Dicas (expandir/colapsar)
+ * - Animações e interações
+ * - Contador de caracteres em textareas
+ * - Envio de formulários via email/WhatsApp
+ * 
+ * Dependências:
+ * - DOMContentLoaded para inicialização
+ * - Tailwind CSS para classes utilitárias
+ * - RemixIcon para ícones
+ * 
+ * ============================================
+ */
+
+// ============================================
+// VARIÁVEIS GLOBAIS
+// ============================================
+// Variáveis para controle de slides e carrosséis
 let currentSlideIndex = 0;
 let currentMainSlideIndex = 0;
 let currentServiceSlideIndex = 0;
@@ -29,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeFinalContactForm();
     initializeCtaContactForm();
     initializeContactFormNew();
+    initializeMobileMenu();
     console.log('Todos os componentes inicializados');
 });
 
@@ -1608,6 +1636,152 @@ function initializeContactFormNew() {
             charCount.textContent = '0';
             charCount.style.color = '#6c757d';
         }
+    });
+}
+
+// Inicializar Menu Mobile
+function initializeMobileMenu() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+    if (!mobileMenuButton || !mobileMenu) {
+        console.warn('Elementos do menu mobile não encontrados');
+        return;
+    }
+
+    // Função para abrir/fechar menu
+    function toggleMobileMenu() {
+        const isOpen = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px';
+        
+        if (isOpen) {
+            // Fechar menu
+            mobileMenu.style.maxHeight = '0';
+            if (menuIcon) {
+                menuIcon.classList.remove('hidden');
+            }
+            if (closeIcon) {
+                closeIcon.classList.add('hidden');
+            }
+            document.body.style.overflow = '';
+        } else {
+            // Abrir menu
+            mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+            if (menuIcon) {
+                menuIcon.classList.add('hidden');
+            }
+            if (closeIcon) {
+                closeIcon.classList.remove('hidden');
+            }
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    // Event listener no botão hamburger
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    }
+
+    // Fechar menu ao clicar em um link
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.style.maxHeight = '0';
+            if (menuIcon) {
+                menuIcon.classList.remove('hidden');
+            }
+            if (closeIcon) {
+                closeIcon.classList.add('hidden');
+            }
+            document.body.style.overflow = '';
+        });
+    });
+
+    // Fechar menu ao clicar fora (opcional)
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && 
+            !mobileMenuButton.contains(e.target) && 
+            mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px') {
+            toggleMobileMenu();
+        }
+    });
+
+    // Fechar menu ao redimensionar a janela para desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024 && !mobileMenu.classList.contains('-translate-y-full')) {
+            mobileMenu.classList.add('-translate-y-full');
+            menuIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+// Função para inicializar formulário CTA na página quem-somos
+function initializeCtaContactFormQuemSomos() {
+    const form = document.getElementById('cta-contact-form-quem-somos');
+    if (!form) return;
+
+    // Máscara para telefone
+    const phoneInput = document.getElementById('cta-phone-quem');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                if (value.length < 14) {
+                    value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                }
+            }
+            e.target.value = value;
+        });
+    }
+
+    // Contador de caracteres
+    const mensagemInput = document.getElementById('cta-message-quem');
+    const charCount = document.getElementById('cta-charCount-quem');
+    
+    if (mensagemInput && charCount) {
+        mensagemInput.addEventListener('input', function() {
+            const currentLength = this.value.length;
+            charCount.textContent = currentLength;
+            
+            if (currentLength > 450) {
+                charCount.style.color = '#dc3545';
+            } else if (currentLength > 400) {
+                charCount.style.color = '#ffc107';
+            } else {
+                charCount.style.color = '#6c757d';
+            }
+        });
+    }
+
+    // Validação e envio
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        
+        const nome = formData.get('name');
+        const telefone = formData.get('phone');
+        const email = formData.get('email');
+        const servico = formData.get('service');
+        const mensagem = formData.get('message');
+
+        if (!nome || !telefone || !email || !servico || !mensagem) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+
+        // Criar link WhatsApp
+        const whatsappMessage = `Olá! Meu nome é ${nome}.\n\nTelefone: ${telefone}\nE-mail: ${email}\nServiço: ${servico}\n\nMensagem: ${mensagem}`;
+        const whatsappUrl = `https://wa.me/5511999776208?text=${encodeURIComponent(whatsappMessage)}`;
+        
+        window.open(whatsappUrl, '_blank');
+        
+        // Limpar formulário
+        form.reset();
+        if (charCount) charCount.textContent = '0';
     });
 }
 

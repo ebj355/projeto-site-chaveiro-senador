@@ -1,4 +1,32 @@
-/* Reset e configurações básicas */
+/**
+ * ============================================
+ * STYLES.CSS - ESTILOS PRINCIPAIS DO SITE
+ * ============================================
+ * 
+ * Este arquivo contém todos os estilos CSS customizados do site.
+ * O site também utiliza Tailwind CSS via CDN.
+ * 
+ * Estrutura:
+ * - Reset CSS e variáveis CSS
+ * - Estilos de componentes (header, footer, cards)
+ * - Estilos de formulários
+ * - Animações e transições
+ * - Responsividade (media queries)
+ * - Estilos específicos de seções
+ * 
+ * Tecnologias:
+ * - CSS3 com variáveis customizadas
+ * - Tailwind CSS (via CDN)
+ * - Animações CSS
+ * - Media queries para responsividade
+ * 
+ * ============================================
+ */
+
+/* ============================================
+   RESET E CONFIGURAÇÕES BÁSICAS
+   ============================================ */
+/* Reset CSS para garantir consistência entre navegadores */
 * {
     margin: 0;
     padding: 0;

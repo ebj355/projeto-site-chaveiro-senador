@@ -1,4 +1,23 @@
-// Configuração de Imagens do Site - Chaveiro Seguro
+/**
+ * ============================================
+ * CONFIG-IMAGENS.JS - CONFIGURAÇÃO DE IMAGENS
+ * ============================================
+ * 
+ * Este arquivo centraliza a configuração de todas as imagens do site.
+ * Facilita a manutenção e alteração de imagens sem modificar o HTML.
+ * 
+ * Estrutura:
+ * - IMAGENS_CONFIG: Objeto com todas as URLs de imagens
+ * - aplicarImagensConfig(): Função que aplica as imagens no DOM
+ * 
+ * Como usar:
+ * 1. Edite as URLs no objeto IMAGENS_CONFIG
+ * 2. As imagens serão aplicadas automaticamente quando o DOM carregar
+ * 
+ * ============================================
+ */
+
+// Configuração de Imagens do Site - Chaveiro Senador
 // Este arquivo pode ser facilmente editado para alterar as imagens do site
 
 const IMAGENS_CONFIG = {

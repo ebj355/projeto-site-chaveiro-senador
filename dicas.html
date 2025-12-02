@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<!-- 
+    ============================================
+    PÁGINA DICAS - DICAS E ORIENTAÇÕES
+    ============================================
+    Página com dicas úteis sobre chaveiro, segurança
+    e manutenção de fechaduras em formato de accordion.
+    
+    Estrutura:
+    - Header fixo (mesmo do index.html)
+    - Seção de Dicas com accordion interativo
+    - Cada dica expande/colapsa ao clicar
+    - JavaScript controla a animação do accordion
+    - Footer
+    
+    Tecnologias: HTML5, Tailwind CSS, JavaScript
+    ============================================
+-->
+<html lang="pt-BR">
+<head>
+    <!-- Meta Tags Básicas -->
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/webp" href="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Dicas | Chaveiro Senador - Chaveiro em Santo André</title>
+    <meta name="description" content="Dicas úteis sobre chaveiro, manutenção de fechaduras, segurança residencial e automotiva. Confira as melhores práticas do Chaveiro Senador em Santo André.">
+    <meta name="keywords" content="dicas chaveiro, dicas segurança, dicas fechadura, manutenção chaveiro santo andré">
+    <meta name="author" content="Chaveiro Senador">
+    <link rel="canonical" href="https://chaveiroseguro.com.br/dicas.html">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="root">
+        <!-- Header Fixo com Menu -->
+        <header class="menu-header fixed top-0 left-0 right-0 z-50 w-full" style="background-color: #2c3e50 !important; background-image: none !important; margin: 0 !important; padding: 0 !important; height: 64px !important; line-height: 64px !important;">
+            <div class="w-full h-full px-4 sm:px-6 lg:px-8" style="max-width: 100%; margin: 0 auto; height: 100%;">
+                <div class="flex items-center justify-between h-full w-full" style="height: 100%; align-items: center;">
+                    <!-- Logo/Texto à Esquerda -->
+                    <div class="flex items-center gap-2 flex-shrink-0" style="height: 100%; align-items: center; margin: 0; padding: 0;">
+                        <a href="index.html">
+                            <img src="imagens/logo do site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="Chaveiro Senador - Chaveiro em Santo André e região do ABC" class="h-10 w-auto object-contain" style="display: block; margin: 0; padding: 0;">
+                        </a>
+                        <span class="font-bold text-2xl whitespace-nowrap" style="color: #FACC15; margin: 0; padding: 0; line-height: 1;">Chaveiro Senador</span>
+                    </div>
+                    <!-- Links de Navegação no Meio (Desktop) -->
+                    <nav class="hidden lg:flex items-center gap-3 xl:gap-4 flex-1 justify-center px-2" style="height: 100%; align-items: center; margin: 0; padding: 0 8px;">
+                        <a href="index.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Início</a>
+                        <a href="quem-somos.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Quem Somos</a>
+                        <a href="nossos-servicos.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Nossos Serviços</a>
+                        <a href="contato.html" class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap">Contato</a>
+                    </nav>
+                    <!-- Botão à Direita -->
+                    <div class="flex items-center gap-2 lg:gap-3 flex-shrink-0" style="height: 100%; align-items: center; margin: 0; padding: 0;">
+                        <!-- Botão WhatsApp -->
+                        <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-white font-semibold text-base sm:text-lg transition-all hover:opacity-90 whitespace-nowrap" style="background-color: #22C55E; margin: 0; padding: 8px 12px; line-height: 1;">
+                            <span>Fale Conosco</span>
+                            <i class="ri-whatsapp-fill text-base sm:text-lg"></i>
+                        </a>
+                        <!-- Botão Menu Mobile (Hamburger) -->
+                        <button id="mobile-menu-button" class="lg:hidden flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors" aria-label="Abrir menu" style="margin: 0; padding: 0;">
+                            <i class="ri-menu-line text-2xl" id="menu-icon"></i>
+                            <i class="ri-close-line text-2xl hidden" id="close-icon"></i>
+                        </button>
+            </div>
+                </div>
+            </div>
+        </header>
+        <!-- Menu Mobile (Dropdown) -->
+        <div id="mobile-menu" class="lg:hidden fixed top-16 left-0 right-0 bg-[#2c3e50] shadow-lg z-[60] max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <nav class="flex flex-col">
+                <a href="index.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Início</a>
+                <a href="quem-somos.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Quem Somos</a>
+                <a href="nossos-servicos.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold">Nossos Serviços</a>
+                <a href="contato.html" class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold">Contato</a>
+            </nav>
+        </div>
+        <div class="min-h-screen bg-white" style="padding-top: 64px; margin-top: 0;">
+            <!-- Banner Dicas -->
+            <section class="relative w-full h-[400px] md:h-[500px] overflow-hidden bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), url('imagens/banner/chaveiro-em-santo-andre-banner-principal.webp');">
+                <div class="relative w-full h-full flex items-center">
+                    <div class="relative flex items-center pl-8 md:pl-12 pr-8">
+                        <div class="text-white z-10">
+                            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4">Dicas</h1>
+                            <p class="text-xl md:text-2xl text-white/90">Dicas úteis sobre chaveiro e segurança do Chaveiro Senador</p>
+                        </div>
+                        <!-- Linha Amarela Vertical Separadora -->
+                        <div class="absolute right-0 top-0 bottom-0 w-1 bg-yellow-400 z-20"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Dicas Section -->
+            <section id="dicas" class="py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Dicas de Segurança e Manutenção</h2>
+                        <h3 class="text-2xl md:text-3xl font-semibold text-blue-600 mb-4">Orientações profissionais para sua segurança</h3>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Confira dicas valiosas do Chaveiro Senador para manter sua segurança e evitar problemas com chaves e fechaduras em Santo André e região do ABC.</p>
+                    </div>
+                    
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <!-- Dica Item 1 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Como prevenir perda de chaves?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Sempre tenha uma chave reserva em local seguro, de preferência com alguém de confiança. Evite deixar chaves em locais visíveis ou óbvios. Considere fazer uma cópia adicional e mantenha uma lista de contatos de chaveiros de confiança, como o Chaveiro Senador, para emergências.</p>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 3 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Como manter chaves automotivas em bom estado?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Evite quedas, umidade excessiva e temperaturas extremas. Troque a bateria regularmente. Se a chave parar de funcionar, não force - procure um profissional especializado como o Chaveiro Senador para verificação e reparo adequado.</p>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 4 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">O que fazer se travar o carro com a chave dentro?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Mantenha a calma e não tente abrir por conta própria - você pode danificar o veículo. Ligue imediatamente para um chaveiro especializado em abertura de veículos, como o Chaveiro Senador. Temos técnicos prontos para atendimento emergencial em Santo André e região do ABC.</p>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 5 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Como identificar fechadura com problema?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Sinais de problema incluem: chave muito difícil de girar, fechadura emperrando, barulhos estranhos, porta não fechando completamente, ou chave saindo com facilidade. Nestes casos, procure um profissional antes que o problema se agrave.</p>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 6 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Vale a pena investir em fechadura digital?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">Sim! Fechaduras digitais oferecem maior segurança, conveniência e controle de acesso. Você pode programar senhas, usar biometria ou aplicativos. O Chaveiro Senador oferece instalação profissional de fechaduras digitais em Santo André com garantia de qualidade.</p>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 7 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Qual a importância da manutenção preventiva?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <p class="text-gray-700 leading-relaxed">A manutenção preventiva evita emergências e custos maiores. Recomendamos limpeza e lubrificação das fechaduras a cada 6 meses, verificação de alinhamento das portas e substituição de fechaduras antigas. Isso garante segurança e funcionamento adequado por mais tempo.</p>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 8 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Quais as vantagens de contratar um chaveiro profissional para abrir uma porta ao invés de tentar abrir sozinho?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>Quando surge um problema com a fechadura, muitas pessoas tentam resolver por conta própria. Porém, essa prática pode gerar prejuízos, estresse e até riscos físicos. Contar com um chaveiro profissional em Santo André é a forma mais segura, eficiente e econômica de lidar com qualquer dificuldade relacionada a portas, fechaduras ou chaves.</p>
+                                    
+                                    <p>Profissionais especializados possuem técnicas específicas, ferramentas adequadas e experiência prática, garantindo que o serviço seja realizado com precisão e sem danos.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Riscos de tentar abrir a fechadura por conta própria</h5>
+                                        <p class="mb-2">Muitos acabam recorrendo a tutoriais na internet ou tentam improvisar ferramentas, mas isso normalmente causa mais problemas do que soluções. Veja os principais riscos:</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Danos à porta e à fechadura</strong><br>Objetos improvisados como facas, grampos, cartões ou chaves de fenda podem afetar o interior da fechadura. Em vez de ajudar, acabam estragando o mecanismo e tornando o reparo muito mais caro — muitas vezes, sendo necessária a troca completa.</li>
+                                            <li><strong>Chance de quebrar a chave dentro do cilindro</strong><br>Se a chave estiver presa e você tentar forçá-la, ela pode quebrar. Nesse caso, a abertura se torna mais complexa e cara, exigindo ferramentas profissionais para remover o fragmento.</li>
+                                            <li><strong>Perda de tempo e frustração</strong><br>Embora pareça simples em vídeos, abrir uma fechadura sem conhecimento técnico pode levar horas, gerar estresse e, no fim, o problema continuar sem solução.</li>
+                                            <li><strong>Risco de acidentes</strong><br>Ferramentas erradas podem escorregar e causar cortes, perfurações ou ferimentos nos dedos. Além de danificar a fechadura, você pode acabar machucado.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vantagens de chamar um chaveiro profissional</h5>
+                                        <p class="mb-2">Optar por um especialista traz benefícios imediatos e evita dores de cabeça desnecessárias.</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Atendimento rápido e eficiente</strong><br>Enquanto uma tentativa amadora pode demorar muito, um profissional experiente — como o <strong>Chaveiro Senador</strong> — realiza o serviço em poucos minutos e sem nenhum dano.</li>
+                                            <li><strong>Ferramentas apropriadas para cada tipo de fechadura</strong><br>Chaveiros profissionais utilizam equipamentos específicos, garantindo que o mecanismo não seja danificado durante a abertura.</li>
+                                            <li><strong>Horários flexíveis para atender emergências</strong><br>O <strong>Chaveiro Senador</strong> atende em Santo André de segunda a sexta, das 8h às 22h, e aos sábados, das 8h às 16h — ideal para quem precisa de ajuda rápida e confiável.</li>
+                                            <li><strong>Segurança e confiança</strong><br>Com 46 anos de experiência no ABC, o <strong>Chaveiro Senador</strong> trabalha com ética, profissionalismo e total segurança. Você tem a certeza de que seu imóvel está sendo atendido por pessoas capacitadas e de confiança.</li>
+                                            <li><strong>Economia no longo prazo</strong><br>Tentar abrir a fechadura sozinho pode causar danos graves e elevar muito os custos. Contratar um profissional evita reparos desnecessários e garante que o trabalho seja bem feito logo na primeira tentativa.</li>
+                                            <li><strong>Zero danos à porta ou ao imóvel</strong><br>O <strong>Chaveiro Senador</strong> é especializado em abertura de portas sem danificar fechadura ou batente, preservando sua propriedade e reduzindo qualquer chance de prejuízo.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Para evitar riscos, prejuízos ou complicações, a melhor decisão é sempre contar com um chaveiro profissional. O <strong>Chaveiro Senador</strong>, referência em Santo André e em toda a região do ABC — incluindo São Bernardo, São Caetano, Mauá e Diadema — oferece abertura de portas residenciais sem danos, com profissionais treinados e equipamentos modernos para garantir um serviço rápido e seguro.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 9 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Quando é o momento certo para modernizar sua segurança?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>A segurança de casas e comércios é uma prioridade constante, especialmente em cidades movimentadas como Santo André e toda a região do ABC. Com o passar dos anos, fechaduras podem perder eficiência, ficar vulneráveis e até facilitar ações de criminosos. Por isso, saber a hora certa de substituir as fechaduras é essencial para manter seu patrimônio protegido e garantir tranquilidade no dia a dia.</p>
+                                    
+                                    <p>Muitas vezes, a troca se torna necessária — seja por desgaste, perda de chaves, tentativa de invasão ou até pela vontade de modernizar o sistema de segurança. Esse cuidado simples pode evitar dores de cabeça e aumentar significativamente a proteção do seu ambiente.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que considerar a troca da sua fechadura?</h5>
+                                        <p class="mb-2">Assim como qualquer mecanismo, fechaduras sofrem desgaste natural. Poeira, umidade, uso frequente e o próprio tempo acabam comprometendo a precisão do sistema. Além disso, surgem constantemente fechaduras mais modernas, seguras e tecnológicas.</p>
+                                        <p class="mb-2">Motivos mais comuns para trocar fechaduras em Santo André e ABC:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li><strong>Desgaste ao longo dos anos:</strong> mecanismos internos ficam frouxos e menos confiáveis.</li>
+                                            <li><strong>Perda ou roubo de chaves:</strong> situação de risco imediato, exigindo substituição.</li>
+                                            <li><strong>Tentativas de arrombamento:</strong> mesmo que o ladrão não consiga entrar, a estrutura pode ter sido danificada.</li>
+                                            <li><strong>Atualização da segurança:</strong> fechaduras digitais e eletrônicas oferecem controle de acesso e resistência superior.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quando é o momento certo para trocar?</h5>
+                                        <p class="mb-2">Existem sinais claros de que sua fechadura já não está funcionando como deveria. Identificá-los a tempo evita problemas maiores.</p>
+                                        <p class="mb-2"><strong>Atenção a estes sinais:</strong></p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>A chave entra ou gira com dificuldade</li>
+                                            <li>A maçaneta ou cilindro apresenta folgas</li>
+                                            <li>O mecanismo faz barulhos metálicos incomuns</li>
+                                            <li>Presença de ferrugem ou oxidação</li>
+                                            <li>Mudança recente de residência ou ponto comercial</li>
+                                        </ul>
+                                        <p class="mt-2">Se um desses sintomas aparecer, a troca é recomendada para evitar falhas inesperadas.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quais tipos de fechaduras são ideais para substituição?</h5>
+                                        <p class="mb-2">Hoje, o mercado oferece modelos para todos os níveis de segurança e tipos de porta.</p>
+                                        <p class="mb-2"><strong>Opções mais utilizadas:</strong></p>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Fechaduras mecânicas reforçadas:</strong> versões mais modernas e resistentes das tradicionais.</li>
+                                            <li><strong>Modelos multiponto:</strong> travam a porta em diversos pontos, garantindo maior proteção contra arrombamentos.</li>
+                                            <li><strong>Fechaduras eletrônicas e digitais:</strong> permitem acesso via senha, biometria, cartão ou aplicativo — ideais para quem busca praticidade e tecnologia.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vantagens de atualizar suas fechaduras</h5>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Mais segurança contra invasões e desgaste natural</li>
+                                            <li>Maior praticidade no dia a dia</li>
+                                            <li>Tecnologia de ponta, com controle de acesso e monitoramento</li>
+                                            <li>Valorização do imóvel</li>
+                                            <li>Visual moderno, combinando com qualquer decoração</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que contratar um chaveiro profissional em Santo André?</h5>
+                                        <p class="mb-2">Trocar uma fechadura parece simples, mas exige conhecimento técnico para evitar danos à porta e garantir o funcionamento perfeito.</p>
+                                        <p class="mb-2">Um chaveiro especializado, como o <strong>Chaveiro Senador</strong>, oferece:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Instalação precisa e sem riscos</li>
+                                            <li>Orientação sobre o melhor modelo para cada porta</li>
+                                            <li>Testes completos do sistema</li>
+                                            <li>Manutenção e suporte quando necessário</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Mudou de casa ou fez reforma? Troque as fechaduras!</h5>
+                                        <p>Muitas pessoas esquecem desse detalhe, mas ele é crucial para a segurança. Você nunca sabe quantas cópias de chave o antigo morador distribuiu, ou quem teve acesso ao imóvel durante a reforma. Trocar a fechadura elimina completamente esse risco.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Tendências em segurança: fechaduras digitais em alta</h5>
+                                        <p>As fechaduras digitais vêm ganhando espaço no Brasil, crescendo em média 25% ao ano. Em Santo André e região do ABC, essa demanda é ainda maior, especialmente em condomínios, empresas e comércios que buscam praticidade e monitoramento mais eficiente.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Como escolher a fechadura ideal?</h5>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Identifique o tipo de porta (madeira, metálica, vidro)</li>
+                                            <li>Verifique se o modelo possui certificação ABNT</li>
+                                            <li>Avalie seu nível de segurança desejado</li>
+                                            <li>Conte com a orientação de um profissional</li>
+                                        </ul>
+                                    </div>
+
+                                    <p class="mt-4"><strong>Conclusão</strong></p>
+                                    <p>A troca de fechaduras em Santo André e região do ABC é uma medida simples, acessível e extremamente importante para reforçar a segurança do seu imóvel. Seja por atualização, mudança, desgaste ou tentativa de invasão, esse cuidado pode evitar problemas sérios e aumentar sua tranquilidade.</p>
+                                    
+                                    <p>O <strong>Chaveiro Senador</strong> é referência em instalação e substituição de fechaduras residenciais e comerciais em toda a região. Atuamos de segunda a sexta, das 8h às 22h, e aos sábados das 8h às 16h, oferecendo atendimento rápido, seguro e especializado.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 10 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">O que fazer quando a chave quebra dentro da fechadura?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>Quebrar a chave dentro da fechadura é uma situação frustrante que pode acontecer com qualquer pessoa. Seja ao tentar abrir a porta de casa, do carro ou do escritório, esse problema pode causar estresse e atrasos no dia a dia. Muitos tentam resolver por conta própria, mas isso pode acabar piorando ainda mais a situação.</p>
+                                    
+                                    <p>Neste artigo, explicamos o que fazer quando a chave quebra dentro da fechadura e por que é essencial contar com um profissional qualificado, como o <strong>Chaveiro Senador</strong>, para resolver o problema de forma segura e eficiente.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">1. Por que a chave quebra dentro da fechadura?</h5>
+                                        <p class="mb-2">Vários fatores podem causar esse problema:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li><strong>Desgaste natural:</strong> Com o tempo, as chaves enfraquecem.</li>
+                                            <li><strong>Fechadura desalinhada ou danificada:</strong> A chave sofre mais pressão ao girar.</li>
+                                            <li><strong>Uso de força excessiva:</strong> Girar a chave com muita força pode quebrá-la.</li>
+                                            <li><strong>Má qualidade da chave:</strong> Chaves frágeis quebram com mais facilidade.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">2. O que fazer quando a chave quebra dentro da fechadura?</h5>
+                                        <p class="mb-2">Siga estas orientações para evitar danos maiores:</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Não force a fechadura</strong><br>Forçar a chave quebrada pode empurrá-la ainda mais para dentro, dificultando a remoção.</li>
+                                            <li><strong>Lubrifique a fechadura</strong><br>Use grafite em pó ou um lubrificante apropriado para facilitar a remoção.</li>
+                                            <li><strong>Use pinça ou alicate de bico fino</strong><br>Somente se uma parte da chave estiver visível. Caso contrário, não insista.</li>
+                                            <li><strong>Evite métodos caseiros arriscados</strong><br>Supercola, objetos improvisados e truques da internet podem danificar permanentemente a fechadura.</li>
+                                            <li><strong>Chame um chaveiro profissional</strong><br>A maneira mais segura e eficiente é contar com um profissional especializado. O <strong>Chaveiro Senador</strong> possui ferramentas corretas e experiência para remover a chave sem causar danos ao mecanismo.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">3. Por que não tentar resolver sozinho?</h5>
+                                        <p class="mb-2">Resolver por conta própria pode gerar:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Danos ao cilindro da fechadura</li>
+                                            <li>Aumento do custo do reparo</li>
+                                            <li>Horas perdidas tentando sem sucesso</li>
+                                        </ul>
+                                        <p class="mt-2">Um chaveiro especializado evita todos esses problemas fornecendo um serviço rápido, seguro e sem prejuízos.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">4. Como evitar que a chave quebre no futuro?</h5>
+                                        <p class="mb-2">Algumas medidas simples podem prevenir esse transtorno:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Mantenha a fechadura lubrificada</li>
+                                            <li>Evite forçar a chave</li>
+                                            <li>Use chaves de boa qualidade</li>
+                                            <li>Troque fechaduras antigas ou desgastadas</li>
+                                        </ul>
+                                        <p class="mt-2">Para manutenção preventiva ou substituição de fechaduras, o <strong>Chaveiro Senador</strong> oferece atendimento técnico com total segurança e precisão.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Se sua chave quebrou dentro da fechadura, a melhor solução é chamar um especialista. Tentar resolver sozinho pode agravar o problema e gerar custos maiores. O <strong>Chaveiro Senador</strong>, em Santo André e região do ABC, está pronto para ajudar você com atendimento profissional, seguro e eficiente.</p>
+                                        <p class="mt-2">Precisa de um chaveiro agora? Entre em contato com o <strong>Chaveiro Senador</strong> e resolva o problema sem complicações!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 11 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">O que fazer em caso de arrombamento no seu estabelecimento?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>Infelizmente, casos de invasão e arrombamento em comércios fazem parte da realidade de quem empreende em cidades movimentadas como Santo André e região do ABC. Além das perdas financeiras, esse tipo de situação causa medo, insegurança e, muitas vezes, atrapalha o funcionamento do negócio. Por isso, é essencial saber exatamente o que fazer em caso de arrombamento no seu estabelecimento — desde as primeiras medidas emergenciais até os cuidados preventivos para evitar novas ocorrências.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">O que fazer imediatamente após o arrombamento?</h5>
+                                        <p class="mb-2">Quando um comércio é arrombado, cada segundo conta. Por isso, adotar medidas rápidas e organizadas é fundamental.</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Não entre no local sozinho</strong><br>Evite entrar no estabelecimento sem apoio. O invasor pode ainda estar dentro do local. Aguarde a chegada da polícia para garantir sua segurança.</li>
+                                            <li><strong>Acione a polícia imediatamente</strong><br>Ligue para a Polícia Militar pelo número 190 e informe sobre o ocorrido. A presença das autoridades é fundamental para registrar a ocorrência e iniciar a investigação.</li>
+                                            <li><strong>Preserve a cena do crime</strong><br>Não mexa em objetos, portas ou fechaduras até a chegada da polícia. Marcas de ferramentas e danos estruturais podem servir como provas importantes.</li>
+                                            <li><strong>Registre um boletim de ocorrência</strong><br>Após a liberação policial, registre um B.O. (Boletim de Ocorrência). Esse documento é essencial para acionar o seguro e formalizar o caso.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Medidas de contenção após o arrombamento</h5>
+                                        <p class="mb-2">Depois da liberação da cena, é hora de restabelecer a segurança do local. E aqui entra a importância de saber o que fazer de forma eficiente.</p>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Troca de fechaduras danificadas:</strong> Em quase todos os arrombamentos, as fechaduras ficam danificadas. Um chaveiro profissional pode substituí-las por modelos mais resistentes. O <strong>Chaveiro Senador</strong> oferece troca de fechaduras comerciais com opções reforçadas.</li>
+                                            <li><strong>Troca de segredo da fechadura:</strong> Se o mecanismo não estiver destruído, é possível apenas alterar o segredo, evitando uso de cópias antigas.</li>
+                                            <li><strong>Instalação de fechaduras eletrônicas:</strong> Fechaduras eletrônicas são muito mais resistentes a tentativas de invasão e podem funcionar com senha, biometria ou cartões, dificultando acessos indevidos.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Como reforçar a segurança após um arrombamento?</h5>
+                                        <p class="mb-2">Resolver o problema imediato não basta. A segurança deve ser reforçada para evitar novas ocorrências.</p>
+                                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                                            <li><strong>Reforce portas e janelas:</strong> Use fechaduras de alta resistência, travas adicionais e reforços metálicos, especialmente em portas de vidro.</li>
+                                            <li><strong>Invista em automação e controle de acesso:</strong> Sistemas automatizados permitem controlar entradas, autorizar acessos e monitorar horários remotamente.</li>
+                                            <li><strong>Utilize cofres de segurança:</strong> Para guardar valores e documentos sensíveis, cofres reforçados são indispensáveis. Um chaveiro profissional pode indicar o modelo ideal para seu comércio.</li>
+                                            <li><strong>Instale câmeras de vigilância:</strong> Câmeras de CFTV integradas a fechaduras digitais aumentam significativamente o nível de proteção.</li>
+                                        </ol>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Dicas práticas para comerciantes</h5>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Faça manutenção periódica das fechaduras</li>
+                                            <li>Troque o segredo sempre que houver perda de chaves</li>
+                                            <li>Nunca tente reparar uma fechadura arrombada por conta própria</li>
+                                            <li>Ensine funcionários sobre como agir em emergências</li>
+                                            <li>Tenha um chaveiro profissional de confiança para acionamento rápido</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vantagens de contar com um chaveiro profissional</h5>
+                                        <p class="mb-2">Um chaveiro profissional não apenas repara fechaduras danificadas, mas também atua como consultor de segurança do seu estabelecimento.</p>
+                                        <p class="mb-2"><strong>Benefícios de contratar o Chaveiro Senador:</strong></p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Troca rápida de fechaduras danificadas</li>
+                                            <li>Instalação de fechaduras digitais e reforçadas</li>
+                                            <li>Emissão de nota fiscal (essencial para seguros empresariais)</li>
+                                            <li>Avaliação técnica para identificar vulnerabilidades</li>
+                                            <li>Orientação personalizada para reforçar a segurança do comércio</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Tendências em segurança comercial</h5>
+                                        <p>Estudos recentes indicam que comércios que utilizam fechaduras digitais, automação e controle de acesso apresentam taxas muito menores de reincidência em invasões. A tecnologia se tornou indispensável para quem deseja proteger o patrimônio e manter o negócio funcionando com tranquilidade.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Saber o que fazer em caso de arrombamento no seu estabelecimento é fundamental para minimizar prejuízos e reforçar a segurança do seu comércio. Desde acionar a polícia e registrar o B.O., até trocar fechaduras, reforçar portas e investir em sistemas eletrônicos, cada etapa é essencial.</p>
+                                        <p class="mt-2">Para reforçar a segurança e evitar novos incidentes, conte com o <strong>Chaveiro Senador</strong>, especializado em soluções comerciais e pronto para atender necessidades emergenciais e preventivas em Santo André e região do ABC.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 12 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">5 sinais de que sua fechadura precisa ser trocada com urgência</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>A segurança do seu imóvel depende de cuidados simples, porém fundamentais — como verificar o estado das fechaduras. Muitas pessoas ignoram sinais de desgaste sem perceber que sua fechadura precisa ser trocada com urgência. Negligenciar isso pode comprometer a proteção da casa ou do comércio, facilitando furtos, invasões ou até mesmo dificultando a entrada dos próprios moradores.</p>
+                                    
+                                    <p>Neste artigo, você entenderá os principais sinais de que sua fechadura precisa ser trocada, por que isso é importante e como agir de forma segura com o apoio de um chaveiro profissional.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">1. A fechadura está com dificuldade para girar</h5>
+                                        <p class="mb-2">Um dos primeiros sinais de alerta é quando a chave começa a girar com dificuldade, enrosca ou parece "travar". Isso pode acontecer por desgaste interno, acúmulo de sujeira ou corrosão. Se não for resolvido rapidamente, a chave pode quebrar dentro da fechadura.</p>
+                                        <p class="mb-2"><strong>Solução:</strong></p>
+                                        <p>Evite forçar a chave e procure um chaveiro profissional, como o <strong>Chaveiro Senador</strong>, que avaliará se um reparo é suficiente ou se a troca é necessária.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">2. Você perdeu a chave ou teve a casa arrombada</h5>
+                                        <p class="mb-2">Em casos de perda de chave, furto ou tentativa de arrombamento, a recomendação é clara: troque a fechadura imediatamente. Mesmo que você tenha outras cópias, não é possível saber se alguém encontrou ou está com a chave original.</p>
+                                        <p class="mb-2"><strong>Dica importante:</strong></p>
+                                        <p>Se a porta apresentar danos, o mecanismo pode estar comprometido. Nessas situações, a troca deve ser feita sem demora.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">3. A fechadura é antiga ou de baixa qualidade</h5>
+                                        <p class="mb-2">Fechaduras antigas, simples ou de procedência duvidosa oferecem pouca resistência. Modelos antigos costumam ser facilmente violados e não atendem aos padrões modernos de segurança.</p>
+                                        <p class="mb-2">Se a fechadura tem mais de 10 anos, ou se você não sabe sua origem (como ocorre ao comprar um imóvel usado), faça a substituição por versões mais seguras, como:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Fechaduras tetra</li>
+                                            <li>Fechaduras digitais</li>
+                                            <li>Fechaduras com controle de acesso</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">4. A fechadura apresenta folga ou está solta</h5>
+                                        <p class="mb-2">Quando a fechadura começa a "bambear", ficar frouxa ou se mover dentro da porta, isso mostra desgaste nos parafusos, cilindro ou no encaixe interno. Além de facilitar arrombamentos, a fechadura pode simplesmente parar de trancar.</p>
+                                        <p class="mb-2"><strong>Atenção:</strong></p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Não aperte os parafusos sozinho. Isso pode piorar o problema ou danificar a estrutura.</li>
+                                            <li>Um profissional deve avaliar se a porta também foi comprometida.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">5. Mudança de residência ou troca de funcionários</h5>
+                                        <p class="mb-2">Ao se mudar para uma nova casa, apartamento ou ponto comercial, é essencial trocar a fechadura — você não sabe quem tem cópias antigas.</p>
+                                        <p class="mb-2">Em empresas, o mesmo vale quando um funcionário com acesso ao ambiente é desligado. A troca evita riscos de entrada indesejada e garante controle total do acesso.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Não tente resolver sozinho</h5>
+                                        <p class="mb-2">Jamais tente desmontar ou consertar a fechadura por conta própria. Isso pode:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Danificar o cilindro</li>
+                                            <li>Prejudicar a porta</li>
+                                            <li>Aumentar o custo final</li>
+                                            <li>Gerar riscos de travamento total</li>
+                                        </ul>
+                                        <p class="mt-2">Manter fechaduras modernas e revisadas regularmente é um dos pilares da segurança residencial.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Como o Chaveiro Senador pode ajudar?</h5>
+                                        <p class="mb-2">O <strong>Chaveiro Senador</strong> é referência em Santo André e em toda a região do ABC, oferecendo atendimento profissional e seguro para residências e comércios.</p>
+                                        <p class="mb-2"><strong>Serviços oferecidos:</strong></p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Troca de fechaduras e segredos</li>
+                                            <li>Conserto de portas e mecanismos danificados</li>
+                                            <li>Instalação de fechaduras tetra, elétricas e digitais</li>
+                                            <li>Abertura de portas sem danos</li>
+                                            <li>Consultoria para melhorar a segurança do imóvel</li>
+                                        </ul>
+                                        <p class="mt-2">Com mais de 46 anos de experiência, o <strong>Chaveiro Senador</strong> é uma escolha confiável para quem precisa de segurança, precisão e qualidade.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Identificar os sinais de que sua fechadura precisa ser trocada com urgência é fundamental para proteger sua casa, comércio e família. Pequenos travamentos, folgas ou perda de chaves são alertas que não devem ser ignorados.</p>
+                                        <p class="mt-2">Ao perceber qualquer irregularidade, conte com o <strong>Chaveiro Senador</strong>, seu parceiro de confiança para garantir segurança e tranquilidade em Santo André e região do ABC.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 13 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">Qual a vida útil de uma fechadura e quando trocar?</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>A segurança de um imóvel depende diretamente da qualidade das fechaduras instaladas. Mesmo sendo um item essencial, muita gente não sabe ao certo qual é a vida útil de uma fechadura e quando é o momento ideal para realizar a troca. Essa dúvida é comum tanto em residências quanto em comércios em Santo André e região do ABC.</p>
+                                    
+                                    <p>Por isso, o <strong>Chaveiro Senador</strong>, especialista em fechaduras residenciais, comerciais e automotivas, preparou este guia completo explicando quanto tempo dura uma fechadura, os sinais de desgaste e quando chamar um profissional para substituí-la.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vida útil de uma fechadura: quanto tempo dura?</h5>
+                                        <p class="mb-2">A durabilidade de uma fechadura depende principalmente de fatores como:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Qualidade e marca do produto</li>
+                                            <li>Material da porta (madeira, alumínio, aço, vidro)</li>
+                                            <li>Frequência de uso</li>
+                                            <li>Ambiente (umidade, maresia, poeira)</li>
+                                            <li>Manutenção preventiva</li>
+                                        </ul>
+                                        <p class="mt-2">Em média, uma fechadura dura entre <strong>5 e 10 anos</strong>, mas esse tempo pode variar bastante dependendo das condições acima.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Sinais de que está na hora de trocar a fechadura</h5>
+                                        <p class="mb-2">Para saber quando trocar uma fechadura, observe sintomas como:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Dificuldade para girar a chave</li>
+                                            <li>Chave enroscando ou quebrando dentro do cilindro</li>
+                                            <li>Ruídos ou folgas no mecanismo</li>
+                                            <li>Porta que não tranca corretamente</li>
+                                            <li>Perda de chaves sem cópias</li>
+                                            <li>Tentativa de arrombamento</li>
+                                            <li>Mudança de moradores ou funcionários (caso comercial)</li>
+                                        </ul>
+                                        <p class="mt-2">Ao identificar um desses sinais, o ideal é chamar o <strong>Chaveiro Senador</strong> para avaliação imediata.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Vida útil estimada por tipo de fechadura</h5>
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full border-collapse border border-gray-300 mt-2">
+                                                <thead>
+                                                    <tr class="bg-gray-100">
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Tipo de Fechadura</th>
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Vida Útil Média</th>
+                                                        <th class="border border-gray-300 px-4 py-2 text-left font-bold">Observações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2">Cilíndrica comum</td>
+                                                        <td class="border border-gray-300 px-4 py-2">5 a 7 anos</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Mais utilizada em residências</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2">Fechadura tetra</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Até 10 anos</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Maior segurança contra arrombamentos</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2">Fechadura elétrica</td>
+                                                        <td class="border border-gray-300 px-4 py-2">7 a 12 anos</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Precisa de manutenção periódica</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="border border-gray-300 px-4 py-2">Fechadura digital</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Até 15 anos</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Troca de pilha/bateria necessária</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2">Fechadura para vidro</td>
+                                                        <td class="border border-gray-300 px-4 py-2">5 a 8 anos</td>
+                                                        <td class="border border-gray-300 px-4 py-2">Exige cuidado especial</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p class="mt-2">Mesmo funcionando, modelos antigos podem ser substituídos por versões mais modernas e seguras.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que chamar o Chaveiro Senador para trocar a fechadura?</h5>
+                                        <p class="mb-2">Trocar a fechadura por conta própria pode danificar a porta ou comprometer a segurança. O <strong>Chaveiro Senador</strong>, especialista em atendimento residencial e comercial em Santo André e região do ABC, oferece:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Instalação correta sem danos</li>
+                                            <li>Avaliação técnica do tipo de porta e fechadura ideal</li>
+                                            <li>Troca de cilindro, segredo ou fechadura completa</li>
+                                            <li>Profissionais experientes e com ferramentas adequadas</li>
+                                            <li>Atendimento rápido e eficiente</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quando a troca é obrigatória?</h5>
+                                        <p class="mb-2">Segundo especialistas em segurança residencial, a fechadura deve ser trocada imediatamente quando houver:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Mudança de residência</li>
+                                            <li>Roubo ou perda de chave</li>
+                                            <li>Funcionário desligado (em área comercial)</li>
+                                            <li>Falha no mecanismo</li>
+                                            <li>Qualquer sinal de tentativa de invasão</li>
+                                        </ul>
+                                        <p class="mt-2">Essas situações representam risco direto à segurança.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Troca de segredo: uma opção mais econômica</h5>
+                                        <p>Quando a estrutura da fechadura está boa, mas há risco com as chaves antigas, você pode optar pela troca do segredo.</p>
+                                        <p class="mt-2">É mais rápida, segura e mais barata do que trocar a fechadura inteira.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão: qual a vida útil de uma fechadura e quando trocar?</h5>
+                                        <p>A vida útil de uma fechadura varia entre <strong>5 e 10 anos</strong>, podendo aumentar ou diminuir conforme o uso e a manutenção.</p>
+                                        <p class="mt-2">Saber quando trocar é essencial para manter a segurança da sua casa ou empresa.</p>
+                                        <p class="mt-2">Se você identificou qualquer sinal de desgaste, chame o <strong>Chaveiro Senador</strong> — especialista em fechaduras, troca de segredo, fechaduras digitais, manutenção e serviços residenciais ou comerciais em Santo André e região do ABC.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 14 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">5 dicas de segurança que você deve aplicar</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>Manter a segurança residencial é essencial, especialmente em regiões movimentadas como o ABC Paulista. Pequenas medidas preventivas podem evitar invasões, furtos e problemas com fechaduras. Abaixo, você encontra 5 dicas de segurança para casas no ABC que realmente fazem a diferença no dia a dia.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">1. Utilize fechaduras modernas e resistentes</h5>
+                                        <p class="mb-2">Uma das principais dicas de segurança é evitar fechaduras antigas, desgastadas ou de baixa qualidade. O ideal é optar por modelos mais seguros, como:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Fechadura tetra</li>
+                                            <li>Fechaduras reforçadas</li>
+                                            <li>Fechaduras digitais</li>
+                                        </ul>
+                                        <p class="mt-2">Esses modelos oferecem maior resistência contra arrombamentos e reduzem o risco de acesso indevido.</p>
+                                        <p class="mt-2">O <strong>Chaveiro Senador</strong>, especialista em fechaduras residenciais no ABC, realiza:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Venda e instalação de fechaduras modernas</li>
+                                            <li>Troca de segredo</li>
+                                            <li>Manutenção preventiva</li>
+                                        </ul>
+                                        <p class="mt-2">Assim, sua casa fica muito mais protegida.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">2. Realize manutenção preventiva</h5>
+                                        <p class="mb-2">A manutenção periódica é uma das dicas de segurança mais importantes. Fechaduras desgastadas podem:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Travar</li>
+                                            <li>Quebrar a chave</li>
+                                            <li>Facilitar arrombamentos</li>
+                                            <li>Deixar a porta sem travamento adequado</li>
+                                        </ul>
+                                        <p class="mt-2">A equipe técnica do <strong>Chaveiro Senador</strong> identifica problemas antes que eles comprometam a segurança, realizando ajustes, lubrificação e troca de peças quando necessário.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">3. Cuidado ao fazer cópias de chaves</h5>
+                                        <p class="mb-2">Evite deixar cópias em locais óbvios, como:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Debaixo do capacho</li>
+                                            <li>Dentro de vasos</li>
+                                            <li>Em caixas de energia</li>
+                                        </ul>
+                                        <p class="mt-2">Além disso, faça cópias apenas em locais de confiança. Se houver suspeita de extravio ou cópia indevida, o ideal é solicitar a troca de segredo.</p>
+                                        <p class="mt-2">O <strong>Chaveiro Senador</strong> executa esse serviço com precisão, mantendo a mesma fechadura mas alterando a combinação interna.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">4. Reforce portas e janelas</h5>
+                                        <p class="mb-2">Não adianta ter uma fechadura moderna se portas e janelas são frágeis. Reforce o conjunto utilizando:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Trancas adicionais</li>
+                                            <li>Dobradiças de maior qualidade</li>
+                                            <li>Fechaduras antiarrombamento</li>
+                                            <li>Barras de segurança</li>
+                                        </ul>
+                                        <p class="mt-2">O <strong>Chaveiro Senador</strong> também instala fechaduras de alta segurança e trancas reforçadas, aumentando a proteção do imóvel.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">5. Tenha um chaveiro profissional de confiança</h5>
+                                        <p class="mb-2">Ter um chaveiro especializado no ABC faz toda a diferença. Em situações de emergência ou prevenção, somente um profissional experiente garante:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Diagnóstico preciso</li>
+                                            <li>Instalação correta</li>
+                                            <li>Fechaduras de qualidade</li>
+                                            <li>Segurança e durabilidade do serviço</li>
+                                        </ul>
+                                        <p class="mt-2">O <strong>Chaveiro Senador</strong> é referência em:</p>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                            <div>
+                                                <p class="font-semibold text-gray-900 mb-1">Serviços residenciais:</p>
+                                                <ul class="list-disc list-inside space-y-1 ml-4 text-sm">
+                                                    <li>Troca e instalação de fechaduras</li>
+                                                    <li>Abertura de portas</li>
+                                                    <li>Troca de segredo</li>
+                                                    <li>Manutenção e reforço de segurança</li>
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-gray-900 mb-1">Serviços comerciais:</p>
+                                                <ul class="list-disc list-inside space-y-1 ml-4 text-sm">
+                                                    <li>Abertura de cofres</li>
+                                                    <li>Codificação de controles</li>
+                                                    <li>Sistemas de alta segurança</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que aplicar essas dicas de segurança em casas no ABC?</h5>
+                                        <p>Seguir essas medidas reduz drasticamente o risco de furtos, arrombamentos e falhas de fechadura. Além disso, contar com um chaveiro especializado como o <strong>Chaveiro Senador</strong> garante mais tranquilidade para você e sua família.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Aplicar boas práticas de segurança no ABC — como usar fechaduras modernas, fazer manutenção periódica e contar com um chaveiro profissional — é essencial para proteger sua residência.</p>
+                                        <p class="mt-2">Se você busca qualidade, confiança e atendimento rápido, o <strong>Chaveiro Senador</strong> é a melhor opção no ABC e em toda a região de Santo André.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dica Item 15 -->
+                        <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden">
+                            <button class="faq-question w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                <h4 class="text-xl font-bold text-gray-900">As melhores fechaduras para reforçar a segurança da sua casa</h4>
+                                <i class="ri-arrow-down-s-line text-2xl text-blue-600 faq-icon transition-transform"></i>
+                            </button>
+                            <div class="faq-answer hidden px-8 pb-6">
+                                <div class="text-gray-700 leading-relaxed space-y-4">
+                                    <p>A segurança residencial é uma prioridade para quem deseja proteger sua família e seu patrimônio. Entre as medidas mais importantes está a escolha da fechadura ideal. Com tantos modelos disponíveis no mercado, é natural surgir a dúvida: quais são as melhores fechaduras para reforçar a segurança da sua casa no ABC?</p>
+                                    
+                                    <p>Neste guia, você vai conhecer os principais tipos de fechaduras, seus níveis de segurança e qual modelo escolher para cada necessidade.</p>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Por que escolher a fechadura certa é tão importante?</h5>
+                                        <p class="mb-2">As fechaduras são a primeira barreira contra invasões. Uma fechadura fraca pode ser violada em poucos segundos, enquanto um modelo reforçado aumenta de forma significativa a segurança do imóvel.</p>
+                                        <p class="mb-2">Além disso, uma boa fechadura garante:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Funcionamento suave</li>
+                                            <li>Maior durabilidade</li>
+                                            <li>Menos risco de falhas</li>
+                                            <li>Compatibilidade com sistemas de segurança modernos</li>
+                                        </ul>
+                                        <p class="mt-2"><strong>Dica:</strong> sempre conte com a orientação de um profissional especializado, como o <strong>Chaveiro Senador</strong>, referência em segurança residencial e comercial no ABC Paulista.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Os tipos de fechaduras mais indicados para segurança residencial</h5>
+                                        
+                                        <div class="mt-3">
+                                            <h6 class="font-semibold text-gray-900 mb-2">1. Fechadura multiponto</h6>
+                                            <p class="mb-2">Uma das mais seguras disponíveis atualmente. Possui 3 ou mais pontos de travamento distribuídos ao longo da porta.</p>
+                                            <ul class="list-disc list-inside space-y-1 ml-4">
+                                                <li><strong>Indicação:</strong> portas externas e portas blindadas</li>
+                                                <li><strong>Vantagem:</strong> alta resistência a arrombamentos</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <h6 class="font-semibold text-gray-900 mb-2">2. Fechadura tetra</h6>
+                                            <p class="mb-2">Modelo tradicional conhecido pela ótima segurança.</p>
+                                            <ul class="list-disc list-inside space-y-1 ml-4">
+                                                <li><strong>Indicação:</strong> portas externas e ambientes que exigem reforço</li>
+                                                <li><strong>Vantagem:</strong> dificulta o uso de chaves falsas</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <h6 class="font-semibold text-gray-900 mb-2">3. Fechaduras digitais</h6>
+                                            <p class="mb-2">Modernas, práticas e muito seguras.</p>
+                                            <p class="mb-2"><strong>Tipos disponíveis:</strong></p>
+                                            <ul class="list-disc list-inside space-y-1 ml-4">
+                                                <li>Senha</li>
+                                                <li>Biometria</li>
+                                                <li>Cartão</li>
+                                                <li>App no celular</li>
+                                                <li>Dupla autenticação</li>
+                                            </ul>
+                                            <ul class="list-disc list-inside space-y-1 ml-4 mt-2">
+                                                <li><strong>Indicação:</strong> portas de entrada e ambientes internos</li>
+                                                <li><strong>Vantagem:</strong> elimina o uso de chaves e oferece mais controle</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <h6 class="font-semibold text-gray-900 mb-2">4. Travas auxiliares (fechos adicionais)</h6>
+                                            <p class="mb-2">Instaladas junto à fechadura principal para reforçar a proteção.</p>
+                                            <ul class="list-disc list-inside space-y-1 ml-4">
+                                                <li><strong>Indicação:</strong> portas já instaladas que precisam de reforço</li>
+                                                <li><strong>Vantagem:</strong> impede abertura mesmo se a fechadura for destravada</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Como escolher a melhor fechadura para sua casa?</h5>
+                                        <ul class="list-disc list-inside space-y-2 ml-4">
+                                            <li><strong>Avalie o tipo da porta:</strong> Madeira, aço, alumínio, vidro ou porta blindada exigem modelos específicos.</li>
+                                            <li><strong>Considere o local da instalação:</strong> Portas externas exigem modelos robustos; portas internas podem usar fechaduras simples ou digitais.</li>
+                                            <li><strong>Pense na praticidade do dia a dia:</strong> Famílias podem preferir fechaduras digitais.</li>
+                                            <li><strong>Invista em segurança real:</strong> Evite modelos genéricos ou sem certificação.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Quando trocar a fechadura da sua casa?</h5>
+                                        <p class="mb-2">Os principais sinais de que está na hora de trocar:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Perda ou roubo de chaves</li>
+                                            <li>Mudança de residência</li>
+                                            <li>Saída de inquilinos</li>
+                                            <li>Dificuldade para girar a chave</li>
+                                            <li>Tentativa de arrombamento</li>
+                                            <li>Fechadura antiga ou desatualizada</li>
+                                        </ul>
+                                        <p class="mt-2">Em qualquer desses casos, o ideal é contar com o <strong>Chaveiro Senador</strong>, que atua em Santo André, São Bernardo, São Caetano e toda a região do ABC.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Dica extra: combine a fechadura com outros itens de segurança</h5>
+                                        <p class="mb-2">Para reforçar ainda mais o imóvel, considere instalar:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Olho mágico</li>
+                                            <li>Travas tetra adicionais</li>
+                                            <li>Alarmes e sensores</li>
+                                            <li>Câmeras de monitoramento</li>
+                                            <li>Portões automatizados</li>
+                                            <li>Controle de acesso digital</li>
+                                        </ul>
+                                        <p class="mt-2">Esses itens, combinados com uma boa fechadura, aumentam significativamente a proteção.</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-2">Conclusão</h5>
+                                        <p>Escolher as melhores fechaduras para reforçar a segurança da sua casa é fundamental para garantir tranquilidade e proteção ao seu imóvel.</p>
+                                        <p class="mt-2">Mais importante ainda é contar com um profissional experiente para instalação e manutenção.</p>
+                                        <p class="mt-2">O <strong>Chaveiro Senador</strong> é especializado em serviços residenciais e comerciais no ABC, oferecendo:</p>
+                                        <ul class="list-disc list-inside space-y-1 ml-4">
+                                            <li>Instalação de fechaduras</li>
+                                            <li>Troca de segredo</li>
+                                            <li>Reforço de portas</li>
+                                            <li>Assessoria para escolha do modelo ideal</li>
+                                        </ul>
+                                        <p class="mt-2">Se você quer elevar o nível de segurança da sua casa no ABC, o <strong>Chaveiro Senador</strong> é a escolha certa.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Footer -->
+            <footer class="bg-gray-900 text-white py-8">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Chaveiro Senador</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">Chaveiro em Santo André com 46 anos de experiência. Qualidade, Segurança e Eficiência em Serviços de Chaveiro Residencial, Automotivo e Comercial. Atendemos toda a região do ABC incluindo São Bernardo do Campo, Mauá, Diadema e São Caetano do Sul.</p>
+                            <div class="flex items-start gap-3">
+                                <i class="ri-map-pin-fill text-blue-500 text-lg mt-1"></i>
+                                <span class="text-gray-400 text-sm">Rua Senador Flaquer, 561 - Centro - Santo André - SP<br>CEP: 09010-060</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Links Rápidos</h3>
+                            <ul class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Início</a></li>
+                                <li><a href="quem-somos.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Quem Somos</a></li>
+                                <li><a href="nossos-servicos.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Nossos Serviços</a></li>
+                                <li><a href="contato.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Contato</a></li>
+                                <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">FAQ</a></li>
+                                <li><a href="dicas.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm">Dicas</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3">Contato</h3>
+                            <div class="space-y-3">
+                                <a href="tel:+551149942568" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-full text-base font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-105 cursor-pointer whitespace-nowrap shadow-lg">
+                                    <i class="ri-phone-fill text-xl"></i>(11) 4994-2568
+                                </a>
+                                <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full text-base font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-105 cursor-pointer whitespace-nowrap shadow-lg">
+                                    <i class="ri-whatsapp-fill text-xl"></i>(11) 99977-6208
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-800 pt-6">
+                        <div class="text-center">
+                            <p class="text-gray-400 text-sm">Copyright © 2025 Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os direitos reservados.</p>
+                </div>
+                    </div>
+        </div>
+    </footer>
+    
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('.faq-icon');
+                    const isOpen = !answer.classList.contains('hidden');
+                    
+                    // Close all other FAQs
+                    document.querySelectorAll('.faq-answer').forEach(ans => {
+                        ans.classList.add('hidden');
+                    });
+                    document.querySelectorAll('.faq-icon').forEach(ic => {
+                        ic.classList.remove('rotate-180');
+                    });
+                    
+                    // Toggle current FAQ
+                    if (isOpen) {
+                        answer.classList.add('hidden');
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        answer.classList.remove('hidden');
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

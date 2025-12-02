@@ -1,0 +1,192 @@
+{
+  "palavrasChave": {
+    "santoAndre": {
+      "principais": [
+        "chaveiro em santo andré",
+        "chaveiro barato santo andré",
+        "chaveiro automotivo em santo andré",
+        "serviço de chaveiro em santo andré",
+        "chaveiro residencial santo andré",
+        "chaveiro comercial santo andré"
+      ],
+      "chaveCodificada": [
+        "chave codificada barata em santo andré"
+      ]
+    },
+    "saoBernardo": {
+      "principais": [
+        "chaveiro em são bernardo",
+        "chaveiro automotivo são bernardo",
+        "chaveiro barato são bernardo",
+        "serviço de chaveiro em são bernardo",
+        "chaveiro em são bernardo do campo",
+        "serviço de chaveiro em são bernardo do campo"
+      ],
+      "chaveCodificada": [
+        "chave codificada barata em são bernardo do campo"
+      ]
+    },
+    "saoCaetano": {
+      "principais": [
+        "chaveiro em são caetano",
+        "chaveiro automotivo são caetano",
+        "serviço de chaveiro em são caetano",
+        "chaveiro em são caetano do sul",
+        "serviço de chaveiro em são caetano do sul"
+      ],
+      "chaveCodificada": [
+        "chave codificada barata em são caetano do sul"
+      ]
+    },
+    "diadema": {
+      "principais": [
+        "chaveiro em diadema",
+        "chaveiro barato diadema",
+        "chaveiro automotivo diadema",
+        "serviço de chaveiro diadema"
+      ],
+      "chaveCodificada": [
+        "chave codificada barata em diadema"
+      ]
+    },
+    "maua": {
+      "principais": [
+        "chaveiro em maua",
+        "chaveiro automotivo maua",
+        "chaveiro residencial maua",
+        "serviço de chaveiro em maua",
+        "chaveiro em mauá"
+      ],
+      "chaveCodificada": [
+        "chave codificada barata em mauá"
+      ]
+    },
+    "abc": {
+      "principais": [
+        "chaveiro no abc",
+        "chaveiro no grande abc",
+        "serviço de chaveiro no abc",
+        "serviço de chaveiro no grande abc"
+      ],
+      "chaveCodificada": [
+        "chave codificada barata no abc",
+        "chave codificada barata no grande abc"
+      ]
+    },
+    "saoPaulo": {
+      "principais": [
+        "chaveiro em são paulo",
+        "chaveiro barato em são paulo",
+        "chaveiro automotivo em são paulo",
+        "serviço de chaveiro em são paulo"
+      ],
+      "chaveCodificada": [
+        "chave codificada barata em são paulo"
+      ]
+    },
+    "servicos": {
+      "comercial": [
+        "chaveiro comercial",
+        "chaveiro com atendimento comercial"
+      ],
+      "residencial": [
+        "chaveiro residencial",
+        "chaveiro com atendimento residencial"
+      ],
+      "automotivo": [
+        "chaveiro automotivo",
+        "chaveiro para chave codificada",
+        "chave codificada automotiva"
+      ],
+      "abertura": [
+        "chaveiro para abertura de portas",
+        "chaveiro para abertura de veículos",
+        "chaveiro para abertura de cofre"
+      ],
+      "fechaduras": [
+        "chaveiro para troca de fechadura",
+        "chaveiro para instalação de fechadura",
+        "chaveiro para instalação de fechadura digital",
+        "chaveiro para troca de cilindro de porta",
+        "chaveiro para troca de segredo de fechadura",
+        "chaveiro para reparo de fechadura"
+      ],
+      "outros": [
+        "chaveiro para reparo de ignição",
+        "chaveiro para afiação",
+        "chaveiro para confecção de carimbos"
+      ]
+    },
+    "localizacao": [
+      "chaveiro perto de mim",
+      "chaveiro próximo"
+    ]
+  },
+  "todas": [
+    "chaveiro em santo andré",
+    "chaveiro barato santo andré",
+    "chaveiro automotivo em santo andré",
+    "serviço de chaveiro em santo andré",
+    "chaveiro residencial santo andré",
+    "chaveiro comercial santo andré",
+    "chaveiro em são bernardo",
+    "chaveiro automotivo são bernardo",
+    "chaveiro barato são bernardo",
+    "serviço de chaveiro em são bernardo",
+    "chaveiro em são bernardo do campo",
+    "serviço de chaveiro em são bernardo do campo",
+    "chaveiro em são caetano",
+    "chaveiro automotivo são caetano",
+    "serviço de chaveiro em são caetano",
+    "chaveiro em são caetano do sul",
+    "serviço de chaveiro em são caetano do sul",
+    "chaveiro em diadema",
+    "chaveiro barato diadema",
+    "chaveiro automotivo diadema",
+    "serviço de chaveiro diadema",
+    "chaveiro em maua",
+    "chaveiro automotivo maua",
+    "chaveiro residencial maua",
+    "serviço de chaveiro em maua",
+    "chaveiro no abc",
+    "chaveiro no grande abc",
+    "serviço de chaveiro no abc",
+    "serviço de chaveiro no grande abc",
+    "chaveiro em são paulo",
+    "chaveiro barato em são paulo",
+    "chaveiro automotivo em são paulo",
+    "serviço de chaveiro em são paulo",
+    "chave codificada barata em santo andré",
+    "chave codificada barata no abc",
+    "chave codificada barata em são bernardo do campo",
+    "chave codificada barata em mauá",
+    "chave codificada barata em diadema",
+    "chave codificada barata em são caetano do sul",
+    "chave codificada barata em são paulo",
+    "chave codificada barata no grande abc",
+    "chaveiro comercial",
+    "chaveiro com atendimento comercial",
+    "chaveiro residencial",
+    "chaveiro com atendimento residencial",
+    "chaveiro automotivo",
+    "chaveiro para chave codificada",
+    "chave codificada automotiva",
+    "chaveiro para abertura de portas",
+    "chaveiro para abertura de veículos",
+    "chaveiro para abertura de cofre",
+    "chaveiro para troca de fechadura",
+    "chaveiro para instalação de fechadura",
+    "chaveiro para instalação de fechadura digital",
+    "chaveiro para troca de cilindro de porta",
+    "chaveiro para troca de segredo de fechadura",
+    "chaveiro para reparo de ignição",
+    "chaveiro para reparo de fechadura",
+    "chaveiro para afiação",
+    "chaveiro para confecção de carimbos",
+    "chaveiro perto de mim",
+    "chaveiro próximo"
+  ]
+}
+
+
+
