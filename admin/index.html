@@ -1,0 +1,744 @@
+<!doctype html>
+<!--
+    =====================================================================
+    PAINEL ADMINISTRATIVO - CHAVEIRO SENADOR (área restrita)
+    =====================================================================
+    Plataforma interna do estacionamento. Perfis:
+      - Administrador (dono): tudo
+      - Operador (funcionário): Painel, Pátio e Histórico do dia
+    Acesso padrão na primeira vez: usuário admin / senha admin
+    (o painel avisa até a senha ser trocada).
+
+    LAYOUT
+      - Menu lateral (computador) / gaveta (celular)
+      - Barra superior: título da tela, relógio, "Nova entrada"
+      - Área de conteúdo com fundo cinza claro e cartões brancos
+
+    TELAS (uma por vez, endereço #tela)
+      painel      resumo do dia, gráfico de 7 dias, pagamentos, atividades
+      patio       nova entrada + veículos estacionados + saída com troco
+      historico   saídas pagas com filtros e totais por forma de pagamento
+      relatorios  período, faturamento por dia, pagamentos, horários de pico
+      auditoria   quem fez o quê e quando (encadeado por hash)
+      usuarios    funcionários e administradores
+      config      preços, vagas, backup e informações de segurança
+
+    ARQUIVOS
+      css/admin.css                       visual do painel
+      js/nucleo/seguranca.js              hash de senha, escape, CSV seguro
+      js/nucleo/regras-estacionamento.js  cálculo do valor e placa
+      js/nucleo/armazenamento.js          leitura/gravação dos dados
+      js/nucleo/auditoria.js              registro de auditoria
+      js/nucleo/sessao.js                 login, sessão, permissões
+      js/ui.js                            avisos, modais, datas, gráficos
+      js/telas/*.js                       uma tela por arquivo
+      js/app.js                           menu, navegação, sessão, atalhos
+    =====================================================================
+-->
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#2c3e50" />
+
+        <!-- Não indexar, não seguir links e não guardar cópia em buscadores -->
+        <meta name="robots" content="noindex, nofollow, noarchive" />
+        <!-- Não envia o endereço do painel para outros sites ao clicar em links -->
+        <meta name="referrer" content="no-referrer" />
+        <!-- Política de segurança de conteúdo: só scripts do próprio site e do Tailwind -->
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+        />
+
+        <title>Painel Administrativo | Chaveiro Senador</title>
+        <link rel="icon" type="image/webp" href="../imagens/logo-site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" />
+
+        <!-- Ícones (cópia local), fonte Inter e Tailwind: os mesmos do site -->
+        <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="css/admin.css" />
+
+        <!-- Proteção contra abrir o painel dentro de um iframe (carrega antes de tudo) -->
+        <script src="js/nucleo/seguranca.js"></script>
+    </head>
+    <body>
+        <!-- =============================================================
+             TELA DE ACESSO (login e troca obrigatória de senha)
+             Esquerda: marca com foto. Direita: formulário.
+             ============================================================= -->
+        <div id="tela-acesso" class="acesso so-deslogado">
+            <aside class="acesso-marca" aria-hidden="true">
+                <div class="acesso-marca-conteudo">
+                    <img src="../imagens/logo-site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="" class="acesso-logo" />
+                    <h2>Chaveiro Senador</h2>
+                    <p>Painel de gestão do estacionamento</p>
+                    <ul>
+                        <li><i class="ri-car-fill"></i><span>Entrada e saída de veículos</span></li>
+                        <li><i class="ri-money-dollar-circle-fill"></i><span>Cobrança automática e comprovante</span></li>
+                        <li><i class="ri-bar-chart-2-fill"></i><span>Relatórios de faturamento</span></li>
+                        <li><i class="ri-shield-check-fill"></i><span>Auditoria de todas as ações</span></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main class="acesso-form">
+                <div class="cartao-acesso">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="icone-redondo bg-[#2c3e50] text-yellow-300"><i class="ri-lock-2-fill text-xl"></i></span>
+                        <div>
+                            <h1 id="acesso-titulo" class="text-2xl font-bold text-slate-900 leading-tight">Área Restrita</h1>
+                            <p class="text-sm text-slate-500">Entre com seu usuário e senha</p>
+                        </div>
+                    </div>
+
+                    <!-- Login -->
+                    <form id="form-login" class="space-y-5" novalidate autocomplete="on">
+                        <div>
+                            <label for="login-usuario" class="rotulo">Usuário</label>
+                            <div class="campo-icone">
+                                <i class="ri-user-3-line"></i>
+                                <input id="login-usuario" class="campo" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="30" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="login-senha" class="rotulo">Senha</label>
+                            <div class="campo-icone relative">
+                                <i class="ri-key-2-line"></i>
+                                <input id="login-senha" class="campo pr-12" type="password" autocomplete="current-password" maxlength="128" />
+                                <button type="button" class="mostrar-senha" data-alvo="login-senha" aria-label="Mostrar senha"><i class="ri-eye-line text-lg"></i></button>
+                            </div>
+                        </div>
+                        <p id="login-erro" class="erro-form hidden" role="alert"></p>
+                        <button type="submit" class="btn btn-primario w-full btn-grande"><i class="ri-login-box-line"></i> Entrar</button>
+                    </form>
+
+                    <!-- Troca obrigatória de senha (após redefinição pelo admin) -->
+                    <form id="form-troca" class="space-y-4 hidden" novalidate>
+                        <div class="aviso aviso-azul">
+                            <i class="ri-key-2-fill"></i>
+                            <span>Sua senha foi redefinida pelo Administrador. Crie uma senha nova para continuar.</span>
+                        </div>
+                        <div>
+                            <label for="troca-senha" class="rotulo">Nova senha <span class="dica">(mín. 8, com letras e números)</span></label>
+                            <input id="troca-senha" class="campo" type="password" autocomplete="new-password" maxlength="128" />
+                        </div>
+                        <div>
+                            <label for="troca-senha2" class="rotulo">Confirmar nova senha</label>
+                            <input id="troca-senha2" class="campo" type="password" autocomplete="new-password" maxlength="128" />
+                        </div>
+                        <p id="troca-erro" class="erro-form hidden" role="alert"></p>
+                        <button type="submit" class="btn btn-primario w-full btn-grande"><i class="ri-save-3-fill"></i> Salvar e entrar</button>
+                    </form>
+
+                    <a href="../chaveiro-em-santo-andre.html" class="link-voltar"><i class="ri-arrow-left-line"></i> Voltar ao site</a>
+                </div>
+                <p class="acesso-rodape">Uso exclusivo de funcionários e administração · acesso registrado em auditoria</p>
+            </main>
+        </div>
+
+        <!-- =============================================================
+             PLATAFORMA (após o login)
+             ============================================================= -->
+        <div id="app" class="layout so-logado">
+            <!-- ---------- MENU LATERAL ---------- -->
+            <aside id="menu-lateral" class="menu-lateral" aria-label="Menu do painel">
+                <a href="#painel" class="menu-marca" data-tela="painel">
+                    <img src="../imagens/logo-site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" alt="" />
+                    <span>
+                        <strong>Chaveiro Senador</strong>
+                        <small>Painel Administrativo</small>
+                    </span>
+                </a>
+
+                <nav class="menu-grupos">
+                    <p class="menu-titulo">Operação</p>
+                    <button class="menu-item" data-tela="painel" data-perm="painel"><i class="ri-dashboard-3-line"></i><span>Painel</span></button>
+                    <button class="menu-item" data-tela="patio" data-perm="patio.ver"><i class="ri-parking-box-line"></i><span>Pátio</span><b id="menu-contador-patio" class="menu-contador">0</b></button>
+                    <button class="menu-item" data-tela="historico" data-perm="historico.ver"><i class="ri-history-line"></i><span>Histórico</span></button>
+
+                    <p class="menu-titulo" data-perm="relatorios.ver">Gestão</p>
+                    <button class="menu-item" data-tela="relatorios" data-perm="relatorios.ver"><i class="ri-bar-chart-2-line"></i><span>Relatórios</span></button>
+                    <button class="menu-item" data-tela="usuarios" data-perm="usuarios.gerenciar"><i class="ri-team-line"></i><span>Usuários</span></button>
+                    <button class="menu-item" data-tela="auditoria" data-perm="auditoria.ver"><i class="ri-file-shield-2-line"></i><span>Auditoria</span></button>
+                    <button class="menu-item" data-tela="config" data-perm="config.alterar"><i class="ri-settings-3-line"></i><span>Configurações</span></button>
+                </nav>
+
+                <div class="menu-rodape">
+                    <button id="btn-conta" class="menu-usuario" title="Minha conta">
+                        <span id="usuario-iniciais" class="avatar">A</span>
+                        <span class="min-w-0 text-left">
+                            <strong id="usuario-nome" class="block truncate"></strong>
+                            <small id="usuario-perfil" class="block"></small>
+                        </span>
+                        <i class="ri-settings-4-line ml-auto"></i>
+                    </button>
+                    <button id="btn-conta-m" class="menu-item menu-item-pequeno"><i class="ri-key-2-line"></i><span>Trocar minha senha</span></button>
+                    <a href="../chaveiro-em-santo-andre.html" class="menu-item menu-item-pequeno"><i class="ri-global-line"></i><span>Ver o site</span></a>
+                    <button id="btn-sair" class="menu-item menu-item-pequeno menu-sair"><i class="ri-logout-box-r-line"></i><span>Sair</span></button>
+                </div>
+            </aside>
+            <div id="menu-fundo" class="menu-fundo" aria-hidden="true"></div>
+
+            <!-- ---------- CONTEÚDO ---------- -->
+            <div class="conteudo">
+                <!-- Barra superior -->
+                <header class="topo">
+                    <button id="btn-menu-mobile" class="btn-icone-topo lg:hidden" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                    <div class="min-w-0 flex-1">
+                        <h1 id="titulo-tela" class="topo-titulo">Painel</h1>
+                        <p id="subtitulo-tela" class="topo-subtitulo"></p>
+                    </div>
+                    <div class="topo-acoes">
+                        <span id="relogio" class="relogio" aria-label="Hora atual"></span>
+                        <button id="btn-topo-entrada" class="btn btn-primario" data-perm="patio.entrada" title="Nova entrada (atalho: N)">
+                            <i class="ri-add-line"></i><span class="hidden sm:inline">Nova entrada</span>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="area">
+                    <!-- Avisos gerais (senha padrão e sessão perto de expirar) -->
+                    <div id="aviso-senha-padrao" class="aviso aviso-amarelo hidden" role="alert">
+                        <i class="ri-error-warning-fill"></i>
+                        <div class="flex-1"><strong>Você está usando a senha padrão (admin).</strong> Qualquer pessoa que conheça o sistema consegue entrar. Troque a senha agora.</div>
+                        <button id="btn-trocar-padrao" class="btn btn-primario btn-pequeno">Trocar senha</button>
+                    </div>
+                    <div id="aviso-sessao" class="aviso aviso-azul hidden" role="status">
+                        <i class="ri-time-line"></i>
+                        <div class="flex-1">Sua sessão vai expirar por inatividade em <strong id="aviso-sessao-tempo">2:00</strong>.</div>
+                        <button id="btn-continuar-sessao" class="btn btn-primario btn-pequeno">Continuar conectado</button>
+                    </div>
+
+                    <!-- ===================== PAINEL ===================== -->
+                    <section id="tela-painel" class="tela hidden" aria-labelledby="titulo-tela">
+                        <div class="saudacao">
+                            <div>
+                                <h2 id="painel-saudacao">Olá!</h2>
+                                <p id="painel-data"></p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="btn btn-primario" data-acao="nova-entrada" data-perm="patio.entrada"><i class="ri-add-circle-line"></i> Nova entrada</button>
+                                <button class="btn btn-secundario" data-ir="patio"><i class="ri-parking-box-line"></i> Ver pátio</button>
+                                <button class="btn btn-secundario" data-ir="relatorios" data-perm="relatorios.ver"><i class="ri-bar-chart-2-line"></i> Relatórios</button>
+                            </div>
+                        </div>
+
+                        <div class="grade-kpi">
+                            <div class="kpi">
+                                <div class="kpi-topo"><span>No pátio agora</span><i class="ri-car-fill kpi-icone azul"></i></div>
+                                <strong id="kpi-patio">0</strong>
+                                <div class="barra" aria-hidden="true"><span id="kpi-ocupacao-barra"></span></div>
+                                <small id="kpi-ocupacao">0% de 30 vagas</small>
+                            </div>
+                            <div class="kpi">
+                                <div class="kpi-topo"><span>Faturamento hoje</span><i class="ri-money-dollar-circle-fill kpi-icone verde"></i></div>
+                                <strong id="kpi-faturamento">R$ 0,00</strong>
+                                <small id="kpi-faturamento-var" class="variacao"></small>
+                            </div>
+                            <div class="kpi">
+                                <div class="kpi-topo"><span>Saídas hoje</span><i class="ri-logout-circle-r-fill kpi-icone amarelo"></i></div>
+                                <strong id="kpi-saidas">0</strong>
+                                <small id="kpi-saidas-var" class="variacao"></small>
+                            </div>
+                            <div class="kpi">
+                                <div class="kpi-topo"><span>Ticket médio hoje</span><i class="ri-bill-line kpi-icone escuro"></i></div>
+                                <strong id="kpi-ticket">—</strong>
+                                <small id="kpi-permanencia">Permanência média: —</small>
+                            </div>
+                        </div>
+
+                        <div class="grade-2-1">
+                            <div class="cartao">
+                                <div class="cartao-cabeca">
+                                    <h3><i class="ri-bar-chart-box-line"></i> Faturamento dos últimos 7 dias</h3>
+                                    <span id="painel-7dias-total" class="selo selo-cinza"></span>
+                                </div>
+                                <div id="graf-7dias" class="grafico"></div>
+                            </div>
+                            <div class="cartao">
+                                <div class="cartao-cabeca"><h3><i class="ri-wallet-3-line"></i> Pagamentos hoje</h3></div>
+                                <div id="graf-pgto-hoje"></div>
+                            </div>
+                        </div>
+
+                        <div class="grade-2-1">
+                            <div class="cartao">
+                                <div class="cartao-cabeca">
+                                    <h3><i class="ri-parking-box-line"></i> Há mais tempo no pátio</h3>
+                                    <button class="link-acao" data-ir="patio">Abrir pátio <i class="ri-arrow-right-line"></i></button>
+                                </div>
+                                <div id="painel-patio"></div>
+                            </div>
+                            <div class="cartao">
+                                <div class="cartao-cabeca">
+                                    <h3><i class="ri-pulse-line"></i> Atividades recentes</h3>
+                                    <button class="link-acao so-admin" data-ir="auditoria">Ver tudo <i class="ri-arrow-right-line"></i></button>
+                                </div>
+                                <div id="painel-atividades"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ===================== PÁTIO ===================== -->
+                    <section id="tela-patio" class="tela hidden">
+                        <div class="grade-1-2">
+                            <!-- Nova entrada -->
+                            <div class="cartao cartao-destaque lg:sticky lg:top-24 self-start" id="cartao-entrada">
+                                <div class="cartao-cabeca">
+                                    <h3><i class="ri-add-circle-line"></i> Nova entrada</h3>
+                                    <kbd title="Atalho do teclado">N</kbd>
+                                </div>
+                                <form id="form-entrada" class="space-y-4" novalidate>
+                                    <div>
+                                        <label for="ent-placa" class="rotulo">Placa *</label>
+                                        <input id="ent-placa" class="campo campo-placa" type="text" maxlength="8" autocomplete="off" placeholder="ABC1D23" />
+                                        <p class="erro-campo" data-erro="ent-placa"></p>
+                                        <p id="ent-placa-info" class="dica-campo"></p>
+                                    </div>
+                                    <div>
+                                        <label for="ent-nome" class="rotulo">Nome do motorista *</label>
+                                        <input id="ent-nome" class="campo" type="text" maxlength="80" autocomplete="off" placeholder="Nome completo" list="lista-motoristas" />
+                                        <datalist id="lista-motoristas"></datalist>
+                                        <p class="erro-campo" data-erro="ent-nome"></p>
+                                    </div>
+                                    <div>
+                                        <label for="ent-hora" class="rotulo">Hora de entrada *</label>
+                                        <div class="flex gap-2">
+                                            <input id="ent-hora" class="campo min-w-0 flex-1" type="datetime-local" />
+                                            <button type="button" id="btn-agora" class="btn btn-secundario flex-shrink-0" title="Usar a hora atual">Agora</button>
+                                        </div>
+                                        <p class="erro-campo" data-erro="ent-hora"></p>
+                                    </div>
+                                    <details class="detalhes-opcionais">
+                                        <summary>Informações opcionais</summary>
+                                        <div class="space-y-4 mt-3">
+                                            <div>
+                                                <label for="ent-modelo" class="rotulo">Modelo / cor</label>
+                                                <input id="ent-modelo" class="campo" type="text" maxlength="40" placeholder="ex.: Onix prata" />
+                                            </div>
+                                            <div>
+                                                <label for="ent-chave" class="rotulo">Nº da chave / gancho</label>
+                                                <input id="ent-chave" class="campo" type="text" maxlength="10" placeholder="ex.: 12" />
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <button type="submit" class="btn btn-primario w-full btn-grande"><i class="ri-login-circle-line"></i> Registrar entrada</button>
+                                    <p class="dica-campo text-center">Dica: comece pela placa — se o carro já veio antes, o nome é sugerido.</p>
+                                </form>
+                            </div>
+
+                            <!-- Veículos estacionados -->
+                            <div class="cartao">
+                                <div class="cartao-cabeca">
+                                    <h3><i class="ri-parking-box-line"></i> Veículos no pátio <span id="patio-qtd" class="selo selo-azul">0</span></h3>
+                                    <div class="legenda">
+                                        <span><i class="ponto ponto-verde"></i> até 1h</span>
+                                        <span><i class="ponto ponto-ambar"></i> 1h a 3h</span>
+                                        <span><i class="ponto ponto-vermelho"></i> mais de 3h</span>
+                                    </div>
+                                </div>
+                                <div class="barra-ferramentas">
+                                    <div class="campo-icone flex-1">
+                                        <i class="ri-search-line"></i>
+                                        <input id="busca-patio" class="campo" type="search" placeholder="Buscar placa ou motorista  ( / )" aria-label="Buscar no pátio" />
+                                    </div>
+                                    <select id="ordem-patio" class="campo sm:w-56" aria-label="Ordenar">
+                                        <option value="antigo">Mais tempo no pátio</option>
+                                        <option value="recente">Entrada mais recente</option>
+                                        <option value="placa">Placa (A–Z)</option>
+                                        <option value="nome">Motorista (A–Z)</option>
+                                    </select>
+                                </div>
+                                <div id="lista-patio"></div>
+                                <p class="dica-campo mt-3"><i class="ri-refresh-line"></i> Tempo e valor atualizados a cada 30 segundos.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ===================== HISTÓRICO ===================== -->
+                    <section id="tela-historico" class="tela hidden">
+                        <div class="cartao">
+                            <div class="filtros">
+                                <div class="filtros-atalhos" role="group" aria-label="Período rápido">
+                                    <button class="chip" data-hist-periodo="0">Hoje</button>
+                                    <button class="chip so-admin" data-hist-periodo="1">Ontem</button>
+                                    <button class="chip so-admin" data-hist-periodo="7">7 dias</button>
+                                    <button class="chip so-admin" data-hist-periodo="30">30 dias</button>
+                                </div>
+                                <div class="filtros-campos">
+                                    <div>
+                                        <label for="hist-de" class="rotulo">De</label>
+                                        <input id="hist-de" class="campo" type="date" />
+                                    </div>
+                                    <div>
+                                        <label for="hist-ate" class="rotulo">Até</label>
+                                        <input id="hist-ate" class="campo" type="date" />
+                                    </div>
+                                    <div>
+                                        <label for="hist-pgto" class="rotulo">Pagamento</label>
+                                        <select id="hist-pgto" class="campo">
+                                            <option value="">Todos</option>
+                                            <option>Dinheiro</option>
+                                            <option>Cartão</option>
+                                            <option>Pix</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="busca-hist" class="rotulo">Buscar</label>
+                                        <input id="busca-hist" class="campo" type="search" placeholder="Placa ou motorista" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="resumo-linha">
+                                <div id="hist-resumo" class="resumo-itens"></div>
+                                <button id="btn-hist-csv" class="btn btn-verde so-admin"><i class="ri-file-excel-2-line"></i> Exportar CSV</button>
+                            </div>
+                            <div id="lista-historico"></div>
+                        </div>
+                    </section>
+
+                    <!-- ===================== RELATÓRIOS (Administrador) ===================== -->
+                    <section id="tela-relatorios" class="tela hidden">
+                        <div class="cartao">
+                            <div class="filtros">
+                                <div class="filtros-atalhos" role="group" aria-label="Período">
+                                    <button class="chip" data-rel-periodo="hoje">Hoje</button>
+                                    <button class="chip" data-rel-periodo="7">7 dias</button>
+                                    <button class="chip" data-rel-periodo="30">30 dias</button>
+                                    <button class="chip" data-rel-periodo="mes">Este mês</button>
+                                    <button class="chip" data-rel-periodo="mes-anterior">Mês anterior</button>
+                                </div>
+                                <div class="filtros-campos filtros-campos-curto">
+                                    <div>
+                                        <label for="rel-de" class="rotulo">De</label>
+                                        <input id="rel-de" class="campo" type="date" />
+                                    </div>
+                                    <div>
+                                        <label for="rel-ate" class="rotulo">Até</label>
+                                        <input id="rel-ate" class="campo" type="date" />
+                                    </div>
+                                    <div class="flex items-end">
+                                        <button id="btn-rel-csv" class="btn btn-verde w-full"><i class="ri-file-excel-2-line"></i> Exportar resumo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rel-kpis" class="grade-kpi"></div>
+                        <div class="grade-2-1">
+                            <div class="cartao">
+                                <div class="cartao-cabeca"><h3><i class="ri-bar-chart-box-line"></i> Faturamento por dia</h3></div>
+                                <div id="rel-graf-dias" class="grafico"></div>
+                            </div>
+                            <div class="cartao">
+                                <div class="cartao-cabeca"><h3><i class="ri-wallet-3-line"></i> Formas de pagamento</h3></div>
+                                <div id="rel-graf-pgto"></div>
+                            </div>
+                        </div>
+                        <div class="grade-2-1">
+                            <div class="cartao">
+                                <div class="cartao-cabeca">
+                                    <h3><i class="ri-time-line"></i> Entradas por horário</h3>
+                                    <span id="rel-pico" class="selo selo-amarelo"></span>
+                                </div>
+                                <div id="rel-graf-horas" class="grafico"></div>
+                            </div>
+                            <div class="cartao">
+                                <div class="cartao-cabeca"><h3><i class="ri-repeat-line"></i> Clientes frequentes</h3></div>
+                                <div id="rel-placas"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ===================== USUÁRIOS (Administrador) ===================== -->
+                    <section id="tela-usuarios" class="tela hidden">
+                        <div class="grade-1-2">
+                            <div class="cartao cartao-destaque self-start">
+                                <div class="cartao-cabeca"><h3><i class="ri-user-add-line"></i> Novo usuário</h3></div>
+                                <form id="form-usuario" class="space-y-4" novalidate>
+                                    <div>
+                                        <label for="usu-nome" class="rotulo">Nome *</label>
+                                        <input id="usu-nome" class="campo" type="text" maxlength="60" />
+                                    </div>
+                                    <div>
+                                        <label for="usu-login" class="rotulo">Usuário (login) *</label>
+                                        <input id="usu-login" class="campo" type="text" maxlength="30" autocomplete="off" autocapitalize="none" />
+                                    </div>
+                                    <div>
+                                        <label for="usu-senha" class="rotulo">Senha inicial * <span class="dica">(mín. 8, letras e números)</span></label>
+                                        <input id="usu-senha" class="campo" type="password" autocomplete="new-password" maxlength="128" />
+                                    </div>
+                                    <div>
+                                        <label for="usu-perfil" class="rotulo">Perfil *</label>
+                                        <select id="usu-perfil" class="campo">
+                                            <option value="operador">Operador (funcionário)</option>
+                                            <option value="admin">Administrador</option>
+                                        </select>
+                                    </div>
+                                    <label class="flex items-start gap-2 text-sm text-slate-600">
+                                        <input id="usu-trocar" type="checkbox" class="mt-1" checked />
+                                        <span>Pedir para trocar a senha no primeiro login</span>
+                                    </label>
+                                    <p id="usu-erro" class="erro-form hidden" role="alert"></p>
+                                    <button type="submit" class="btn btn-primario w-full btn-grande"><i class="ri-save-3-line"></i> Cadastrar</button>
+                                </form>
+                            </div>
+                            <div class="cartao">
+                                <div class="cartao-cabeca"><h3><i class="ri-team-line"></i> Usuários cadastrados</h3></div>
+                                <div id="lista-usuarios" class="space-y-3"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ===================== AUDITORIA (Administrador) ===================== -->
+                    <section id="tela-auditoria" class="tela hidden">
+                        <div id="aud-integridade"></div>
+                        <div class="cartao">
+                            <div class="filtros-campos filtros-campos-4">
+                                <div>
+                                    <label for="aud-de" class="rotulo">De</label>
+                                    <input id="aud-de" class="campo" type="date" />
+                                </div>
+                                <div>
+                                    <label for="aud-ate" class="rotulo">Até</label>
+                                    <input id="aud-ate" class="campo" type="date" />
+                                </div>
+                                <div>
+                                    <label for="aud-usuario" class="rotulo">Usuário</label>
+                                    <select id="aud-usuario" class="campo"></select>
+                                </div>
+                                <div>
+                                    <label for="aud-acao" class="rotulo">Ação</label>
+                                    <select id="aud-acao" class="campo"></select>
+                                </div>
+                            </div>
+                            <div class="resumo-linha">
+                                <p id="aud-qtd" class="text-sm text-slate-500"></p>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <button id="btn-aud-verificar" class="btn btn-secundario"><i class="ri-shield-check-line"></i> Verificar integridade</button>
+                                    <button id="btn-aud-csv" class="btn btn-verde"><i class="ri-file-excel-2-line"></i> Exportar CSV</button>
+                                </div>
+                            </div>
+                            <div id="lista-auditoria"></div>
+                            <div class="text-center mt-4"><button id="btn-aud-mais" class="btn btn-secundario hidden">Mostrar mais</button></div>
+                        </div>
+                    </section>
+
+                    <!-- ===================== CONFIGURAÇÕES (Administrador) ===================== -->
+                    <section id="tela-config" class="tela hidden">
+                        <div class="grade-2">
+                            <div class="cartao">
+                                <div class="cartao-cabeca"><h3><i class="ri-price-tag-3-line"></i> Tabela de preços</h3></div>
+                                <form id="form-config" class="space-y-4" novalidate>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        <div>
+                                            <label for="cfg-minimo" class="rotulo">Até 1 hora (R$)</label>
+                                            <input id="cfg-minimo" class="campo" type="number" min="0" max="999" step="0.50" inputmode="decimal" />
+                                        </div>
+                                        <div>
+                                            <label for="cfg-adicional" class="rotulo">Hora adicional (R$)</label>
+                                            <input id="cfg-adicional" class="campo" type="number" min="0" max="999" step="0.50" inputmode="decimal" />
+                                        </div>
+                                        <div>
+                                            <label for="cfg-tolerancia" class="rotulo">Tolerância (min)</label>
+                                            <input id="cfg-tolerancia" class="campo" type="number" min="0" max="59" step="1" inputmode="numeric" />
+                                        </div>
+                                    </div>
+                                    <p class="dica-campo">Fração de hora adicional é cobrada como hora cheia. Saídas já pagas mantêm a tabela da época.</p>
+                                    <div id="simulacao" class="simulacao"></div>
+                                    <p id="cfg-erro" class="erro-form hidden" role="alert"></p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <button type="submit" class="btn btn-primario flex-1"><i class="ri-save-3-line"></i> Salvar preços</button>
+                                        <button type="button" id="btn-cfg-padrao" class="btn btn-secundario">Restaurar padrão</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div class="cartao">
+                                    <div class="cartao-cabeca"><h3><i class="ri-parking-line"></i> Estacionamento</h3></div>
+                                    <form id="form-vagas" class="flex flex-col sm:flex-row gap-3 sm:items-end" novalidate>
+                                        <div class="flex-1">
+                                            <label for="cfg-vagas" class="rotulo">Número de vagas</label>
+                                            <input id="cfg-vagas" class="campo" type="number" min="1" max="999" step="1" inputmode="numeric" />
+                                        </div>
+                                        <button type="submit" class="btn btn-primario"><i class="ri-save-3-line"></i> Salvar</button>
+                                    </form>
+                                    <p class="dica-campo mt-2">Usado para mostrar a ocupação do pátio no Painel.</p>
+                                </div>
+
+                                <div class="cartao">
+                                    <div class="cartao-cabeca"><h3><i class="ri-database-2-line"></i> Backup dos dados</h3></div>
+                                    <p class="text-sm text-slate-600 mb-4">
+                                        Os dados ficam só neste navegador. Baixe um backup toda semana e guarde em local seguro (pen drive, nuvem).
+                                        O arquivo contém dados de clientes e os hashes das senhas: não compartilhe.
+                                    </p>
+                                    <p id="backup-ultimo" class="dica-campo mb-3"></p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <button id="btn-backup-exportar" class="btn btn-primario flex-1"><i class="ri-download-2-line"></i> Baixar backup</button>
+                                        <label class="btn btn-secundario flex-1 cursor-pointer">
+                                            <i class="ri-upload-2-line"></i> Restaurar backup
+                                            <input id="backup-arquivo" type="file" accept="application/json,.json" class="sr-only" />
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="cartao">
+                                    <div class="cartao-cabeca"><h3><i class="ri-shield-keyhole-line"></i> Segurança</h3></div>
+                                    <ul class="lista-info">
+                                        <li><i class="ri-time-line"></i><span>Sessão expira após <strong>30 min</strong> sem uso (aviso 2 min antes)</span></li>
+                                        <li><i class="ri-lock-password-line"></i><span>Senhas com hash PBKDF2 (120.000 iterações)</span></li>
+                                        <li><i class="ri-forbid-line"></i><span>Bloqueio de 5, 15 e 60 min após 5 senhas erradas</span></li>
+                                        <li><i class="ri-links-line"></i><span>Auditoria encadeada por hash (detecta adulteração)</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <footer class="rodape-app">
+                    <span>Chaveiro Senador · Painel Administrativo</span>
+                    <span class="hidden sm:inline">Atalhos: <kbd>N</kbd> nova entrada · <kbd>/</kbd> buscar · <kbd>Esc</kbd> fechar</span>
+                </footer>
+            </div>
+
+            <!-- ============================================================
+                 BARRA DE NAVEGAÇÃO INFERIOR (só no celular/tablet, < 1024px)
+                 ============================================================
+                 Atalhos ao alcance do polegar: Painel, Pátio, Nova entrada
+                 (botão central), Histórico e "Mais" (abre o menu lateral).
+                 Usa os mesmos data-ir / data-acao / data-perm do resto do
+                 painel, então respeita as permissões do perfil (app.js). -->
+            <nav class="nav-inferior nao-imprimir" aria-label="Navegação rápida">
+                <button type="button" class="nav-inferior-item" data-ir="painel" data-perm="painel"><i class="ri-dashboard-3-line" aria-hidden="true"></i><span>Painel</span></button>
+                <button type="button" class="nav-inferior-item" data-ir="patio" data-perm="patio.ver"><i class="ri-parking-box-line" aria-hidden="true"></i><span>Pátio</span><b id="nav-contador-patio" class="nav-inferior-contador hidden">0</b></button>
+                <button type="button" class="nav-inferior-item nav-inferior-principal" data-acao="nova-entrada" data-perm="patio.entrada" aria-label="Nova entrada"><i class="ri-add-line" aria-hidden="true"></i><span>Entrada</span></button>
+                <button type="button" class="nav-inferior-item" data-ir="historico" data-perm="historico.ver"><i class="ri-history-line" aria-hidden="true"></i><span>Histórico</span></button>
+                <button type="button" id="btn-menu-inferior" class="nav-inferior-item" aria-label="Abrir menu completo"><i class="ri-menu-line" aria-hidden="true"></i><span>Mais</span></button>
+            </nav>
+
+        </div>
+
+        <!-- =============================================================
+             MODAL: REGISTRAR SAÍDA (com cálculo de troco)
+             ============================================================= -->
+        <div id="modal-saida" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="saida-titulo">
+            <div class="modal-caixa">
+                <div class="modal-cabeca">
+                    <h3 id="saida-titulo"><i class="ri-logout-circle-r-line"></i> Registrar saída</h3>
+                    <button class="fechar-modal btn-x" aria-label="Fechar"><i class="ri-close-line"></i></button>
+                </div>
+                <div id="saida-detalhes" class="space-y-1"></div>
+                <fieldset class="mt-5">
+                    <legend class="rotulo mb-2">Forma de pagamento</legend>
+                    <div class="grid grid-cols-3 gap-2">
+                        <label class="opcao-pgto"><input type="radio" name="pgto" value="Dinheiro" checked /><i class="ri-money-dollar-box-line"></i><span>Dinheiro</span></label>
+                        <label class="opcao-pgto"><input type="radio" name="pgto" value="Cartão" /><i class="ri-bank-card-line"></i><span>Cartão</span></label>
+                        <label class="opcao-pgto"><input type="radio" name="pgto" value="Pix" /><i class="ri-qr-code-line"></i><span>Pix</span></label>
+                    </div>
+                </fieldset>
+                <!-- Troco: só aparece para pagamento em dinheiro -->
+                <div id="saida-troco-area" class="troco">
+                    <div>
+                        <label for="saida-recebido" class="rotulo">Valor recebido (R$)</label>
+                        <input id="saida-recebido" class="campo" type="number" min="0" step="0.50" inputmode="decimal" placeholder="opcional" />
+                    </div>
+                    <div class="troco-resultado">
+                        <span>Troco</span>
+                        <strong id="saida-troco">—</strong>
+                    </div>
+                    <div id="saida-notas" class="troco-notas"></div>
+                </div>
+                <div class="modal-acoes">
+                    <button class="fechar-modal btn btn-secundario">Cancelar</button>
+                    <button id="btn-confirmar-saida" class="btn btn-verde btn-grande"><i class="ri-check-double-line"></i> Confirmar pagamento</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- =============================================================
+             MODAL: COMPROVANTE (único conteúdo impresso)
+             ============================================================= -->
+        <div id="modal-comprovante" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="comp-titulo">
+            <div class="modal-caixa modal-estreito">
+                <div id="comprovante" class="comprovante"></div>
+                <div class="modal-acoes nao-imprimir">
+                    <button class="fechar-modal btn btn-secundario">Fechar</button>
+                    <button id="btn-imprimir" class="btn btn-primario btn-grande"><i class="ri-printer-line"></i> Imprimir</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- =============================================================
+             MODAL: MINHA CONTA (trocar a própria senha)
+             ============================================================= -->
+        <div id="modal-conta" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="conta-titulo">
+            <div class="modal-caixa modal-estreito">
+                <div class="modal-cabeca">
+                    <h3 id="conta-titulo"><i class="ri-key-2-line"></i> Trocar minha senha</h3>
+                    <button class="fechar-modal btn-x" aria-label="Fechar"><i class="ri-close-line"></i></button>
+                </div>
+                <form id="form-conta" class="space-y-4" novalidate>
+                    <div>
+                        <label for="conta-atual" class="rotulo">Senha atual</label>
+                        <input id="conta-atual" class="campo" type="password" autocomplete="current-password" maxlength="128" />
+                    </div>
+                    <div>
+                        <label for="conta-nova" class="rotulo">Nova senha <span class="dica">(mín. 8, letras e números)</span></label>
+                        <input id="conta-nova" class="campo" type="password" autocomplete="new-password" maxlength="128" />
+                    </div>
+                    <div>
+                        <label for="conta-nova2" class="rotulo">Confirmar nova senha</label>
+                        <input id="conta-nova2" class="campo" type="password" autocomplete="new-password" maxlength="128" />
+                    </div>
+                    <p id="conta-erro" class="erro-form hidden" role="alert"></p>
+                    <p id="conta-ultimo" class="dica-campo"></p>
+                    <div class="modal-acoes">
+                        <button type="button" class="fechar-modal btn btn-secundario">Cancelar</button>
+                        <button type="submit" class="btn btn-primario"><i class="ri-save-3-line"></i> Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- =============================================================
+             MODAL: CONFIRMAÇÃO GENÉRICA
+             ============================================================= -->
+        <div id="modal-confirmar" class="modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="conf-titulo">
+            <div class="modal-caixa modal-estreito">
+                <h3 id="conf-titulo" class="text-lg font-bold text-slate-900 mb-2"></h3>
+                <p id="conf-texto" class="text-slate-600 mb-4"></p>
+                <div id="conf-extra"></div>
+                <div class="modal-acoes">
+                    <button class="fechar-modal btn btn-secundario">Cancelar</button>
+                    <button id="conf-ok" class="btn btn-perigo">Confirmar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avisos flutuantes -->
+        <div id="toasts" class="toasts nao-imprimir" aria-live="polite"></div>
+
+        <!-- Scripts (a ordem importa: núcleo → interface → telas → app) -->
+        <script src="js/nucleo/regras-estacionamento.js"></script>
+        <script src="js/nucleo/armazenamento.js"></script>
+        <script src="js/nucleo/auditoria.js"></script>
+        <script src="js/nucleo/sessao.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/telas/acesso.js"></script>
+        <script src="js/telas/painel.js"></script>
+        <script src="js/telas/patio.js"></script>
+        <script src="js/telas/historico.js"></script>
+        <script src="js/telas/relatorios.js"></script>
+        <script src="js/telas/auditoria.js"></script>
+        <script src="js/telas/usuarios.js"></script>
+        <script src="js/telas/configuracoes.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+</html>

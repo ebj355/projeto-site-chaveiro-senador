@@ -1,0 +1,613 @@
+<!doctype html>
+<!--
+    ============================================
+    PÁGINA CONTATO - ORÇAMENTO E LOCALIZAÇÃO
+    ============================================
+    Página de contato do Chaveiro Senador.
+
+    Estrutura:
+    - Header fixo (o mesmo de todas as páginas)
+    - Banner "Fale Conosco"
+    - Destaque do chaveiro automotivo (texto + imagem)
+    - "Solicite Seu Orçamento": cartão "Fale com a gente" com os botões
+      Ligar agora / Chamar no WhatsApp (sem mostrar números) e o
+      formulário validado que abre o WhatsApp (módulo Formulario)
+    - Conveniência e Acessibilidade: endereço, botões de contato,
+      horários e mapa
+    - Rodapé: logo, links, endereço, botões discretos "Ligar" e
+      "WhatsApp" (sem números na tela) e link "Área Restrita" do painel
+    - Botão flutuante de WhatsApp (acompanha a rolagem)
+    - Comportamento em assets/js/site.js; estilos extras em assets/css/site.css
+
+    Tecnologias: HTML5, Tailwind CSS (CDN), JavaScript puro, RemixIcon
+    ============================================
+-->
+<html lang="pt-BR">
+    <head>
+        <!-- Meta Tags Básicas -->
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/webp" href="imagens/logo-site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- SEO Meta Tags -->
+        <title>Contato | Chaveiro Senador - Chaveiro em Santo André</title>
+        <meta
+            name="description"
+            content="Entre em contato com o Chaveiro Senador em Santo André. Telefone (11) 4994-2568, WhatsApp (11) 99977-6208. Atendemos toda a região do ABC."
+        />
+        <meta name="keywords" content="contato chaveiro santo andré, telefone chaveiro, whatsapp chaveiro, endereço chaveiro santo andré" />
+        <meta name="author" content="Chaveiro Senador" />
+        <link rel="canonical" href="https://chaveirosenador.com.br/chaveiro-sao-bernardo-do-campo.html" />
+
+        <!-- Remix Icon -->
+        <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <link rel="stylesheet" href="assets/css/site.css" />
+    </head>
+    <body>
+        <div id="root">
+            <!-- =========================================================
+             HEADER FIXO (igual em todas as páginas)
+             =========================================================
+             - Esquerda: logo + nome "Chaveiro Senador" em amarelo
+             - Centro (desktop >= 1024px): links de navegação
+             - Direita: botão "hambúrguer" do menu mobile
+             (O WhatsApp agora é um botão flutuante no canto da tela.)
+             Estilos fixos (altura 64px, fundo #2c3e50): assets/css/site.css
+             ========================================================= -->
+            <header
+                class="menu-header fixed top-0 left-0 right-0 z-50 w-full"
+                style="
+                    background-color: #2c3e50 !important;
+                    background-image: none !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    height: 64px !important;
+                    line-height: 64px !important;
+                "
+            >
+                <div class="w-full h-full px-4 sm:px-6 lg:px-8" style="max-width: 100%; margin: 0 auto; height: 100%">
+                    <div class="flex items-center justify-between h-full w-full" style="height: 100%; align-items: center">
+                        <!-- Logo e nome (link para a página inicial) -->
+                        <div
+                            class="flex items-center gap-2 flex-shrink-0 min-w-0"
+                            style="height: 100%; align-items: center; margin: 0; padding: 0"
+                        >
+                            <a href="chaveiro-em-santo-andre.html" aria-label="Chaveiro Senador - página inicial">
+                                <img
+                                    src="imagens/logo-site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp"
+                                    alt="Chaveiro Senador - Chaveiro em Santo André e região do ABC"
+                                    class="h-10 w-auto object-contain"
+                                    style="display: block; margin: 0; padding: 0"
+                                />
+                            </a>
+                            <span
+                                class="font-bold text-xl sm:text-2xl whitespace-nowrap"
+                                style="color: #facc15; margin: 0; padding: 0; line-height: 1"
+                                >Chaveiro Senador</span
+                            >
+                        </div>
+                        <!-- Navegação principal (somente desktop) -->
+                        <nav
+                            class="hidden lg:flex items-center gap-3 xl:gap-4 flex-1 justify-center px-2"
+                            aria-label="Navegação principal"
+                            style="height: 100%; align-items: center; margin: 0; padding: 0 8px"
+                        >
+                            <a
+                                href="chaveiro-em-santo-andre.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >Início</a
+                            >
+                            <a
+                                href="chaveiro-santo-andre.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >Quem Somos</a
+                            >
+                            <a
+                                href="chaveiro-abc.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >Nossos Serviços</a
+                            >
+                            <a
+                                href="chaveiro-sao-bernardo-do-campo.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                aria-current="page"
+                                >Contato</a
+                            >
+                        </nav>
+                        <!-- Ações à direita -->
+                        <div
+                            class="flex items-center gap-2 lg:gap-3 flex-shrink-0"
+                            style="height: 100%; align-items: center; margin: 0; padding: 0"
+                        >
+                            <!-- Botão do menu mobile (controlado por assets/js/site.js) -->
+                            <button
+                                id="mobile-menu-button"
+                                type="button"
+                                class="lg:hidden flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors"
+                                aria-label="Abrir menu"
+                                style="margin: 0; padding: 0"
+                            >
+                                <i class="ri-menu-line text-2xl" id="menu-icon" aria-hidden="true"></i>
+                                <i class="ri-close-line text-2xl hidden" id="close-icon" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Menu mobile suspenso: abre abaixo do header (max-height animado pelo JS) -->
+            <div
+                id="mobile-menu"
+                class="lg:hidden fixed top-16 left-0 right-0 bg-[#2c3e50] shadow-lg z-[60] max-h-0 overflow-hidden transition-all duration-300 ease-in-out"
+            >
+                <nav class="flex flex-col" aria-label="Menu mobile">
+                    <a
+                        href="chaveiro-em-santo-andre.html"
+                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        >Início</a
+                    >
+                    <a
+                        href="chaveiro-santo-andre.html"
+                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        >Quem Somos</a
+                    >
+                    <a
+                        href="chaveiro-abc.html"
+                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        >Nossos Serviços</a
+                    >
+                    <a
+                        href="chaveiro-sao-bernardo-do-campo.html"
+                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold"
+                        aria-current="page"
+                        >Contato</a
+                    >
+                </nav>
+            </div>
+            <div class="min-h-screen bg-white" style="padding-top: 64px; margin-top: 0">
+                <!-- ============================================
+                     BANNER "FALE CONOSCO"
+                     ============================================
+                     Faixa de título da página com a trilha "Início > Contato".
+                     ============================================ -->
+                <section
+                    class="relative w-full h-[260px] sm:h-[400px] md:h-[500px] overflow-hidden bg-cover bg-center"
+                    style="
+                        background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                            url(&quot;imagens/banner/chaveiro-em-santo-andre-banner-principal.webp&quot;);
+                    "
+                >
+                    <div class="relative w-full h-full flex items-center">
+                        <div class="relative flex items-center pl-5 sm:pl-8 md:pl-12 pr-5 sm:pr-8">
+                            <div class="text-white z-10">
+                                <h1 class="text-[2rem] leading-tight sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4">Fale Conosco</h1>
+                                <p class="text-lg md:text-xl text-white/90">Precisa de ajuda? procure um chaveiro especializado no abc</p>
+                            </div>
+                            <!-- Linha Amarela Vertical Separadora -->
+                            <div class="absolute right-0 top-0 bottom-0 w-1 bg-yellow-400 z-20"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     CHAVEIRO AUTOMOTIVO
+                     ============================================
+                     Destaque do atendimento automotivo: texto à esquerda, imagem à direita.
+                     ============================================ -->
+                <section class="py-12 md:py-20 bg-gray-100">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                            <!-- Lado Esquerdo - Texto -->
+                            <div class="space-y-6">
+                                <h2 class="text-[1.75rem] sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                                    Orçamento Chaveiro Automotivo em Santo André
+                                </h2>
+
+                                <p class="text-lg text-gray-700 leading-relaxed text-left md:text-justify">
+                                    Quer fazer um <strong>Orçamento para Chaveiro Automotivo em Santo André</strong>?
+                                </p>
+
+                                <p class="text-lg text-gray-700 leading-relaxed text-left md:text-justify">
+                                    O <strong>Chaveiro Senador</strong> oferece soluções rápidas e eficientes para todas as suas
+                                    necessidades automotivas. Nossa equipe de profissionais qualificados está pronta para atender
+                                    emergências e também oferece orçamentos antecipados para seu conforto financeiro. Com 46 anos de
+                                    experiência, garantimos qualidade e agilidade em cada serviço.
+                                </p>
+
+                                <p class="text-lg text-gray-700 leading-relaxed text-left md:text-justify">
+                                    Oferecemos serviços de alta qualidade, rapidez e agilidade para sua residência, empresa ou veículo.
+                                    Nosso sistema exclusivo de atendimento garante segurança e conforto para você e sua família. Atendemos
+                                    toda a região do ABC incluindo São Bernardo do Campo, Mauá, Diadema e São Caetano do Sul.
+                                </p>
+
+                                <p class="text-lg text-gray-700 leading-relaxed text-left md:text-justify">
+                                    Entre em contato agora mesmo com o <strong>Chaveiro Senador</strong>. Atendimento personalizado para
+                                    você, nosso cliente amigo.
+                                </p>
+
+                                <p class="text-lg text-gray-700 leading-relaxed text-left md:text-justify">
+                                    Ficou interessado? Conheça nossos
+                                    <a href="chaveiro-abc.html" class="text-yellow-500 hover:text-yellow-600 font-bold underline"
+                                        ><strong>serviços</strong></a
+                                    >
+                                    agora mesmo!
+                                </p>
+                            </div>
+
+                            <!-- Lado Direito - Imagem -->
+                            <div class="flex justify-center lg:justify-end">
+                                <div class="relative w-full max-w-md">
+                                    <img
+                                        alt="Chaveiro automotivo em Santo André - Chave codificada e serviços automotivos"
+                                        class="w-full h-56 sm:h-auto rounded-2xl shadow-xl object-cover"
+                                        src="imagens/servicos/chaveiro-em-santo-andre-chave-codificada-automotiva-servicos.jpg"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     SOLICITE SEU ORÇAMENTO
+                     ============================================
+                     Formulário (nome, telefone, serviço, mensagem) validado no navegador.
+                     Ao enviar, monta a mensagem e abre o WhatsApp (módulo Formulario).
+                     ============================================ -->
+                <section
+                    id="orcamento"
+                    class="relative py-12 md:py-20 bg-cover bg-center"
+                    style="
+                        background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                            url(&quot;imagens/solicite-seu-orcamento/chaveiro-em-santo-andre-solicite-seu-orcamento.webp&quot;);
+                    "
+                >
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-12">
+                            <h2 class="text-[1.75rem] sm:text-4xl md:text-5xl font-bold text-white mb-6">Solicite Seu Orçamento - Chaveiro em Santo André</h2>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                            <div class="space-y-8">
+                                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 sm:p-8 border border-gray-200 shadow-lg">
+                                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-center">Fale com a gente</h3>
+                                    <p class="text-gray-600 text-center mb-6">Escolha a forma mais prática para você.</p>
+                                    <!-- Botões de contato (sem mostrar os números; estilo em site.css, seção 12) -->
+                                    <div class="botoes-contato">
+                                        <a href="tel:+551149942568" class="botao-contato botao-contato-ligar" aria-label="Ligar para o Chaveiro Senador">
+                                            <span class="botao-contato-icone"><i class="ri-phone-fill" aria-hidden="true"></i></span>
+                                            <span class="botao-contato-texto"><strong>Ligar agora</strong><small>Telefone fixo da loja</small></span>
+                                            <i class="ri-arrow-right-up-line botao-contato-seta" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="https://wa.me/5511999776208?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener noreferrer" class="botao-contato botao-contato-whatsapp" aria-label="Conversar pelo WhatsApp">
+                                            <span class="botao-contato-icone"><i class="ri-whatsapp-fill" aria-hidden="true"></i></span>
+                                            <span class="botao-contato-texto"><strong>Chamar no WhatsApp</strong><small>Resposta rápida pelo celular</small></span>
+                                            <i class="ri-arrow-right-up-line botao-contato-seta" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <div class="mt-8 pt-8 border-t border-gray-300">
+                                        <div class="grid grid-cols-3 gap-4 text-center">
+                                            <div>
+                                                <div
+                                                    class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3"
+                                                >
+                                                    <i class="ri-award-fill text-3xl text-white"></i>
+                                                </div>
+                                                <p class="text-gray-900 font-semibold">Qualidade Garantida</p>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3"
+                                                >
+                                                    <i class="ri-shield-check-fill text-3xl text-white"></i>
+                                                </div>
+                                                <p class="text-gray-900 font-semibold">Segurança Garantida</p>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3"
+                                                >
+                                                    <i class="ri-star-fill text-3xl text-white"></i>
+                                                </div>
+                                                <p class="text-gray-900 font-semibold">Excelência Comprovada</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-2xl p-5 sm:p-8">
+                                <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">Entre em Contato</h3>
+                                <form id="cta-contact-form">
+                                    <div class="space-y-6">
+                                        <div>
+                                            <label for="cta-name" class="block text-sm font-semibold text-gray-700 mb-2"
+                                                >Nome Completo *</label
+                                            >
+                                            <input
+                                                id="cta-name"
+                                                required
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                                placeholder="Seu nome"
+                                                type="text"
+                                                value=""
+                                                name="name"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label for="cta-email" class="block text-sm font-semibold text-gray-700 mb-2">E-mail *</label>
+                                            <input
+                                                id="cta-email"
+                                                required
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                                placeholder="seu@email.com"
+                                                type="email"
+                                                value=""
+                                                name="email"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label for="cta-phone" class="block text-sm font-semibold text-gray-700 mb-2">Telefone *</label>
+                                            <input
+                                                id="cta-phone"
+                                                required
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                                placeholder="(11) 99999-9999"
+                                                type="tel"
+                                                value=""
+                                                name="phone"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label for="cta-service" class="block text-sm font-semibold text-gray-700 mb-2"
+                                                >Serviço Desejado *</label
+                                            >
+                                            <select
+                                                id="cta-service"
+                                                name="service"
+                                                required
+                                                class="w-full px-4 py-3 pr-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm cursor-pointer"
+                                            >
+                                                <option value="">Selecione um serviço</option>
+                                                <option value="chaves-automotivas">Chaves Automotivas</option>
+                                                <option value="abertura-portas">Abertura de Portas</option>
+                                                <option value="instalacao-fechaduras">Instalação de Fechaduras</option>
+                                                <option value="manutencao">Manutenção</option>
+                                                <option value="copias-chaves">Cópias de Chaves</option>
+                                                <option value="emergencia">Atendimento Emergencial</option>
+                                                <option value="outro">Outro</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="cta-message" class="block text-sm font-semibold text-gray-700 mb-2"
+                                                >Mensagem *</label
+                                            >
+                                            <textarea
+                                                id="cta-message"
+                                                name="message"
+                                                required
+                                                rows="5"
+                                                maxlength="500"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none"
+                                                placeholder="Descreva sua necessidade..."
+                                            ></textarea>
+                                            <p class="text-xs text-gray-500 mt-1"><span id="cta-charCount">0</span>/500 caracteres</p>
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-lg font-semibold text-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap"
+                                        >
+                                            Enviar Mensagem
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     CONVENIÊNCIA E ACESSIBILIDADE
+                     ============================================
+                     Endereço, telefone, horário de funcionamento e mapa do Google Maps.
+                     ============================================ -->
+                <section id="location" class="py-12 md:py-20 bg-gradient-to-b from-gray-50 to-white">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-10 md:mb-16">
+                            <h2 class="text-[1.75rem] sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">Conveniência e Acessibilidade</h2>
+                            <h3 class="text-xl sm:text-2xl md:text-3xl font-semibold text-blue-600 mb-4">Encontre-nos no Google</h3>
+                            <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                                Venha nos visitar ou solicite atendimento em domicílio. Estamos prontos para atender você com rapidez e
+                                qualidade.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                            <div class="space-y-8">
+                                <div class="bg-white rounded-2xl shadow-lg p-5 sm:p-8 border border-gray-100">
+                                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Chaveiro, Carimbos e Estacionamento Senador</h3>
+                                    <div class="flex items-start gap-4 sm:gap-6 mb-6">
+                                        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="ri-map-pin-fill text-2xl text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-gray-900 mb-3">Endereço</h4>
+                                            <p class="text-gray-700 leading-relaxed">
+                                                Rua Senador Flaquer, 561<br />Centro - Santo André - SP<br />CEP: 09010-060
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-4 sm:gap-6 mb-6">
+                                        <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="ri-phone-fill text-2xl text-green-600"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xl font-bold text-gray-900 mb-3">Contato</h4>
+                                            <p class="text-gray-700 mb-4">Ligue ou chame no WhatsApp: atendemos Santo André e todo o ABC.</p>
+                                            <!-- Botões de contato (sem mostrar os números; estilo em site.css, seção 12) -->
+                                            <div class="botoes-contato botoes-contato-compacto">
+                                                <a href="tel:+551149942568" class="botao-contato botao-contato-ligar" aria-label="Ligar para o Chaveiro Senador">
+                                                    <span class="botao-contato-icone"><i class="ri-phone-fill" aria-hidden="true"></i></span>
+                                                    <span class="botao-contato-texto"><strong>Ligar agora</strong><small>Telefone fixo da loja</small></span>
+                                                    <i class="ri-arrow-right-up-line botao-contato-seta" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="https://wa.me/5511999776208?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener noreferrer" class="botao-contato botao-contato-whatsapp" aria-label="Conversar pelo WhatsApp">
+                                                    <span class="botao-contato-icone"><i class="ri-whatsapp-fill" aria-hidden="true"></i></span>
+                                                    <span class="botao-contato-texto"><strong>Chamar no WhatsApp</strong><small>Resposta rápida pelo celular</small></span>
+                                                    <i class="ri-arrow-right-up-line botao-contato-seta" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-6">
+                                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="ri-time-fill text-2xl text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-gray-900 mb-3">
+                                                Horário de Funcionamento do Chaveiro em Santo André
+                                            </h4>
+                                            <div class="space-y-2 text-gray-700">
+                                                <p><strong>Segunda a Sexta:</strong> 8h às 22h</p>
+                                                <p><strong>Sábado:</strong> 8h às 16h</p>
+                                                <p><strong>Domingo:</strong> Atendimento emergencial</p>
+                                                <p class="text-sm text-gray-600 mt-3">
+                                                    Atendemos durante todo o horário de funcionamento para serviços de chaveiro residencial,
+                                                    automotivo e comercial em Santo André e região do ABC.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 lg:pl-8">
+                                <!-- Mapa do Google (endereço da loja). O link antigo tinha códigos de exemplo e não apontava para o endereço. -->
+                                <iframe
+                                    src="https://www.google.com/maps?q=Rua+Senador+Flaquer,+561+-+Centro,+Santo+Andr%C3%A9+-+SP,+09010-060&amp;output=embed"
+                                    width="100%"
+                                    height="600"
+                                    style="border: 0px"
+                                    allowfullscreen=""
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    title="Localização Chaveiro Senador"
+                                ></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     RODAPÉ
+                     ============================================
+                     Logo, links rápidos, endereço, botões discretos Ligar/WhatsApp
+                     e o link "Área Restrita" para o painel administrativo.
+                     ============================================ -->
+                <footer class="bg-gray-900 text-white py-8">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold mb-3">Chaveiro Senador</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                    Chaveiro em Santo André com 46 anos de experiência. Qualidade, Segurança e Eficiência em Serviços de
+                                    Chaveiro Residencial, Automotivo e Comercial. Atendemos toda a região do ABC incluindo São Bernardo do
+                                    Campo, Mauá, Diadema e São Caetano do Sul.
+                                </p>
+                                <div class="flex items-start gap-3">
+                                    <i class="ri-map-pin-fill text-blue-500 text-lg mt-1"></i>
+                                    <span class="text-gray-400 text-sm"
+                                        >Rua Senador Flaquer, 561 - Centro - Santo André - SP<br />CEP: 09010-060</span
+                                    >
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-3">Links Rápidos</h3>
+                                <ul class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                    <li>
+                                        <a href="chaveiro-em-santo-andre.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"
+                                            >Início</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="chaveiro-santo-andre.html"
+                                            class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"
+                                            >Quem Somos</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="chaveiro-abc.html"
+                                            class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"
+                                            >Nossos Serviços</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="chaveiro-sao-bernardo-do-campo.html"
+                                            class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"
+                                            >Contato</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="chaveiro-maua.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"
+                                            >FAQ</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="chaveiro-diadema.html" class="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm"
+                                            >Dicas</a
+                                        >
+                                    </li>
+                                    <!-- Acesso discreto ao painel administrativo (não indexado pelo Google) -->
+                                    <li>
+                                        <a
+                                            href="admin/index.html"
+                                            rel="nofollow"
+                                            class="text-gray-500 hover:text-white transition-colors cursor-pointer text-sm"
+                                            ><i class="ri-lock-2-line" aria-hidden="true"></i> Área Restrita</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-3">Contato</h3>
+                                <!-- Botões de contato: Ligar (azul) e WhatsApp (verde), sem expor os números na tela -->
+                                <div class="flex flex-wrap justify-center gap-3">
+                                    <a href="tel:+551149942568" class="rodape-botao rodape-botao-ligar" aria-label="Ligar para o Chaveiro Senador">
+                                        <i class="ri-phone-fill" aria-hidden="true"></i>Ligar agora
+                                    </a>
+                                    <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="rodape-botao rodape-botao-whatsapp" aria-label="Conversar pelo WhatsApp">
+                                        <i class="ri-whatsapp-fill" aria-hidden="true"></i>WhatsApp
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-800 pt-6">
+                            <div class="text-center">
+                                <p class="text-gray-400 text-sm">
+                                    Copyright © 2025 Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os
+                                    direitos reservados.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Botão flutuante do WhatsApp: acompanha a rolagem em todas as páginas (estilo em assets/css/site.css) -->
+        <a href="https://wa.me/5511999776208" target="_blank" rel="noopener noreferrer" class="whatsapp-flutuante" aria-label="Fale conosco pelo WhatsApp">
+            <i class="ri-whatsapp-fill" aria-hidden="true"></i><span>Fale conosco</span>
+        </a>
+
+        <!-- Comportamento da página (menu mobile, carrossel, formulário, FAQ): assets/js/site.js -->
+
+        <script src="assets/js/site.js"></script>
+    </body>
+</html>

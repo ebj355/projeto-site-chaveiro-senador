@@ -1,14 +1,13 @@
 {
   "name": "chaveiro-senador-site",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Site institucional do Chaveiro Senador - Otimizado para SEO local em Santo André e região do ABC",
   "scripts": {
-    "push": "powershell -ExecutionPolicy Bypass -File ./push-git.ps1",
-    "push:quick": "powershell -ExecutionPolicy Bypass -File ./push-git.ps1",
-    "pull": "powershell -ExecutionPolicy Bypass -File ./pull-git.ps1",
+    "test": "node testes/testes-unitarios.js",
+    "test:e2e": "python testes/e2e-admin.py",
+    "push": "powershell -ExecutionPolicy Bypass -File ./scripts/push-git.ps1",
+    "pull": "powershell -ExecutionPolicy Bypass -File ./scripts/pull-git.ps1",
     "status": "git status",
-    "add": "git add .",
-    "commit": "git commit -m",
     "log": "git log --oneline -10"
   },
   "keywords": [

@@ -1,0 +1,903 @@
+/**
+ * =====================================================================
+ * SITE.CSS - ESTILOS PRÓPRIOS DO SITE CHAVEIRO SENADOR
+ * =====================================================================
+ *
+ * O visual do site é feito quase todo com classes utilitárias do
+ * Tailwind CSS (carregado via CDN em cada página). Este arquivo guarda
+ * apenas o que o Tailwind não cobre:
+ *
+ *   1. Reset e variáveis de cor (tokens usados no site e no painel admin)
+ *   2. Base (body, html, foco acessível)
+ *   3. Header fixo (cabeçalho azul-escuro #2c3e50 de 64px)
+ *   4. Menus (<nav>) do header e do menu mobile
+ *   5. Rodapé
+ *   6. Carrossel de marcas/montadoras
+ *   7. Notificações (avisos do formulário de contato)
+ *   8. Carrossel de serviços (home) e cartões de serviço
+ *   9. Botão flutuante do WhatsApp
+ *  10. Acessibilidade: movimento reduzido
+ *  11. Fundo cinza claro (menos cansativo que o branco)
+ *  12. Botões de contato (rodapé e cartões), sem mostrar os números
+ *  13. Catálogo de serviços em grade, 4 por linha (chaveiro-abc.html)
+ *  14. Chaves codificadas: marcas, modelos e busca (chaveiro-abc.html)
+ *  15. Celular primeiro (mobile-first): ajustes para telas pequenas
+ *
+ * Limpeza (out/2026): o arquivo antigo tinha 683 regras, das quais só
+ * 28 eram aplicadas em alguma página. As demais (sliders antigos,
+ * formulários que não existem mais, animações sem uso) foram removidas.
+ * A versão anterior continua no histórico do Git.
+ * =====================================================================
+ */
+
+/* =====================================================================
+   1. RESET E VARIÁVEIS
+   ===================================================================== */
+
+/* Reset simples: zera margens e usa box-sizing previsível */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Paleta do site. Também é reutilizada pelo painel admin (admin/css/admin.css). */
+:root {
+    --primary-color: #2c3e50;     /* azul-escuro do header */
+    --primary-dark: #1a252f;
+    --primary-darker: #0f1419;
+    --secondary-color: #34495e;   /* azul-escuro secundário (hover do menu mobile) */
+    --accent-color: #25d366;      /* verde WhatsApp */
+    --accent-yellow: #f39c12;
+    --accent-blue: #3498db;
+    --dark-bg: #2c3e50;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --gradient-primary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    --gradient-secondary: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    --gradient-accent: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    --shadow-soft: 0 10px 30px rgba(44, 62, 80, 0.1);
+    --shadow-medium: 0 15px 35px rgba(0, 0, 0, 0.15);
+    --shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.2);
+    --border-radius: 20px;
+    --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Cantos um pouco menores em telas pequenas */
+@media (max-width: 768px) {
+    :root {
+        --border-radius: 15px;
+    }
+}
+
+/* =====================================================================
+   2. BASE
+   ===================================================================== */
+
+/* Rolagem suave ao clicar em links internos (#secao) */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden; /* evita rolagem lateral no celular */
+}
+
+/* Contorno visível ao navegar pelo teclado (acessibilidade) */
+a:focus,
+button:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* =====================================================================
+   3. HEADER FIXO
+   ---------------------------------------------------------------------
+   O header usa a classe .menu-header. As regras com !important garantem
+   altura fixa de 64px e fundo sólido, mesmo com as classes do Tailwind.
+   ===================================================================== */
+header.menu-header {
+    background: #2c3e50 !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 64px !important;
+    line-height: 64px !important;
+    overflow: hidden !important;
+}
+
+/* Conteúdo interno do header sempre centralizado na vertical */
+header.menu-header > div {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+header.menu-header .flex {
+    height: 100% !important;
+    align-items: center !important;
+}
+
+/* =====================================================================
+   4. MENUS (<nav>)
+   ---------------------------------------------------------------------
+   Aplica-se ao menu do header (desktop) e ao menu suspenso do celular.
+   O efeito "brilho" passa da esquerda para a direita no hover.
+   ===================================================================== */
+nav {
+    background: rgba(44, 62, 80, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+}
+
+nav a {
+    color: white;
+    margin: 0 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    padding: 12px 24px;
+    border-radius: 50px;
+    position: relative;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
+    overflow: hidden;
+}
+
+/* Faixa de brilho escondida à esquerda do link */
+nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+nav a:hover::before {
+    left: 100%;
+}
+
+nav a:hover {
+    color: var(--secondary-color);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Espaçamentos menores no tablet */
+@media (max-width: 768px) {
+    nav {
+        padding: 15px;
+    }
+    nav a {
+        margin: 0 15px;
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}
+
+/* Espaçamentos menores no celular */
+@media (max-width: 480px) {
+    nav {
+        padding: 10px;
+    }
+    nav a {
+        margin: 0 5px;
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+
+/* =====================================================================
+   5. RODAPÉ
+   ===================================================================== */
+footer {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* =====================================================================
+   6. CARROSSEL DE MARCAS (chaveiro-em-santo-andre.html e chaveiro-abc.html)
+   ---------------------------------------------------------------------
+   3 "páginas" de logos lado a lado (300% de largura). O JavaScript
+   (assets/js/site.js) desloca a faixa com translateX.
+   ===================================================================== */
+#brands-carousel-wrapper {
+    overflow: hidden !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+#brands-carousel {
+    display: flex !important;
+    width: 300% !important;
+    transition: transform 0.5s ease-in-out !important;
+    position: relative !important;
+}
+
+#brands-carousel > div {
+    width: 33.333% !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+}
+
+/* =====================================================================
+   7. NOTIFICAÇÕES (criadas pelo JavaScript após enviar o formulário)
+   ===================================================================== */
+.notification {
+    position: fixed;
+    top: 80px;          /* abaixo do header fixo */
+    right: 20px;
+    z-index: 10000;
+    max-width: min(400px, calc(100vw - 40px));
+    animation: notificacao-entrada 0.3s ease-out;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.notification-success { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; }
+.notification-error   { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; }
+.notification-info    { background: var(--gradient-primary); color: white; }
+
+.notification-message {
+    flex: 1;
+    font-weight: 500;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: 15px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+@keyframes notificacao-entrada {
+    from { transform: translateX(100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* =====================================================================
+   8. CARROSSEL DE SERVIÇOS (home) E CARTÕES DE SERVIÇO
+   ---------------------------------------------------------------------
+   Faixa horizontal com rolagem por "encaixe" (scroll-snap): no celular
+   arrasta com o dedo; no computador usa as setas. Cartões visíveis:
+   1 (celular), 2 (tablet), 3 (computador). JS: assets/js/site.js.
+   Os estilos .cartao-servico também valem para a grade do catálogo (seção 13).
+   ===================================================================== */
+.carrossel {
+    position: relative;
+    padding: 0 4px;
+}
+
+.carrossel-trilho {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 8px 4px 24px;
+    scrollbar-width: none;           /* esconde a barra de rolagem (Firefox) */
+}
+.carrossel-trilho::-webkit-scrollbar { display: none; } /* (Chrome/Safari) */
+.carrossel-trilho:focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; border-radius: 1rem; }
+
+/* Cartão: foto na frente + texto curto */
+.cartao-servico {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    border: 1px solid #e5e7eb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.cartao-servico:hover { transform: translateY(-4px); box-shadow: 0 18px 35px rgba(15, 23, 42, 0.14); }
+@media (min-width: 640px)  { .cartao-servico { flex-basis: calc((100% - 1.5rem) / 2); } }
+@media (min-width: 1024px) { .cartao-servico { flex-basis: calc((100% - 3rem) / 3); } }
+
+.cartao-servico-foto {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: #e5e7eb;
+    min-height: 0;
+    /* sem overflow:hidden para o ícone redondo poder "sair" da foto */
+}
+.cartao-servico-foto img {
+    position: absolute;          /* a foto preenche a moldura 4:3 sem esticá-la */
+    inset: 0;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.4s ease;
+}
+.cartao-servico:hover .cartao-servico-foto img { filter: brightness(1.08) saturate(1.1); }
+
+/* Ícone redondo azul sobre a foto */
+.cartao-servico-icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 1.5rem;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+.cartao-servico-foto .cartao-servico-icone { position: absolute; z-index: 2; left: 16px; bottom: -30px; border: 4px solid #fff; width: 60px; height: 60px; }
+
+.cartao-servico-corpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+    padding: 2.2rem 1.4rem 1.4rem;
+}
+.cartao-servico h4 { font-size: 1.25rem; font-weight: 700; color: #111827; line-height: 1.3; }
+.cartao-servico-resumo { color: #4b5563; font-size: 0.98rem; line-height: 1.55; }
+
+.servico-link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: #2563eb;
+}
+.servico-link:hover { text-decoration: underline; }
+
+/* "Ver detalhes" (catálogo chaveiro-abc.html): texto completo continua na página (SEO) */
+.servico-detalhes { margin-top: auto; font-size: 0.92rem; color: #374151; }
+.servico-detalhes summary { cursor: pointer; font-weight: 700; color: #2563eb; list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+.servico-detalhes summary::-webkit-details-marker { display: none; }
+.servico-detalhes summary::after { content: '+'; font-size: 1.1rem; }
+.servico-detalhes[open] summary::after { content: '−'; }
+.servico-detalhes p { margin-top: 0.6rem; line-height: 1.6; text-align: left; }
+
+/* Último cartão da home: "Ver todos os serviços" */
+.cartao-servico-todos {
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 2rem 1.6rem;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    border: none;
+}
+.cartao-servico-todos h4, .cartao-servico-todos p, .cartao-servico-todos .servico-link { color: #fff; }
+.cartao-servico-todos .cartao-servico-icone { background: rgba(255, 255, 255, 0.2); box-shadow: none; }
+.cartao-servico-todos .servico-link { margin-top: 0.4rem; } /* fica logo abaixo do texto, não colado no fim */
+
+/* Setas (somente a partir do tablet; no celular arrasta-se com o dedo) */
+.carrossel-seta {
+    display: none;
+    position: absolute;
+    top: 38%;
+    z-index: 5;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #1f2937;
+    font-size: 1.75rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s, opacity 0.2s;
+}
+.carrossel-seta:hover { transform: scale(1.08); }
+.carrossel-seta:disabled { opacity: 0.35; cursor: default; transform: none; }
+.carrossel-anterior { left: -8px; }
+.carrossel-proximo { right: -8px; }
+@media (min-width: 640px) { .carrossel-seta { display: inline-flex; } }
+@media (min-width: 1280px) { .carrossel-anterior { left: -24px; } .carrossel-proximo { right: -24px; } }
+
+/* Bolinhas de posição */
+.carrossel-pontos { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
+.carrossel-pontos button { width: 10px; height: 10px; border-radius: 9999px; background: #cbd5e1; transition: all 0.3s; }
+.carrossel-pontos button.ativo { width: 28px; background: #2563eb; }
+
+/* =====================================================================
+   9. BOTÃO FLUTUANTE DO WHATSAPP (todas as páginas)
+   ===================================================================== */
+.whatsapp-flutuante {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 70;
+    width: 60px;
+    height: 60px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #22c55e;
+    color: #fff;
+    font-size: 2rem;
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.45);
+    transition: transform 0.2s, background 0.2s;
+}
+.whatsapp-flutuante:hover { transform: scale(1.08); background: #16a34a; }
+/* Onda pulsando em volta (some com "movimento reduzido") */
+.whatsapp-flutuante::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: #22c55e;
+    z-index: -1;
+    animation: whatsapp-pulso 2.2s ease-out infinite;
+}
+@keyframes whatsapp-pulso {
+    0%   { transform: scale(1);   opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+/* Texto que aparece ao passar o mouse (computador) */
+.whatsapp-flutuante span {
+    position: absolute;
+    right: 72px;
+    white-space: nowrap;
+    background: #fff;
+    color: #111827;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+.whatsapp-flutuante:hover span, .whatsapp-flutuante:focus-visible span { opacity: 1; }
+
+/* =====================================================================
+   10. ACESSIBILIDADE: usuários que pedem menos movimento no sistema
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Cartão aberto pelo link "Saiba mais" da home: brilho azul por 2,5 s */
+.cartao-servico.destaque { box-shadow: 0 0 0 4px #2563eb, 0 18px 35px rgba(37, 99, 235, 0.25); }
+
+/* =====================================================================
+   11. FUNDO CINZA CLARO (menos cansativo que o branco puro)
+   ---------------------------------------------------------------------
+   As seções usam classes do Tailwind (bg-white, bg-gray-100, degradês).
+   Aqui elas passam para tons de cinza claro; cartões, formulários e
+   menus continuam brancos para manter o contraste e a leitura.
+   ===================================================================== */
+:root {
+    --fundo-pagina: #eef1f5;   /* fundo geral */
+    --fundo-secao: #f2f4f7;    /* seções que eram brancas */
+    --fundo-secao-alt: #e6eaf0; /* seções alternadas (eram cinza 100) */
+}
+
+body,
+.min-h-screen.bg-white {
+    background-color: var(--fundo-pagina) !important;
+}
+
+section.bg-white,
+section.bg-gray-50 {
+    background-color: var(--fundo-secao) !important;
+}
+
+section.bg-gray-100 {
+    background-color: var(--fundo-secao-alt) !important;
+}
+
+section.bg-gradient-to-b:not(.bg-cover) {
+    background-image: linear-gradient(to bottom, var(--fundo-secao), var(--fundo-secao-alt)) !important;
+}
+
+/* =====================================================================
+   12. BOTÕES DE CONTATO (rodapé e cartões), SEM MOSTRAR OS NÚMEROS
+   ---------------------------------------------------------------------
+   Rodapé: pílulas preenchidas (azul = Ligar, verde = WhatsApp) com o
+   ícone dentro de um círculo claro. Chamam atenção pela cor, sem
+   brilho ou animação exagerada; ao passar o mouse sobem levemente.
+   ===================================================================== */
+.rodape-botao {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 20px 6px 6px;
+    border-radius: 9999px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+/* Ícone em círculo claro */
+.rodape-botao i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 1.05rem;
+    transition: transform 0.2s ease;
+}
+.rodape-botao:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 10px 22px rgba(0, 0, 0, 0.32); }
+.rodape-botao:hover i { transform: rotate(-12deg); }
+.rodape-botao:focus-visible { outline: 2px solid #fbbf24; outline-offset: 3px; }
+.rodape-botao-ligar { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+.rodape-botao-whatsapp { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); }
+
+/* ---------------------------------------------------------------------
+   Botões de contato dos cartões (página de contato e seção
+   "Conveniência e Acessibilidade"): ícone em círculo, título, uma
+   linha de apoio e seta. Nenhum número aparece; o link já disca ou
+   abre a conversa. .botoes-contato-compacto = versão menor.
+   --------------------------------------------------------------------- */
+.botoes-contato { display: grid; gap: 0.85rem; }
+.botao-contato {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 18px 12px 12px;
+    border-radius: 1rem;
+    color: #fff;
+    text-align: left;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.botao-contato:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(15, 23, 42, 0.22); filter: brightness(1.05); }
+.botao-contato:focus-visible { outline: 3px solid #fbbf24; outline-offset: 3px; }
+.botao-contato-ligar { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
+.botao-contato-whatsapp { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); }
+
+.botao-contato-icone {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.2);
+    font-size: 1.5rem;
+    transition: transform 0.2s ease;
+}
+.botao-contato:hover .botao-contato-icone { transform: rotate(-10deg) scale(1.06); }
+.botao-contato-texto { display: flex; flex-direction: column; flex: 1; min-width: 0; line-height: 1.25; }
+.botao-contato-texto strong { font-size: 1.1rem; font-weight: 700; }
+.botao-contato-texto small { font-size: 0.85rem; opacity: 0.85; margin-top: 2px; }
+.botao-contato-seta { font-size: 1.3rem; opacity: 0.7; transition: transform 0.2s ease, opacity 0.2s ease; }
+.botao-contato:hover .botao-contato-seta { opacity: 1; transform: translate(2px, -2px); }
+
+/* Versão compacta (bloco "Contato" da seção de localização) */
+.botoes-contato-compacto { gap: 0.6rem; }
+.botoes-contato-compacto .botao-contato { padding: 8px 14px 8px 8px; box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12); }
+.botoes-contato-compacto .botao-contato-icone { width: 38px; height: 38px; font-size: 1.2rem; }
+.botoes-contato-compacto .botao-contato-texto strong { font-size: 0.98rem; }
+.botoes-contato-compacto .botao-contato-texto small { font-size: 0.78rem; }
+.botoes-contato-compacto { max-width: 360px; } /* empilhados: cabem bem na coluna estreita */
+
+/* =====================================================================
+   13. CATÁLOGO DE SERVIÇOS EM GRADE (chaveiro-abc.html)
+   ---------------------------------------------------------------------
+   1 coluna no celular, 2 a partir de 640px, 3 a partir de 768px e
+   4 por linha no computador (a partir de 1024px). O 16º cartão
+   (.cartao-servico-todos) chama para o WhatsApp e completa a grade.
+   ===================================================================== */
+.grade-servicos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+@media (min-width: 640px)  { .grade-servicos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 768px)  { .grade-servicos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+    .grade-servicos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+    /* cartões mais estreitos: texto e ícone um pouco menores */
+    .grade-servicos .cartao-servico h4 { font-size: 1.08rem; }
+    .grade-servicos .cartao-servico-resumo { font-size: 0.92rem; }
+    .grade-servicos .cartao-servico-corpo { padding: 2rem 1.1rem 1.2rem; }
+    .grade-servicos .cartao-servico-foto .cartao-servico-icone { width: 52px; height: 52px; bottom: -26px; font-size: 1.3rem; }
+}
+.grade-servicos .cartao-servico { scroll-margin-top: 90px; } /* não fica escondido sob o header fixo */
+
+/* =====================================================================
+   14. CHAVES CODIFICADAS: MARCAS E MODELOS (chaveiro-abc.html)
+   ---------------------------------------------------------------------
+   Cartões brancos por marca (logo, nome, quantidade e modelos em
+   etiquetas), 4 por linha no computador. A busca (.busca-modelos)
+   esconde as marcas sem resultado (.oculto) e destaca o modelo
+   encontrado (.achou). JS: módulo BuscaModelos em assets/js/site.js.
+   ===================================================================== */
+.marca-chave-chamada {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* Campo de busca */
+.busca-modelos { position: relative; max-width: 560px; margin: 0 auto 2.5rem; }
+.busca-modelos > i {
+    position: absolute;
+    left: 18px;
+    top: 15px;
+    color: #6b7280;
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+.busca-modelos input {
+    width: 100%;
+    padding: 13px 18px 13px 48px;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    background: #fff;
+    font-size: 1rem;
+    color: #111827;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.busca-modelos input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); }
+.busca-modelos-resultado { margin-top: 0.6rem; text-align: center; font-size: 0.85rem; color: #6b7280; }
+
+/* Grade: 1 / 2 / 3 / 4 por linha */
+.grade-marcas {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+@media (min-width: 560px)  { .grade-marcas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 768px)  { .grade-marcas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .grade-marcas { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Cartão da marca */
+.marca-chave {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.marca-chave:hover { transform: translateY(-3px); border-color: #bfdbfe; box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1); }
+.marca-chave.oculto { display: none; }
+
+.marca-chave-topo { display: flex; align-items: center; gap: 12px; padding-bottom: 0.9rem; border-bottom: 1px solid #f1f5f9; }
+.marca-chave-logo {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+}
+.marca-chave-logo img { width: 38px; height: 38px; object-fit: contain; border-radius: 0; }
+/* Marcas sem logo: sigla ou ícone em azul */
+.marca-chave-sigla { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; font-weight: 800; font-size: 1rem; }
+.marca-chave-sigla i { font-size: 1.5rem; }
+
+.marca-chave h3 { font-size: 1.15rem; font-weight: 700; color: #111827; line-height: 1.2; }
+.marca-chave-rotulo {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+.marca-chave-qtd { font-size: 0.8rem; color: #2563eb; font-weight: 600; margin-top: 2px; }
+
+/* Modelos em etiquetas */
+.marca-chave-modelos { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; }
+.marca-chave-modelos li {
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: background 0.2s, color 0.2s;
+}
+.marca-chave-modelos li.achou { background: #2563eb; color: #fff; }
+
+/* Último cartão: consultar outros modelos pelo WhatsApp */
+.marca-chave-cta {
+    justify-content: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    border: none;
+    color: #e0e7ff;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+.marca-chave-cta strong { color: #fff; font-size: 1.15rem; }
+.marca-chave-cta .marca-chave-logo { background: rgba(255, 255, 255, 0.18); border: none; color: #fff; font-size: 1.6rem; }
+.marca-chave-cta-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 0.3rem; color: #fff; font-weight: 700; }
+.marca-chave-cta:hover { box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35); }
+.marca-chave-cta:hover .marca-chave-cta-link { text-decoration: underline; }
+
+/* Nenhuma marca encontrada na busca */
+.marca-chave-vazio { grid-column: 1 / -1; text-align: center; color: #4b5563; padding: 1.5rem; }
+
+/* =====================================================================
+   15. CELULAR PRIMEIRO (MOBILE-FIRST)
+   ---------------------------------------------------------------------
+   As páginas usam classes do Tailwind já pensadas para o celular
+   (ex.: "text-[1.75rem] sm:text-4xl md:text-5xl", "py-14 md:py-24",
+   "text-left md:text-justify"): o tamanho sem prefixo é o do celular e
+   os prefixos sm/md/lg só AUMENTAM em telas maiores.
+   Aqui ficam os componentes que precisam de um layout próprio em
+   tela pequena. Pontos de quebra: 640px (sm), 768px (md), 1024px (lg).
+   ===================================================================== */
+
+/* Áreas de toque de pelo menos 44px (recomendação de acessibilidade) */
+.servico-detalhes summary { min-height: 44px; padding: 0.4rem 0; }
+.brand-indicator { position: relative; }
+.brand-indicator::after { content: ''; position: absolute; inset: -16px -8px; } /* aumenta a área clicável sem mudar o desenho */
+.carrossel-pontos button { position: relative; }
+.carrossel-pontos button::after { content: ''; position: absolute; inset: -16px -4px; }
+/* Logo do cabeçalho: área de toque mínima de 44x44 */
+header a[aria-label$="página inicial"] { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+/* Links rápidos do rodapé: alvo de toque maior no celular (o texto continua pequeno) */
+@media (max-width: 767px) {
+    footer ul.grid { row-gap: 0; }
+    footer ul.grid a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 6px; }
+}
+
+/* Imagens nunca passam da largura da tela */
+img, video, iframe { max-width: 100%; }
+
+/* Palavras muito longas quebram em vez de estourar a tela */
+h1, h2, h3, h4 { overflow-wrap: break-word; } /* sem hifenização: ela partia nomes como "Santo André" */
+
+/* Galeria: legenda sempre visível em telas de toque (lá não existe "passar o mouse") */
+@media (hover: none) {
+    #gallery .group > div.opacity-0 { opacity: 1; background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent 60%); }
+    #gallery .group .ri-zoom-in-line,
+    #gallery .group .ri-zoom-in-line + span { display: none; }
+}
+
+/* ---------------- até 639px: celular ---------------- */
+@media (max-width: 639px) {
+    /* Catálogo: cartão horizontal (foto à esquerda, texto à direita).
+       16 cartões ocupam ~1/3 da altura que ocupavam empilhados. */
+    .grade-servicos { gap: 0.85rem; }
+    .grade-servicos .cartao-servico { flex-direction: row; border-radius: 1rem; }
+    .grade-servicos .cartao-servico:hover { transform: none; }
+    .grade-servicos .cartao-servico-foto { flex: 0 0 34%; aspect-ratio: auto; min-height: 128px; }
+    .grade-servicos .cartao-servico-foto .cartao-servico-icone { left: auto; right: -14px; bottom: auto; top: 10px; width: 36px; height: 36px; font-size: 1rem; border-width: 3px; }
+    .grade-servicos .cartao-servico-corpo { padding: 0.85rem 0.95rem 0.75rem 1.4rem; gap: 0.3rem; min-width: 0; }
+    .grade-servicos .cartao-servico h4 { font-size: 1rem; }
+    .grade-servicos .cartao-servico-resumo { font-size: 0.85rem; line-height: 1.45; }
+    .grade-servicos .servico-detalhes { font-size: 0.85rem; }
+    .grade-servicos .cartao-servico-todos { flex-direction: column; padding: 1.25rem; }
+
+    /* Carrossel de serviços da home: cartão ocupa quase toda a largura */
+    .carrossel-trilho { gap: 0.9rem; }
+
+    /* Montadoras: 3 logos por linha, cartões menores */
+    #brands-carousel .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; margin-bottom: 1rem; }
+    #brands-carousel .grid > div { padding: 0.6rem 0.2rem; border-radius: 0.9rem; border-width: 1px; min-width: 0; }
+    #brands-carousel .grid > div:hover { transform: none; }
+    #brands-carousel .w-24.h-24 { width: 3.25rem; height: 3.25rem; margin-bottom: 0.35rem; }
+    /* nomes longos (Volkswagen, Mercedes-Benz) quebram a linha em vez de estourar o cartão */
+    #brands-carousel h4 { font-size: 0.7rem; line-height: 1.2; text-align: center; max-width: 100%; overflow-wrap: anywhere; }
+    #brands-carousel-prev, #brands-carousel-next { width: 2.5rem; height: 2.5rem; }
+
+    /* Parcerias: etiquetas de parceiros menores, duas por linha */
+    #partnerships .flex-wrap > .rounded-full { padding: 0.5rem 0.9rem; gap: 0.5rem; font-size: 0.9rem; }
+    #partnerships .flex-wrap > .rounded-full i { font-size: 1.15rem; }
+
+    /* Galeria em 2 colunas: legenda menor */
+    #gallery .group h4 { font-size: 0.85rem; margin: 0; }
+    #gallery .group .p-6 { padding: 0.6rem; }
+    #gallery .rounded-2xl { border-radius: 0.85rem; }
+
+    /* Chaves codificadas: marcas recolhidas; toque no nome para ver os modelos.
+       Só vale quando o JS ativou o recurso (.grade-marcas.recolhivel). */
+    .grade-marcas { gap: 0.75rem; }
+    .marca-chave { padding: 0.9rem 1rem; gap: 0.75rem; }
+    .grade-marcas.recolhivel .marca-chave-topo { cursor: pointer; padding-bottom: 0; border-bottom: none; -webkit-tap-highlight-color: transparent; }
+    .grade-marcas.recolhivel .marca-chave-topo::after {
+        content: "\ea4e";                       /* ri-arrow-down-s-line */
+        font-family: 'remixicon';
+        margin-left: auto;
+        font-size: 1.5rem;
+        color: #2563eb;
+        transition: transform 0.2s ease;
+    }
+    .grade-marcas.recolhivel .marca-chave.aberto .marca-chave-topo::after { transform: rotate(180deg); }
+    .grade-marcas.recolhivel .marca-chave:not(.aberto) .marca-chave-modelos { display: none; }
+    .grade-marcas.recolhivel .marca-chave.aberto .marca-chave-topo { padding-bottom: 0.75rem; border-bottom: 1px solid #f1f5f9; }
+    .marca-chave-logo { width: 44px; height: 44px; border-radius: 12px; }
+    .marca-chave-logo img { width: 32px; height: 32px; }
+    .marca-chave h3 { font-size: 1.05rem; }
+    .marca-chave-rotulo { font-size: 0.75rem; letter-spacing: 0.04em; }
+    .marca-chave-modelos li { font-size: 0.85rem; padding: 5px 11px; }
+    .busca-modelos { margin-bottom: 1.5rem; }
+
+    /* Botões de contato: ocupam a largura toda */
+    .botoes-contato-compacto { max-width: none; }
+
+    /* Rodapé: botões lado a lado e com a mesma largura */
+    footer .rodape-botao { flex: 1 1 0; justify-content: center; padding-right: 14px; font-size: 0.9rem; }
+    footer .flex.flex-wrap.justify-center.gap-3 { flex-wrap: nowrap; max-width: 340px; margin: 0 auto; }
+
+    /* Botão flutuante do WhatsApp um pouco menor para não cobrir o conteúdo */
+    .whatsapp-flutuante { right: 14px; bottom: 14px; }
+}
+
+/* ---------------- até 359px: celulares bem pequenos ---------------- */
+@media (max-width: 359px) {
+    .grade-servicos .cartao-servico-foto { flex-basis: 30%; }
+    #brands-carousel .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 2 logos por linha */
+    .botao-contato-texto small { display: none; }
+    footer .rodape-botao { font-size: 0.82rem; gap: 6px; }
+    footer .rodape-botao i { width: 28px; height: 28px; }
+}
