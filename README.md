@@ -1,6 +1,6 @@
 # Chaveiro Senador — Site Institucional + Painel Administrativo
 
-Site do **Chaveiro Senador** (Santo André/SP, 46 anos de mercado), com foco em SEO local, e um **painel administrativo** de uso interno com controle de estacionamento, usuários e auditoria.
+Site do **Chaveiro Senador** (Santo André/SP, 46 anos de mercado), com foco em SEO local, e um **painel administrativo** de uso interno com controle de estacionamento, usuários e auditoria, gravando num **banco de dados SQL** (ou no navegador, quando aberto sem servidor).
 
 - Site: [chaveirosenador.com.br](https://chaveirosenador.com.br)
 - Telefone: (11) 4994-2568 · WhatsApp: (11) 99977-6208
@@ -18,7 +18,7 @@ Site do **Chaveiro Senador** (Santo André/SP, 46 anos de mercado), com foco em 
 ├── chaveiro-sao-bernardo-do-campo.html Contato (formulário de orçamento + mapa)
 ├── chaveiro-maua.html                  FAQ (sanfona)
 ├── chaveiro-diadema.html               Dicas (sanfona)
-├── package.json                        Atalhos: npm test / npm run test:e2e
+├── package.json                        Atalhos: npm run servidor / npm test / npm run test:e2e...
 │
 ├── assets/
 │   ├── css/site.css         Estilos próprios do site, em 15 seções numeradas (o resto é Tailwind)
@@ -32,9 +32,12 @@ Site do **Chaveiro Senador** (Santo André/SP, 46 anos de mercado), com foco em 
 │       ├── nucleo/                       Regras e segurança (sem tela)
 │       │   ├── seguranca.js              SHA-256, PBKDF2, comparação em tempo constante, escape, CSV seguro
 │       │   ├── regras-estacionamento.js  Cálculo do valor, placa (antiga e Mercosul), formatação
-│       │   ├── armazenamento.js          Leitura/gravação no localStorage e configuração padrão
+│       │   ├── permissoes.js             O que cada perfil pode fazer (usado também pelo servidor)
+│       │   ├── armazenamento.js          Escolhe o modo (servidor/local) e as leituras das telas
 │       │   ├── auditoria.js              Registro de auditoria encadeado por hash + verificação
-│       │   └── sessao.js                 Login, bloqueio progressivo, sessão, perfis e permissões
+│       │   ├── sessao.js                 Login, bloqueio progressivo, sessão, perfis e permissões
+│       │   ├── repositorio-servidor.js   Operações pela API do banco de dados (modo servidor)
+│       │   └── repositorio-local.js      Mesmas operações no localStorage (modo local)
 │       ├── ui.js                         Avisos, modais, datas, gráficos, exportação
 │       ├── telas/                        Uma tela por arquivo
 │       │   ├── acesso.js                 Login e troca obrigatória de senha
@@ -47,16 +50,30 @@ Site do **Chaveiro Senador** (Santo André/SP, 46 anos de mercado), com foco em 
 │       │   └── configuracoes.js          Preços, vagas, backup e restauração
 │       └── app.js                        Navegação, atalhos, aviso de sessão, inicialização
 │
+├── servidor/                SERVIDOR + BANCO DE DADOS (Node.js 22+, sem dependências)
+│   ├── servidor.js          Liga o site, o painel e a API (npm run servidor)
+│   ├── banco/001-esquema-inicial.sql   Tabelas, regras, gatilhos e visões do SQLite
+│   ├── lib/banco.js         Abre o banco, aplica migrações, cópias de segurança
+│   ├── lib/repositorio.js   Todas as operações no banco (validação + regras + auditoria)
+│   ├── lib/auditoria.js     Auditoria no banco (mesma cadeia de hashes do painel)
+│   ├── lib/http.js          Cookies, JSON, cabeçalhos de segurança, arquivos públicos
+│   ├── importar-backup.js   Leva os dados do navegador para o banco (npm run banco:importar)
+│   ├── copiar-banco.js      Cópia de segurança na hora (npm run banco:copia)
+│   ├── consultas-uteis.sql  Perguntas prontas ao banco (faturamento, clientes, exclusões...)
+│   └── dados/               O banco (estacionamento.db) e as cópias — fora do Git
+│
 ├── imagens/                 Imagens do site (nomes otimizados para SEO, sem espaços)
-├── docs/                    SEGURANCA.md e listas de palavras-chave (SEO)
-├── testes/                  Testes automáticos (unitários + navegador)
+├── docs/                    BANCO-DE-DADOS.md, ROTEIRO-DE-TESTES.md, SEGURANCA.md e listas de SEO
+├── testes/                  Testes automáticos (unitários, banco/API e navegador)
 └── scripts/                 push-git.ps1 / pull-git.ps1 (PowerShell)
 ```
 
 ## Como abrir
 
 - **Site:** abra `index.html` (ou `chaveiro-em-santo-andre.html`) no navegador.
-- **Painel:** abra `admin/index.html` (ou clique em **Área Restrita** no rodapé de qualquer página).
+- **Painel com banco de dados (recomendado):** na pasta do projeto rode `npm run servidor` e abra `http://localhost:8080/admin/`. Celulares na mesma rede usam o endereço "Na rede" mostrado no terminal. Precisa do [Node.js](https://nodejs.org) 22 LTS (22.13+) ou 24 LTS. Detalhes em [docs/BANCO-DE-DADOS.md](docs/BANCO-DE-DADOS.md).
+- **Painel sem servidor:** abra `admin/index.html` direto (ou clique em **Área Restrita** no rodapé de qualquer página). Os dados ficam só naquele navegador.
+  - O selo no rodapé do menu mostra onde os dados estão: **"Dados no banco de dados (servidor)"** ou **"Dados só neste navegador"**.
   - Login padrão: usuário **admin**, senha **admin** (criado automaticamente na primeira abertura).
   - Enquanto a senha padrão estiver em uso, o painel mostra um aviso amarelo com o botão **Trocar senha**. Troque logo no primeiro uso.
   - Depois, em **Usuários**, cadastre os funcionários com perfil **Operador**.
@@ -81,7 +98,19 @@ Atalhos de teclado: **N** nova entrada · **/** buscar · **Esc** fechar. A sess
 
 **Segurança e auditoria:** veja [docs/SEGURANCA.md](docs/SEGURANCA.md).
 
-> Os dados do painel ficam no navegador do computador do estacionamento (não há servidor). Para usar em vários computadores ou ter segurança forte, o próximo passo é um back-end — detalhes em `docs/SEGURANCA.md`.
+## Banco de dados
+
+Com `npm run servidor`, o painel grava num banco **SQLite** (`servidor/dados/estacionamento.db`): pátio, histórico, usuários, configurações, sessões e auditoria. Todos os computadores e celulares veem o mesmo pátio (atualização sozinha a cada 15 s), o valor da saída é recalculado no servidor, as permissões são conferidas no servidor e a auditoria fica numa tabela que o próprio banco impede de alterar ou apagar. Cópia automática do banco ao ligar e a cada 24 h.
+
+Já usava o painel no navegador? Baixe o backup em Configurações e rode `npm run banco:importar -- arquivo.json` antes de ligar o servidor pela primeira vez.
+
+| Documento | Conteúdo |
+| --- | --- |
+| [docs/BANCO-DE-DADOS.md](docs/BANCO-DE-DADOS.md) | Como ligar, tabelas, regras do banco, visões, API, segurança, cópias e próximos passos |
+| [docs/ROTEIRO-DE-TESTES.md](docs/ROTEIRO-DE-TESTES.md) | Testes automáticos e roteiro manual de 72 passos para conferir se está tudo funcionando |
+| [servidor/consultas-uteis.sql](servidor/consultas-uteis.sql) | Consultas prontas: faturamento, clientes frequentes, exclusões, logins com erro |
+
+Sem o servidor (arquivo aberto direto, GitHub Pages), o painel continua funcionando no **modo local**, com os dados no navegador.
 
 ## Celular primeiro (mobile-first)
 
@@ -114,7 +143,10 @@ Como achar as coisas:
 | Quero mudar... | Onde |
 | --- | --- |
 | Preço do estacionamento (padrão) | `admin/js/nucleo/regras-estacionamento.js` → `CONFIG_PADRAO` (ou pela tela Configurações) |
-| O que cada perfil pode fazer | `admin/js/nucleo/sessao.js` → `PERMISSOES` |
+| O que cada perfil pode fazer | `admin/js/nucleo/permissoes.js` → `PERMISSOES` (vale para o painel e o servidor) |
+| Tabelas e regras do banco | `servidor/banco/` (crie `002-....sql` para mudanças; o servidor aplica sozinho) |
+| O que o servidor faz em cada ação | `servidor/lib/repositorio.js` |
+| Porta, arquivo do banco, HTTPS | variáveis `PORTA`, `BANCO`, `COOKIE_SEGURO`... (ver `servidor/servidor.js`) |
 | Regras de senha | `admin/js/nucleo/seguranca.js` → `validarSenhaForte` |
 | Tentativas e tempos de bloqueio | `admin/js/nucleo/sessao.js` → `MAX_TENTATIVAS`, `BLOQUEIOS_MIN` |
 | Ações registradas na auditoria | `admin/js/nucleo/auditoria.js` → `ACOES` |
@@ -126,14 +158,17 @@ Como achar as coisas:
 ## Testes
 
 ```bash
-node testes/testes-unitarios.js        # regras, segurança e auditoria (40 testes, sem dependências)
-python testes/e2e-admin.py             # painel no navegador, inclusive no celular (68 verificações; requer Playwright)
+npm test                               # regras, segurança e auditoria (40) + banco de dados e API (96), sem dependências
+python testes/e2e-admin.py             # painel no navegador, modo local, inclusive no celular (68 verificações; requer Playwright)
+python testes/e2e-servidor.py          # painel + servidor + banco, com dois aparelhos ao mesmo tempo (33 verificações)
 python testes/e2e-site.py              # site público em 320/360 px e 1280 px (189 verificações)
 ```
 
+Roteiro completo (automático + manual): [docs/ROTEIRO-DE-TESTES.md](docs/ROTEIRO-DE-TESTES.md).
+
 ## Tecnologias
 
-HTML5 · Tailwind CSS (CDN) · JavaScript puro · RemixIcon · Google Fonts (Inter) · Schema.org (LocalBusiness, FAQPage).
+HTML5 · Tailwind CSS (CDN) · JavaScript puro · RemixIcon · Google Fonts (Inter) · Schema.org (LocalBusiness, FAQPage) · Node.js 22+ com SQLite embutido (`node:sqlite`) no servidor.
 
 ## SEO
 
@@ -146,9 +181,12 @@ HTML5 · Tailwind CSS (CDN) · JavaScript puro · RemixIcon · Google Fonts (Int
 
 ## Publicação
 
-Qualquer hospedagem estática (Netlify, Vercel, GitHub Pages, FTP). Envie a pasta inteira mantendo a estrutura.
+- **Só o site:** qualquer hospedagem estática (Netlify, Vercel, GitHub Pages, FTP). Envie a pasta inteira mantendo a estrutura (o painel funciona no modo local).
+- **Site + painel com banco de dados:** um servidor com Node.js 22+ (VPS ou serviço com Node), rodando `npm run servidor` atrás de HTTPS, com `COOKIE_SEGURO=1` e `CONFIAR_PROXY=1`. Nunca envie a pasta `servidor/dados/` para hospedagem estática.
 
 ## Novidades de out/2026
+
+- **Banco de dados SQL** para o módulo de estacionamento: servidor Node.js sem dependências, SQLite com regras, gatilhos e visões, API com sessão segura por cookie, auditoria imutável no banco, sincronização entre aparelhos, importação dos dados do navegador, cópias automáticas e 129 novos testes (96 de banco/API + 33 no navegador). Veja [docs/BANCO-DE-DADOS.md](docs/BANCO-DE-DADOS.md)
 
 - Seção de serviços da home virou carrossel (foto na frente, resumo e "Saiba mais"); "Saiba mais" abre e destaca o mesmo serviço no catálogo `chaveiro-abc.html`, que mostra os 15 serviços em grade (texto completo em "Ver detalhes")
 - Fotos dos serviços escolhidas pelo conteúdo real da imagem (antes, por exemplo, "Reparo de Ignição" mostrava uma fechadura digital)

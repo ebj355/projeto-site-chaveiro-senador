@@ -46,6 +46,11 @@
         setTimeout(function () { el.remove(); }, 4200);
     }
 
+    /** Mostra o erro de uma operação que falhou (ex.: servidor recusou, sem conexão). */
+    function erroOperacao(erro) {
+        toast((erro && erro.message) || 'Não foi possível concluir a operação.', 'erro');
+    }
+
     /* ---------------- erros de formulário ---------------- */
 
     function erroCampo(id, msg) {
@@ -266,6 +271,7 @@
         $: $,
         esc: esc,
         toast: toast,
+        erroOperacao: erroOperacao,
         erroCampo: erroCampo,
         erroForm: erroForm,
         abrirModal: abrirModal,

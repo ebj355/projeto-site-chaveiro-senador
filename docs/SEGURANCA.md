@@ -2,7 +2,7 @@
 
 Este documento lista **todas** as medidas de segurança aplicadas no código do painel (`admin/`) e no site público, onde cada uma está no código, como testar, e o que ainda **não** é protegido.
 
-> **Resumo honesto:** o painel roda 100% no navegador, sem servidor. Ele impede que um funcionário sem senha use o sistema, não guarda senhas legíveis, registra quem fez o quê e detecta adulteração da auditoria. Ele **não** impede que alguém com acesso ao computador e conhecimento técnico (DevTools) leia ou apague os dados do navegador. Para isso é preciso um back-end (seção 6).
+> **Resumo honesto:** o painel funciona de dois jeitos. **Sem servidor** (modo local) ele roda 100% no navegador: impede que um funcionário sem senha use o sistema, não guarda senhas legíveis, registra quem fez o quê e detecta adulteração da auditoria, mas **não** impede que alguém com acesso ao computador e conhecimento técnico (DevTools) leia ou apague os dados do navegador. **Com o servidor** (`npm run servidor`) os dados ficam num banco SQL, e login, permissões, cálculo dos valores e auditoria passam a ser aplicados pelo servidor (seção 6).
 
 ---
 
@@ -77,17 +77,36 @@ hash(n) = SHA-256( nº, data, usuário, ação, descrição, detalhes, hash(n-1)
 | Indexação | `noindex, nofollow, noarchive` no painel; link do rodapé com `rel="nofollow"`. | `admin/index.html`, rodapés |
 | Entradas inválidas | Placa (antiga/Mercosul), hora no futuro, nome curto, valores de preço fora de 0–999, tolerância 0–59, limites de tamanho (`maxlength`). | `telas/patio.js`, `telas/configuracoes.js` |
 
-## 6. O que NÃO está protegido (e como resolver)
+## 6. Modo servidor (banco de dados)
+
+Com `npm run servidor`, as regras acima continuam valendo, mas quem as aplica é o **servidor**, e os dados ficam no banco SQLite, fora do alcance do navegador. Detalhes em [BANCO-DE-DADOS.md](BANCO-DE-DADOS.md).
+
+| Proteção | Como funciona no servidor |
+| --- | --- |
+| Senhas | Mesmo PBKDF2 (120.000 iterações). O hash nunca vai para as telas (`/api/estado`); só aparece no backup completo, que existe para restauração e só o Administrador baixa. |
+| Sessão | Token aleatório de 256 bits em cookie **HttpOnly + SameSite=Strict + Path=/api** (o JavaScript não lê o token). O banco guarda só o SHA-256 do token. Expira com 30 min sem uso ou 8 h. Desativar um usuário, removê-lo ou trocar a senha derruba as sessões abertas dele. |
+| CSRF | Alterações exigem o cabeçalho `X-Painel: 1` e a mesma origem (`Origin`). Outro site não consegue enviar. |
+| Permissões | Conferidas **no servidor** em cada rota (`admin/js/nucleo/permissoes.js`). Tentativa negada vira `ACESSO_NEGADO` na auditoria. O operador nem recebe usuários, auditoria ou histórico antigo. |
+| Força bruta | Bloqueio progressivo por login (tabela `bloqueios_login`) + no máximo 30 tentativas de login por IP a cada 10 min. |
+| Valores | O servidor **recalcula** minutos e valor na saída com a tabela de preços do banco; o navegador não define o preço. |
+| Injeção de SQL | Todas as consultas usam parâmetros; nenhum texto digitado entra no SQL. |
+| Auditoria | Gravada pelo servidor na mesma transação da ação. Gatilhos do banco impedem `UPDATE` e `DELETE`. O painel só consegue registrar `EXPORTACAO` e `ACESSO_NEGADO`. |
+| Integridade do banco | `CHECK`, índice único (uma placa por vez no pátio) e gatilhos que impedem mudar uma saída já paga. |
+| Arquivos | Só `admin/`, `assets/`, `imagens/` e as páginas da raiz são servidos; o banco, o código do servidor, `.git` e os testes respondem 404. |
+| Cabeçalhos | `X-Frame-Options: DENY`, `frame-ancestors 'none'`, `nosniff`, `X-Robots-Tag: noindex` no painel; `Cache-Control: no-store` na API. |
+| Cópias | Cópia automática do banco ao ligar e a cada 24 h (30 mais recentes) + `npm run banco:copia`. |
+
+## 7. O que ainda NÃO está protegido (e como resolver)
 
 | Limitação | Por quê | Solução recomendada |
 | --- | --- | --- |
-| Quem abre o DevTools pode ler/apagar o `localStorage` | Não há servidor; os dados ficam no navegador | Back-end (Node.js + PostgreSQL/SQLite) com os dados no servidor |
-| A cadeia da auditoria pode ser **recalculada** por alguém técnico | O hash não usa uma chave secreta | No servidor: registros só de inclusão (append-only) e HMAC com chave secreta, ou envio para um serviço externo de logs |
-| Dados não são compartilhados entre computadores | Cada navegador tem seu próprio armazenamento | Back-end com API |
-| Sem backup automático | Limpar os dados do navegador apaga tudo | Em **Configurações → Backup** baixe o arquivo .json toda semana (contém clientes e hashes de senha: guarde em local seguro). A restauração pede confirmação e é registrada como ação crítica na auditoria. |
-| Cabeçalhos de segurança completos | `X-Frame-Options`, `HSTS` e CSP `frame-ancestors` só funcionam enviados pelo servidor | Configurar na hospedagem (ver abaixo) |
+| **Modo local:** quem abre o DevTools pode ler/apagar o `localStorage` | Sem servidor, os dados ficam no navegador | Usar o modo servidor (`npm run servidor`) |
+| **Modo local:** dados não são compartilhados entre computadores e somem ao limpar o navegador | Cada navegador tem seu próprio armazenamento | Modo servidor; no modo local, backup semanal em **Configurações → Backup** |
+| Quem tiver acesso ao **arquivo do banco** e conhecimento técnico pode desligar os gatilhos e recalcular a cadeia | O hash da auditoria não usa chave secreta | Proteger o computador/servidor (senha do Windows, disco criptografado); no futuro, HMAC com chave secreta ou envio da auditoria para um serviço externo de logs |
+| Em rede local o tráfego é HTTP | O servidor não tem certificado próprio | Para acesso pela internet: HTTPS na frente (Caddy/nginx) com `COOKIE_SEGURO=1` e `CONFIAR_PROXY=1` |
+| Backup `.json` contém clientes e hashes de senha | É uma cópia completa | Guardar em local seguro; não enviar por WhatsApp/e-mail |
 
-**Ao publicar em hospedagem**, configure estes cabeçalhos para a pasta `/admin/`:
+**Ao publicar só os arquivos estáticos em hospedagem** (sem o servidor Node), configure estes cabeçalhos para a pasta `/admin/`:
 
 ```
 Content-Security-Policy: frame-ancestors 'none'
@@ -100,17 +119,23 @@ X-Robots-Tag: noindex, nofollow
 
 E use **sempre HTTPS**.
 
-## 7. Como testar
+## 8. Como testar
 
 ```bash
 node testes/testes-unitarios.js   # 40 testes: PBKDF2 conferido com o Node, política de senha,
                                   # escape, CSV, cadeia de auditoria (alterar/remover/trocar autor)
-python testes/e2e-admin.py        # 65 verificações no navegador: bloqueio após 5 erros,
+node testes/testes-banco.js       # 96 testes: restrições e gatilhos do banco, bloqueio, sessão,
+                                  # CSRF, cookie, 403 do operador, arquivos protegidos, auditoria
+                                  # imutável, adulteração do arquivo do banco detectada
+python testes/e2e-admin.py        # 68 verificações no navegador (modo local): bloqueio após 5 erros,
                                   # operador sem acesso a telas de admin, #usuarios pelo endereço
                                   # bloqueado e auditado, XSS não executa, adulteração detectada,
                                   # sessão vencida, nenhuma violação de CSP
+python testes/e2e-servidor.py     # 33 verificações no navegador com o servidor e o banco
 ```
 
-## 8. Comparação com o site de estética
+Roteiro manual de segurança: blocos B6, B7 e B8 de [ROTEIRO-DE-TESTES.md](ROTEIRO-DE-TESTES.md).
+
+## 9. Comparação com o site de estética
 
 O painel admin do site de estética (`Documentos\GitHub\site-estetica`) não pôde ser lido nesta sessão: a versão publicada no GitHub tem só a página pública, e o acesso à pasta local não foi liberado. As medidas acima foram implementadas segundo boas práticas (OWASP). Quando os arquivos do admin da estética forem disponibilizados, esta seção será completada com a comparação item a item.

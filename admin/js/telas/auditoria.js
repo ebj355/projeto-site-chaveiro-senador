@@ -152,11 +152,12 @@
             $('btn-aud-csv').addEventListener('click', exportarCSV);
             $('btn-aud-verificar').addEventListener('click', function () {
                 if (!A.Sessao.exigir('auditoria.ver')) return;
-                var res = A.Auditoria.verificar();
-                A.Auditoria.registrar('AUDITORIA_VERIFICADA', { resultado: res.ok ? 'ok' : 'falha', registros: res.total });
-                renderizar();
-                mostrarIntegridade(A.Auditoria.verificar(), true);
-                UI.toast(res.ok ? 'Integridade confirmada.' : 'Foram encontradas alterações na auditoria!', res.ok ? 'sucesso' : 'erro');
+                // No modo servidor a verificação percorre TODA a tabela do banco
+                A.Repo.verificarAuditoria().then(function (res) {
+                    renderizar();
+                    mostrarIntegridade(A.Dados.emServidor() ? res : A.Auditoria.verificar(), true);
+                    UI.toast(res.ok ? 'Integridade confirmada.' : 'Foram encontradas alterações na auditoria!', res.ok ? 'sucesso' : 'erro');
+                }).catch(UI.erroOperacao);
             });
         }
     };

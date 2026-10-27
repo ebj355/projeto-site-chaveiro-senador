@@ -168,6 +168,8 @@
                 </nav>
 
                 <div class="menu-rodape">
+                    <!-- Onde os dados estão sendo gravados (preenchido por app.js) -->
+                    <p id="modo-dados" class="modo-dados" role="status"></p>
                     <button id="btn-conta" class="menu-usuario" title="Minha conta">
                         <span id="usuario-iniciais" class="avatar">A</span>
                         <span class="min-w-0 text-left">
@@ -574,7 +576,7 @@
 
                                 <div class="cartao">
                                     <div class="cartao-cabeca"><h3><i class="ri-database-2-line"></i> Backup dos dados</h3></div>
-                                    <p class="text-sm text-slate-600 mb-4">
+                                    <p id="backup-texto" class="text-sm text-slate-600 mb-4">
                                         Os dados ficam só neste navegador. Baixe um backup toda semana e guarde em local seguro (pen drive, nuvem).
                                         O arquivo contém dados de clientes e os hashes das senhas: não compartilhe.
                                     </p>
@@ -727,9 +729,12 @@
 
         <!-- Scripts (a ordem importa: núcleo → interface → telas → app) -->
         <script src="js/nucleo/regras-estacionamento.js"></script>
+        <script src="js/nucleo/permissoes.js"></script>
         <script src="js/nucleo/armazenamento.js"></script>
         <script src="js/nucleo/auditoria.js"></script>
         <script src="js/nucleo/sessao.js"></script>
+        <script src="js/nucleo/repositorio-local.js"></script>
+        <script src="js/nucleo/repositorio-servidor.js"></script>
         <script src="js/ui.js"></script>
         <script src="js/telas/acesso.js"></script>
         <script src="js/telas/painel.js"></script>

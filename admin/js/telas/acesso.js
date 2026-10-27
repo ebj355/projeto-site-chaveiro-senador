@@ -31,19 +31,13 @@
         if (b) b.disabled = sim;
     }
 
-    /** Troca a senha do usuário logado (usada no modal e na troca obrigatória). */
-    function gravarNovaSenha(usuario, nova, acao) {
-        return A.Seguranca.hashSenha(nova).then(function (h) {
-            var lista = A.Dados.usuarios();
-            var u = lista.find(function (x) { return x.id === usuario.id; });
-            u.senha = h;
-            delete u.hash; delete u.sal;
-            u.trocarSenha = false;
-            u.senhaPadrao = false;
-            u.senhaAlteradaEm = new Date().toISOString();
-            A.Dados.salvar(A.Dados.CHAVES.usuarios, lista);
-            A.Auditoria.registrar(acao || 'SENHA_ALTERADA', { alvo: u.login });
-        });
+    /**
+     * Troca a senha do usuário logado. atual = null na troca obrigatória
+     * (logo após o login com senha provisória); no modal "Minha conta" a
+     * senha atual é conferida (no navegador ou no servidor, conforme o modo).
+     */
+    function gravarNovaSenha(atual, nova) {
+        return A.Repo.trocarMinhaSenha(atual, nova);
     }
 
     var Acesso = {
@@ -64,7 +58,7 @@
                 var senha = $('login-senha').value;
                 if (!login.trim() || !senha) { UI.erroForm('login-erro', 'Informe usuário e senha.'); return; }
                 ocupado(form, true);
-                A.Sessao.entrar(login, senha).then(function (r) {
+                A.App.pronto.then(function () { return A.Sessao.entrar(login, senha); }).then(function (r) {
                     ocupado(form, false);
                     $('login-senha').value = '';
                     if (!r.ok) { UI.erroForm('login-erro', r.msg); $('login-senha').focus(); return; }
@@ -88,12 +82,12 @@
                 UI.erroForm('troca-erro', erro);
                 if (erro) return;
                 ocupado(form, true);
-                gravarNovaSenha(u, nova).then(function () {
+                gravarNovaSenha(null, nova).then(function () {
                     ocupado(form, false);
                     form.reset();
                     UI.toast('Senha alterada. Bem-vindo(a)!');
                     A.App.atualizarEstado('painel');
-                });
+                }).catch(function (erro) { ocupado(form, false); UI.erroForm('troca-erro', erro.message); });
             });
 
             /* ---- Minha conta (modal) ---- */
@@ -121,15 +115,12 @@
                 UI.erroForm('conta-erro', erro);
                 if (erro) return;
                 ocupado(form, true);
-                A.Seguranca.verificarSenha(atual, u).then(function (ok) {
-                    if (!ok) { ocupado(form, false); UI.erroForm('conta-erro', 'Senha atual incorreta.'); return null; }
-                    return gravarNovaSenha(u, nova).then(function () {
-                        ocupado(form, false);
-                        UI.fecharModais();
-                        A.App.atualizarEstado();
-                        UI.toast('Senha alterada.');
-                    });
-                });
+                gravarNovaSenha(atual, nova).then(function () {
+                    ocupado(form, false);
+                    UI.fecharModais();
+                    A.App.atualizarEstado();
+                    UI.toast('Senha alterada.');
+                }).catch(function (erro) { ocupado(form, false); UI.erroForm('conta-erro', erro.message); });
             });
 
             /* ---- Botões "mostrar senha" ---- */

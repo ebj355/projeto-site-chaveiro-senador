@@ -58,17 +58,13 @@
         UI.erroForm('usu-erro', erro);
         if (erro) return;
         form.querySelector('button[type=submit]').disabled = true;
-        A.Sessao.criarUsuario(nome, login, senha, perfil, $('usu-trocar').checked).then(function (u) {
-            var lista = A.Dados.usuarios();
-            lista.push(u);
-            A.Dados.salvar(A.Dados.CHAVES.usuarios, lista);
-            A.Auditoria.registrar('USUARIO_CRIADO', { alvo: u.login, perfil: u.perfil });
+        A.Repo.criarUsuario({ nome: nome, login: login, senha: senha, perfil: perfil, trocarSenha: $('usu-trocar').checked }).then(function () {
             form.reset();
             $('usu-trocar').checked = true;
-            form.querySelector('button[type=submit]').disabled = false;
             UI.toast('Usuário cadastrado.');
             renderizar();
-        });
+        }).catch(function (erro) { UI.erroForm('usu-erro', erro.message); })
+            .then(function () { form.querySelector('button[type=submit]').disabled = false; });
     }
 
     /** Desativa ou reativa um usuário (não apaga o histórico dele). */
@@ -80,11 +76,10 @@
         if (!alvo || alvo.id === eu.id) return;
         var desativar = alvo.ativo !== false;
         if (desativar && alvo.perfil === 'admin' && adminsAtivos(lista) <= 1) { UI.toast('É preciso manter ao menos um Administrador ativo.', 'erro'); return; }
-        alvo.ativo = !desativar;
-        A.Dados.salvar(A.Dados.CHAVES.usuarios, lista);
-        A.Auditoria.registrar(desativar ? 'USUARIO_DESATIVADO' : 'USUARIO_ATIVADO', { alvo: alvo.login });
-        UI.toast(desativar ? 'Usuário desativado: ele não consegue mais entrar.' : 'Usuário reativado.', 'info');
-        renderizar();
+        A.Repo.alterarAtivo(id, !desativar).then(function () {
+            UI.toast(desativar ? 'Usuário desativado: ele não consegue mais entrar.' : 'Usuário reativado.', 'info');
+            renderizar();
+        }).catch(UI.erroOperacao);
     }
 
     /** Remove um usuário (com confirmação; nunca a si mesmo nem o último admin). */
@@ -98,10 +93,10 @@
         if (alvo.perfil === 'admin' && alvo.ativo !== false && adminsAtivos(lista) <= 1) { UI.toast('É preciso manter ao menos um Administrador ativo.', 'erro'); return; }
         UI.confirmar('Remover usuário?', alvo.nome + ' (@' + alvo.login + ') perderá o acesso ao painel. Os registros de auditoria dele continuam guardados.', function () {
             if (!A.Sessao.exigir('usuarios.gerenciar')) return;
-            A.Dados.salvar(A.Dados.CHAVES.usuarios, A.Dados.usuarios().filter(function (u) { return u.id !== id; }));
-            A.Auditoria.registrar('USUARIO_REMOVIDO', { alvo: alvo.login, perfil: alvo.perfil });
-            UI.toast('Usuário removido.', 'info');
-            renderizar();
+            A.Repo.removerUsuario(id).then(function () {
+                UI.toast('Usuário removido.', 'info');
+                renderizar();
+            }).catch(UI.erroOperacao);
         }, { rotulo: 'Remover' });
     }
 
@@ -119,19 +114,11 @@
             var senha = $('nova-senha').value;
             var erro = A.Seguranca.validarSenhaForte(senha, alvo.login);
             if (erro) { UI.erroCampo('nova-senha', erro); return false; }
-            return A.Seguranca.hashSenha(senha).then(function (h) {
-                var lista = A.Dados.usuarios();
-                var u = lista.find(function (x) { return x.id === id; });
-                u.senha = h;
-                delete u.hash; delete u.sal;
-                u.senhaPadrao = false;
-                // Ao redefinir a própria senha não há troca obrigatória
-                u.trocarSenha = u.id !== A.Sessao.usuarioAtual().id;
-                A.Dados.salvar(A.Dados.CHAVES.usuarios, lista);
-                A.Auditoria.registrar('SENHA_REDEFINIDA', { alvo: u.login });
+            // Ao redefinir a própria senha não há troca obrigatória (regra no repositório)
+            return A.Repo.redefinirSenha(id, senha).then(function () {
                 UI.toast('Senha redefinida.');
                 renderizar();
-            });
+            }).catch(function (erro) { UI.erroOperacao(erro); });
         }, { rotulo: 'Salvar senha', estilo: 'normal', htmlExtra: html });
         setTimeout(function () { $('nova-senha').focus(); }, 60);
     }

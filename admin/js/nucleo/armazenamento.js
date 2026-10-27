@@ -2,21 +2,23 @@
  * =====================================================================
  * ARMAZENAMENTO.JS - ONDE O PAINEL GUARDA OS DADOS
  * =====================================================================
- * Os dados ficam no localStorage do navegador do computador do
- * estacionamento (não há servidor). Cada chave guarda um JSON:
+ * O painel funciona de dois jeitos, escolhidos sozinhos ao abrir:
  *
- *   adm_usuarios         usuários do painel (senha só como hash PBKDF2)
- *   adm_bloqueios        tentativas de login erradas por usuário
- *   adm_auditoria        registro de auditoria (encadeado por hash)
- *   adm_auditoria_ancora hash do último registro arquivado (ver auditoria.js)
- *   est_patio            veículos estacionados agora
- *   est_historico        saídas já pagas
- *   est_config           tabela de preços
+ *   MODO SERVIDOR  (página aberta pelo servidor: npm run servidor)
+ *     Os dados ficam no BANCO DE DADOS SQL (servidor/dados/estacionamento.db).
+ *     Todos os computadores e celulares veem o mesmo pátio. Quem grava,
+ *     calcula o valor e registra a auditoria é o servidor
+ *     (ver nucleo/repositorio-servidor.js e servidor/lib/repositorio.js).
  *
- * A sessão (quem está logado) fica no sessionStorage: some ao fechar a aba.
+ *   MODO LOCAL  (arquivo aberto direto, sem servidor)
+ *     Os dados ficam no localStorage deste navegador, como antes
+ *     (ver nucleo/repositorio-local.js). Chaves usadas:
+ *       adm_usuarios, adm_bloqueios, adm_auditoria, adm_auditoria_ancora,
+ *       est_patio, est_historico, est_config
  *
- * Migração: se existirem dados do módulo antigo (estacionamento.html,
- * chaves "estac_*"), eles são copiados para as chaves novas uma única vez.
+ * As telas não precisam saber qual é o modo:
+ *   - LEEM pelos atalhos síncronos abaixo (Dados.patio(), Dados.config()...)
+ *   - GRAVAM pelas operações de Admin.Repo (sempre devolvem uma Promise)
  *
  * Exposto em: window.Admin.Dados
  * =====================================================================
@@ -34,7 +36,7 @@
         config: 'est_config'
     };
 
-    /** Lê uma chave e devolve o valor (ou "padrao" se não existir/estiver corrompida). */
+    /** Lê uma chave do localStorage (ou "padrao" se não existir/estiver corrompida). */
     function ler(chave, padrao) {
         try {
             var v = localStorage.getItem(chave);
@@ -44,7 +46,7 @@
         }
     }
 
-    /** Grava o valor. Retorna false se o navegador recusar (modo privado, cota cheia). */
+    /** Grava no localStorage. Retorna false se o navegador recusar (modo privado, cota cheia). */
     function salvar(chave, valor) {
         try {
             localStorage.setItem(chave, JSON.stringify(valor));
@@ -71,19 +73,78 @@
         return Date.now().toString(36) + raiz.Admin.Seguranca.gerarToken(4);
     }
 
-    raiz.Admin = raiz.Admin || {};
-    raiz.Admin.Dados = {
+    /** Cópia profunda (as telas podem mexer no que recebem sem estragar o cache). */
+    function copia(v) { return v == null ? v : JSON.parse(JSON.stringify(v)); }
+
+    /** Cache do modo servidor (preenchido por repositorio-servidor.js). */
+    function cache() { return raiz.Admin.RepoServidor.cache; }
+
+    var Dados = {
         CHAVES: CHAVES,
         ler: ler,
         salvar: salvar,
         novoId: novoId,
         migrarModuloAntigo: migrarModuloAntigo,
 
-        // Atalhos de leitura usados pelas telas
-        usuarios: function () { return ler(CHAVES.usuarios, []); },
-        patio: function () { return ler(CHAVES.patio, []); },
-        historico: function () { return ler(CHAVES.historico, []); },
-        /** Tabela de preços + dados do estacionamento (vagas). */
-        config: function () { return Object.assign({ vagas: 30 }, raiz.Admin.Regras.CONFIG_PADRAO, ler(CHAVES.config, {})); }
+        /** 'local' ou 'servidor' (definido por detectarModo ao abrir o painel). */
+        modo: 'local',
+
+        /**
+         * Descobre se a página foi aberta pelo servidor do banco de dados
+         * e escolhe Admin.Repo. Promise<'servidor'|'local'>.
+         */
+        detectarModo: function () {
+            var definir = function (modo) {
+                Dados.modo = modo;
+                raiz.Admin.Repo = modo === 'servidor' ? raiz.Admin.RepoServidor : raiz.Admin.RepoLocal;
+                return modo;
+            };
+            if (!/^https?:$/.test(raiz.location.protocol) || !raiz.fetch) return Promise.resolve(definir('local'));
+            var limite = new Promise(function (ok) { setTimeout(function () { ok(null); }, 3000); });
+            var consulta = fetch('../api/saude', { cache: 'no-store', credentials: 'same-origin' })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .catch(function () { return null; });
+            return Promise.race([consulta, limite]).then(function (j) {
+                return definir(j && j.sistema === 'chaveiro-senador-api' ? 'servidor' : 'local');
+            });
+        },
+
+        emServidor: function () { return Dados.modo === 'servidor'; },
+
+        /* ---------- leituras síncronas usadas pelas telas ---------- */
+
+        usuarios: function () { return Dados.emServidor() ? copia(cache().usuarios || []) : ler(CHAVES.usuarios, []); },
+        patio: function () { return Dados.emServidor() ? copia(cache().patio || []) : ler(CHAVES.patio, []); },
+        historico: function () { return Dados.emServidor() ? copia(cache().historico || []) : ler(CHAVES.historico, []); },
+
+        /** Tabela de preços + vagas. */
+        config: function () {
+            var gravada = Dados.emServidor() ? (cache().config || {}) : ler(CHAVES.config, {});
+            return Object.assign({ vagas: 30 }, raiz.Admin.Regras.CONFIG_PADRAO, gravada);
+        },
+
+        /**
+         * Clientes conhecidos (para preencher a entrada): placa, nº de visitas,
+         * última saída, último nome e modelo. No servidor vem pronto da
+         * visão vw_clientes do banco; no modo local é calculado do histórico.
+         */
+        clientes: function () {
+            if (Dados.emServidor()) return copia(cache().clientes || []);
+            var porPlaca = {};
+            Dados.historico().forEach(function (h) {
+                var c = porPlaca[h.placa] || (porPlaca[h.placa] = { placa: h.placa, visitas: 0, ultimaSaida: '', nome: '', modelo: '' });
+                c.visitas++;
+                if (h.saida > c.ultimaSaida) { c.ultimaSaida = h.saida; c.nome = h.nome; c.modelo = h.modelo || ''; }
+            });
+            return Object.keys(porPlaca).map(function (p) { return porPlaca[p]; });
+        },
+
+        /** Cliente de uma placa (ou null). */
+        cliente: function (placa) {
+            return Dados.clientes().find(function (c) { return c.placa === placa; }) || null;
+        }
     };
+
+    raiz.Admin = raiz.Admin || {};
+    raiz.Admin.Dados = Dados;
 })(window);

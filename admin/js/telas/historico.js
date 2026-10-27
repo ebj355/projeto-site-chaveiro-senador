@@ -135,10 +135,10 @@
         if (!h) return;
         UI.confirmar('Excluir do histórico?', 'A saída de ' + R.formatarPlaca(h.placa) + ' (' + R.formatarMoeda(h.valor) + ') será apagada e deixará de contar no faturamento. A exclusão fica registrada na auditoria.', function () {
             if (!A.Sessao.exigir('historico.excluir')) return;
-            A.Dados.salvar(A.Dados.CHAVES.historico, A.Dados.historico().filter(function (x) { return x.id !== id; }));
-            A.Auditoria.registrar('HISTORICO_EXCLUIDO', { placa: h.placa, valor: h.valor, saida: h.saida, pagamento: h.pagamento });
-            UI.toast('Registro excluído.', 'info');
-            A.App.renderizar();
+            A.Repo.excluirHistorico(id).then(function () {
+                UI.toast('Registro excluído.', 'info');
+                A.App.renderizar();
+            }).catch(UI.erroOperacao);
         }, { rotulo: 'Excluir' });
     }
 

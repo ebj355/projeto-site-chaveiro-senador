@@ -21,6 +21,12 @@
  *
  * Nenhuma tela permite apagar ou editar registros de auditoria.
  *
+ * MODO SERVIDOR: os registros ficam na tabela "auditoria" do banco, que
+ *   tem gatilhos impedindo UPDATE e DELETE, e o próprio servidor registra
+ *   cada ação (o navegador não consegue forjar registros). listar() mostra
+ *   os últimos 5.000 recebidos do servidor; registrar() só repassa as
+ *   poucas ações que nascem no navegador (exportações, acesso negado).
+ *
  * Exposto em: window.Admin.Auditoria (navegador) ou module.exports (Node)
  * =====================================================================
  */
@@ -114,11 +120,13 @@
 
         /** Todos os registros guardados (mais antigo primeiro). */
         listar: function () {
+            if (raiz.Admin.Dados.emServidor()) return (raiz.Admin.RepoServidor.cache.auditoria || []).slice();
             return raiz.Admin.Dados.ler(raiz.Admin.Dados.CHAVES.auditoria, []);
         },
 
         /** Hash do último registro descartado (ponto de partida da verificação), ou null. */
         ancora: function () {
+            if (raiz.Admin.Dados.emServidor()) return raiz.Admin.RepoServidor.cache.ancora || null;
             return raiz.Admin.Dados.ler(raiz.Admin.Dados.CHAVES.ancora, null);
         },
 
@@ -130,6 +138,11 @@
          */
         registrar: function (acao, detalhes, quem) {
             var Dados = raiz.Admin.Dados;
+            if (Dados.emServidor()) {
+                // O servidor registra sozinho entradas, saídas, logins etc.; daqui só vão estas
+                if (acao === 'EXPORTACAO' || acao === 'ACESSO_NEGADO') raiz.Admin.RepoServidor.registrarEvento(acao, detalhes);
+                return null;
+            }
             var u = quem || (raiz.Admin.Sessao ? raiz.Admin.Sessao.usuarioAtual() : null);
             var lista = this.listar();
             var reg = montarRegistro(lista[lista.length - 1] || null, {

@@ -1,10 +1,15 @@
 {
   "name": "chaveiro-senador-site",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Site institucional do Chaveiro Senador - Otimizado para SEO local em Santo André e região do ABC",
   "scripts": {
-    "test": "node testes/testes-unitarios.js",
+    "servidor": "node servidor/servidor.js",
+    "banco:importar": "node servidor/importar-backup.js",
+    "banco:copia": "node servidor/copiar-banco.js",
+    "test": "node testes/testes-unitarios.js && node testes/testes-banco.js",
+    "test:banco": "node testes/testes-banco.js",
     "test:e2e": "python testes/e2e-admin.py",
+    "test:e2e-servidor": "python testes/e2e-servidor.py",
     "push": "powershell -ExecutionPolicy Bypass -File ./scripts/push-git.ps1",
     "pull": "powershell -ExecutionPolicy Bypass -File ./scripts/pull-git.ps1",
     "status": "git status",
@@ -22,5 +27,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/eduabjr/projeto-site-chaveiro-senador.git"
+  },
+  "engines": {
+    "node": ">=22.13"
   }
 }

@@ -20,11 +20,13 @@
  *
  * Exposto em: window.Admin.Seguranca (navegador) ou module.exports (Node)
  *
- * IMPORTANTE: tudo roda no navegador, sem servidor. Isso protege o uso
+ * IMPORTANTE: no modo local tudo roda no navegador. Isso protege o uso
  * no balcão (funcionário sem senha não entra, senha não fica legível,
  * ações ficam auditadas), mas quem tem acesso ao computador e
  * conhecimento técnico pode ler/alterar o armazenamento do navegador.
- * Ver docs/SEGURANCA.md.
+ * No modo servidor este mesmo arquivo é usado pelo servidor
+ * (servidor/lib/repositorio.js) para o hash das senhas, e os dados
+ * ficam no banco. Ver docs/SEGURANCA.md e docs/BANCO-DE-DADOS.md.
  * =====================================================================
  */
 (function (raiz) {

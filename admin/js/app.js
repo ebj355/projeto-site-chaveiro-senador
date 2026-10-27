@@ -14,6 +14,9 @@
  *   6. Sessão: renova com o uso, avisa 2 min antes de expirar e
  *      encerra após 30 min parado
  *   7. Atualização automática a cada 30 s e entre abas do navegador
+ *   8. Modo dos dados: ao abrir, descobre se a página veio do servidor
+ *      do banco de dados (modo servidor) ou não (modo local, navegador).
+ *      No modo servidor, a cada 15 s confere se outro aparelho gravou algo.
  *
  * Exposto em: window.Admin.App
  * =====================================================================
@@ -27,6 +30,9 @@
     var TELAS = ['painel', 'patio', 'historico', 'relatorios', 'usuarios', 'auditoria', 'config'];
     var AVISO_SESSAO_SEG = 120; // mostra o aviso quando faltam 2 minutos
     var telaAtual = 'painel';
+    var marcarPronto;
+    /** Resolve quando o modo dos dados (servidor/local) já foi definido. */
+    var pronto = new Promise(function (ok) { marcarPronto = ok; });
 
     /* ---------------- menu lateral (gaveta no celular) ---------------- */
 
@@ -140,6 +146,23 @@
         UI.toast(motivo === 'SESSAO_EXPIRADA' ? 'Sessão expirada por inatividade. Entre novamente.' : 'Sessão encerrada.', 'info');
     }
 
+    /** O servidor avisou que a sessão acabou (expirou lá ou o usuário foi desativado). */
+    function sessaoEncerradaNoServidor() {
+        if (document.body.classList.contains('logado')) sair('SESSAO_EXPIRADA');
+    }
+
+    /** Selo no menu: onde os dados estão sendo gravados. */
+    function mostrarModo() {
+        var el = $('modo-dados');
+        if (!el) return;
+        var servidor = A.Dados.emServidor();
+        el.className = 'modo-dados ' + (servidor ? 'servidor' : 'local');
+        el.innerHTML = servidor
+            ? '<i class="ri-database-2-fill" aria-hidden="true"></i><span>Dados no banco de dados (servidor)</span>'
+            : '<i class="ri-computer-line" aria-hidden="true"></i><span>Dados só neste navegador</span>';
+        el.title = servidor ? 'Todos os aparelhos conectados ao servidor veem os mesmos dados.' : 'Sem servidor: os dados ficam no armazenamento deste navegador. Faça backup.';
+    }
+
     /* ---------------- relógio e aviso de sessão ---------------- */
 
     function atualizarRelogio() {
@@ -188,7 +211,6 @@
 
     function iniciar() {
         A.Seguranca.protegerContraFrames();
-        A.Dados.migrarModuloAntigo();
 
         // Cada tela liga os próprios eventos
         ['acesso', 'patio', 'historico', 'relatorios', 'auditoria', 'usuarios', 'config'].forEach(function (t) {
@@ -241,23 +263,44 @@
             if ((telaAtual === 'patio' || telaAtual === 'painel') && !document.querySelector('.modal:not(.hidden)')) renderizar();
         }, 30000);
 
-        // Alterações feitas em outra aba/janela do mesmo navegador
+        // Alterações feitas em outra aba/janela do mesmo navegador (modo local)
         raiz.addEventListener('storage', function (e) {
+            if (A.Dados.emServidor()) return;
             if (!e.key || /^(adm_|est_)/.test(e.key)) {
                 if (!usuarioLiberado()) atualizarEstado(); else renderizar();
             }
         });
 
         // Voltar pelo botão do navegador depois de sair não mostra dados
-        raiz.addEventListener('pageshow', function () { atualizarEstado(); });
+        raiz.addEventListener('pageshow', function () { pronto.then(function () { atualizarEstado(); }); });
 
-        // Sessão encontrada vencida ao abrir a página
-        if (A.Sessao.expirou()) A.Sessao.sair('SESSAO_EXPIRADA');
-        // Sem nenhum usuário: cria admin / admin e só então mostra o login
-        A.Sessao.garantirAdminPadrao().then(function () { atualizarEstado(); });
+        // Descobre onde ficam os dados e só então mostra o login ou o painel
+        A.Dados.detectarModo().then(function (modo) {
+            mostrarModo();
+            if (modo === 'servidor') {
+                // Outro aparelho gravou algo: recarrega e redesenha (sem atrapalhar um modal aberto)
+                A.RepoServidor.acompanhar(function () {
+                    if (!usuarioLiberado()) { atualizarEstado(); return; }
+                    if (!document.querySelector('.modal:not(.hidden)')) renderizar();
+                    if (A.Telas.patio.atualizarSugestoesNomes) A.Telas.patio.atualizarSugestoesNomes();
+                });
+                return A.RepoServidor.restaurarSessao();
+            }
+            A.Dados.migrarModuloAntigo();
+            // Sessão encontrada vencida ao abrir a página
+            if (A.Sessao.expirou()) A.Sessao.sair('SESSAO_EXPIRADA');
+            // Sem nenhum usuário: cria admin / admin e só então mostra o login
+            return A.Sessao.garantirAdminPadrao();
+        }).then(function () {
+            marcarPronto();
+            atualizarEstado();
+            if (A.Dados.emServidor()) A.Telas.patio.atualizarSugestoesNomes();
+        });
     }
 
     A.App = {
+        pronto: pronto,
+        sessaoEncerradaNoServidor: sessaoEncerradaNoServidor,
         atualizarEstado: atualizarEstado,
         irPara: irPara,
         renderizar: renderizar,

@@ -7,6 +7,8 @@
  *   - Número de vagas (ocupação mostrada no Painel)
  *   - Backup: baixa um arquivo .json com todos os dados do painel e
  *     restaura a partir dele (com confirmação). Ambos vão para a auditoria.
+ *     No modo servidor o backup vem do banco de dados e a restauração
+ *     troca os dados do banco (a auditoria do banco nunca é apagada).
  *
  * Exposto em: window.Admin.Telas.config
  * =====================================================================
@@ -54,13 +56,9 @@
         var erro = validarPrecos(nova);
         UI.erroForm('cfg-erro', erro);
         if (erro) return;
-        var antiga = A.Dados.config();
-        A.Dados.salvar(A.Dados.CHAVES.config, Object.assign({}, antiga, nova));
-        A.Auditoria.registrar('CONFIG_ALTERADA', {
-            antes: R.formatarMoeda(antiga.valorMinimo) + ' + ' + R.formatarMoeda(antiga.valorHoraAdicional) + '/h, tol. ' + antiga.toleranciaMin + 'min',
-            depois: R.formatarMoeda(nova.valorMinimo) + ' + ' + R.formatarMoeda(nova.valorHoraAdicional) + '/h, tol. ' + nova.toleranciaMin + 'min'
-        });
-        UI.toast('Tabela de preços salva. Vale para as próximas saídas.');
+        A.Repo.salvarPrecos(nova).then(function () {
+            UI.toast('Tabela de preços salva. Vale para as próximas saídas.');
+        }).catch(function (erro) { UI.erroForm('cfg-erro', erro.message); });
     }
 
     /* ---------------- vagas ---------------- */
@@ -70,11 +68,9 @@
         if (!A.Sessao.exigir('config.alterar')) return;
         var vagas = parseInt($('cfg-vagas').value, 10);
         if (isNaN(vagas) || vagas < 1 || vagas > 999) { UI.toast('Informe um número de vagas entre 1 e 999.', 'erro'); return; }
-        var cfg = A.Dados.config();
-        A.Auditoria.registrar('CONFIG_ALTERADA', { antes: cfg.vagas + ' vagas', depois: vagas + ' vagas' });
-        cfg.vagas = vagas;
-        A.Dados.salvar(A.Dados.CHAVES.config, cfg);
-        UI.toast('Número de vagas salvo.');
+        A.Repo.salvarVagas(vagas).then(function () {
+            UI.toast('Número de vagas salvo.');
+        }).catch(UI.erroOperacao);
     }
 
     /* ---------------- backup ---------------- */
@@ -88,26 +84,13 @@
     /** Gera o arquivo .json com todos os dados do painel e baixa no computador. */
     function exportarBackup() {
         if (!A.Sessao.exigir('config.backup')) return;
-        var K = A.Dados.CHAVES;
-        var dados = {
-            sistema: 'chaveiro-senador-painel',
-            versao: VERSAO_BACKUP,
-            geradoEm: new Date().toISOString(),
-            geradoPor: A.Sessao.usuarioAtual().login,
-            usuarios: A.Dados.usuarios(),
-            patio: A.Dados.patio(),
-            historico: A.Dados.historico(),
-            config: A.Dados.ler(K.config, {}),
-            auditoria: A.Auditoria.listar(),
-            ancora: A.Auditoria.ancora()
-        };
-        A.Auditoria.registrar('BACKUP_EXPORTADO', { patio: dados.patio.length, historico: dados.historico.length });
-        dados.auditoria = A.Auditoria.listar(); // inclui o registro do próprio backup
-        var nome = 'backup-chaveiro-senador-' + D.hoje() + '.json';
-        UI.baixarArquivo(nome, JSON.stringify(dados, null, 2), 'application/json');
-        try { localStorage.setItem(CHAVE_ULTIMO_BACKUP, new Date().toISOString()); } catch (e) { /* sem armazenamento */ }
-        mostrarUltimoBackup();
-        UI.toast('Backup baixado: ' + nome);
+        A.Repo.exportarBackup().then(function (dados) {
+            var nome = 'backup-chaveiro-senador-' + D.hoje() + '.json';
+            UI.baixarArquivo(nome, JSON.stringify(dados, null, 2), 'application/json');
+            try { localStorage.setItem(CHAVE_ULTIMO_BACKUP, new Date().toISOString()); } catch (e) { /* sem armazenamento */ }
+            mostrarUltimoBackup();
+            UI.toast('Backup baixado: ' + nome);
+        }).catch(UI.erroOperacao);
     }
 
     /** Confere se o arquivo tem o formato esperado. Retorna '' ou o erro. */
@@ -130,19 +113,13 @@
             var erro = validarBackup(b);
             if (erro) { UI.toast(erro, 'erro'); return; }
             var resumo = b.historico.length + ' saídas, ' + b.patio.length + ' veículos no pátio e ' + b.usuarios.length + ' usuário(s), gerado em ' + D.dataHora(b.geradoEm) + '.';
-            UI.confirmar('Restaurar backup?', 'Todos os dados atuais deste navegador serão substituídos pelo backup: ' + resumo + ' Se o seu usuário não existir no backup, você será desconectado.', function () {
+            var onde = A.Dados.emServidor() ? 'do banco de dados' : 'deste navegador';
+            UI.confirmar('Restaurar backup?', 'Todos os dados atuais ' + onde + ' serão substituídos pelo backup: ' + resumo + ' Se o seu usuário não existir no backup, você será desconectado.', function () {
                 if (!A.Sessao.exigir('config.backup')) return;
-                var eu = A.Sessao.usuarioAtual();
-                var K = A.Dados.CHAVES;
-                A.Dados.salvar(K.usuarios, b.usuarios);
-                A.Dados.salvar(K.patio, b.patio);
-                A.Dados.salvar(K.historico, b.historico);
-                A.Dados.salvar(K.config, b.config || {});
-                A.Dados.salvar(K.auditoria, b.auditoria);
-                if (b.ancora) A.Dados.salvar(K.ancora, b.ancora); else { try { localStorage.removeItem(K.ancora); } catch (e) { /* nada */ } }
-                A.Auditoria.registrar('BACKUP_RESTAURADO', { arquivo: arquivo.name, historico: b.historico.length, patio: b.patio.length }, eu);
-                UI.toast('Backup restaurado.');
-                A.App.atualizarEstado();
+                A.Repo.restaurarBackup(b, arquivo.name).then(function () {
+                    UI.toast('Backup restaurado.');
+                    A.App.atualizarEstado();
+                }).catch(UI.erroOperacao);
             }, { rotulo: 'Restaurar' });
         };
         leitor.readAsText(arquivo);
@@ -164,6 +141,10 @@
             UI.erroForm('cfg-erro', '');
             simular();
             mostrarUltimoBackup();
+            // Texto do cartão de backup conforme onde os dados ficam
+            $('backup-texto').textContent = A.Dados.emServidor()
+                ? 'Os dados ficam no banco de dados do servidor (com cópia automática diária). Baixe também um backup de vez em quando e guarde fora deste computador. O arquivo contém dados de clientes e os hashes das senhas: não compartilhe.'
+                : 'Os dados ficam só neste navegador. Baixe um backup toda semana e guarde em local seguro (pen drive, nuvem). O arquivo contém dados de clientes e os hashes das senhas: não compartilhe.';
         },
 
         /** Liga os formulários de preços e vagas e os botões de backup. */

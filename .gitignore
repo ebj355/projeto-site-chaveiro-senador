@@ -24,3 +24,9 @@ dist/
 build/
 
 testes/capturas/
+
+# Banco de dados do servidor (dados de clientes e hashes de senha: nunca vai para o Git)
+servidor/dados/
+*.db
+*.db-wal
+*.db-shm

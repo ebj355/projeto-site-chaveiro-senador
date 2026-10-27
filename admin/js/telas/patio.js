@@ -19,6 +19,8 @@
  *   EXCLUSÃO (só Administrador) para lançamentos feitos por engano.
  *
  * Toda entrada, saída e exclusão vai para a auditoria.
+ * A gravação passa por Admin.Repo: banco de dados (modo servidor) ou
+ * este navegador (modo local). Ver nucleo/armazenamento.js.
  *
  * Exposto em: window.Admin.Telas.patio
  * =====================================================================
@@ -57,16 +59,10 @@
         nome: function (a, b) { return a.nome.localeCompare(b.nome, 'pt-BR'); }
     };
 
-    /** Últimas visitas de uma placa no histórico (mais recente primeiro). */
-    function visitasDaPlaca(placa) {
-        return A.Dados.historico().filter(function (h) { return h.placa === placa; })
-            .sort(function (a, b) { return new Date(b.saida) - new Date(a.saida); });
-    }
-
     /** Sugestões de nomes para o campo do motorista (clientes anteriores). */
     function atualizarSugestoesNomes() {
         var nomes = {};
-        A.Dados.historico().forEach(function (h) { nomes[h.nome] = true; });
+        A.Dados.clientes().forEach(function (c) { if (c.nome) nomes[c.nome] = true; });
         $('lista-motoristas').innerHTML = Object.keys(nomes).sort().slice(0, 300)
             .map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join('');
     }
@@ -90,12 +86,11 @@
             UI.erroCampo('ent-placa', 'Este veículo já está no pátio.');
             return;
         }
-        var visitas = visitasDaPlaca(placa);
-        if (visitas.length) {
-            var ultima = visitas[0];
-            info.innerHTML = '<i class="ri-repeat-line"></i> Cliente conhecido: ' + visitas.length + ' visita(s), a última em ' + esc(D.dataHora(ultima.saida)) + '.';
-            if (!$('ent-nome').value.trim()) $('ent-nome').value = ultima.nome;
-            if (!$('ent-modelo').value.trim() && ultima.modelo) $('ent-modelo').value = ultima.modelo;
+        var cliente = A.Dados.cliente(placa);
+        if (cliente) {
+            info.innerHTML = '<i class="ri-repeat-line"></i> Cliente conhecido: ' + cliente.visitas + ' visita(s), a última em ' + esc(D.dataHora(cliente.ultimaSaida)) + '.';
+            if (!$('ent-nome').value.trim()) $('ent-nome').value = cliente.nome;
+            if (!$('ent-modelo').value.trim() && cliente.modelo) $('ent-modelo').value = cliente.modelo;
         }
     }
 
@@ -127,27 +122,26 @@
             return;
         }
 
-        var u = A.Sessao.usuarioAtual();
-        var veiculo = {
-            id: A.Dados.novoId(),
+        var form = e.target;
+        var botao = form.querySelector('button[type=submit]');
+        botao.disabled = true; // evita entrada dupla com dois cliques
+        A.Repo.registrarEntrada({
             nome: nome,
             placa: placa,
             entrada: entrada.toISOString(),
             modelo: $('ent-modelo').value.trim(),
-            chave: $('ent-chave').value.trim(),
-            registradoPor: u.nome
-        };
-        var patio = A.Dados.patio();
-        patio.push(veiculo);
-        if (!A.Dados.salvar(A.Dados.CHAVES.patio, patio)) return;
-        A.Auditoria.registrar('VEICULO_ENTRADA', { placa: placa, motorista: nome, entrada: veiculo.entrada });
-
-        e.target.reset();
-        $('ent-placa-info').textContent = '';
-        $('ent-hora').value = D.paraInputDataHora(new Date());
-        UI.toast('Entrada registrada: ' + R.formatarPlaca(placa));
-        A.App.renderizar();
-        $('ent-placa').focus(); // pronto para o próximo carro
+            chave: $('ent-chave').value.trim()
+        }).then(function () {
+            form.reset();
+            $('ent-placa-info').textContent = '';
+            $('ent-hora').value = D.paraInputDataHora(new Date());
+            UI.toast('Entrada registrada: ' + R.formatarPlaca(placa));
+            A.App.renderizar();
+            $('ent-placa').focus(); // pronto para o próximo carro
+        }).catch(function (erro) {
+            if (/pátio/.test(erro.message)) UI.erroCampo('ent-placa', erro.message);
+            UI.erroOperacao(erro);
+        }).then(function () { botao.disabled = false; });
     }
 
     /* ---------------- lista ---------------- */
@@ -259,7 +253,6 @@
     /** Grava a saída paga no histórico, tira do pátio e abre o comprovante. */
     function confirmarSaida() {
         if (!saidaPendente || !A.Sessao.exigir('patio.saida')) return;
-        var u = A.Sessao.usuarioAtual();
         var p = saidaPendente;
         var pagamento = formaPagamento();
         var recebido = parseFloat($('saida-recebido').value);
@@ -269,36 +262,25 @@
             return;
         }
 
-        var patio = A.Dados.patio();
-        var idx = patio.findIndex(function (x) { return x.id === p.veiculo.id; });
-        if (idx < 0) { UI.toast('Este veículo já saiu do pátio.', 'erro'); UI.fecharModais(); A.App.renderizar(); return; }
-
-        var registro = Object.assign({}, p.veiculo, {
+        var botao = $('btn-confirmar-saida');
+        botao.disabled = true; // evita cobrar duas vezes
+        // A hora de saída é a mostrada ao cliente no modal; no modo servidor o
+        // valor é recalculado pelo banco com a tabela de preços oficial.
+        A.Repo.registrarSaida(p.veiculo.id, {
             saida: p.saida,
-            minutos: p.minutos,
-            valor: p.valor,
             pagamento: pagamento,
-            tabela: { valorMinimo: p.config.valorMinimo, valorHoraAdicional: p.config.valorHoraAdicional, toleranciaMin: p.config.toleranciaMin },
-            recebidoPor: u.nome
-        });
-        if (pagamento === 'Dinheiro' && !isNaN(recebido)) {
-            registro.valorRecebido = recebido;
-            registro.troco = Math.round((recebido - p.valor) * 100) / 100;
-        }
-
-        var hist = A.Dados.historico();
-        hist.push(registro);
-        if (!A.Dados.salvar(A.Dados.CHAVES.historico, hist)) return;
-        patio.splice(idx, 1);
-        A.Dados.salvar(A.Dados.CHAVES.patio, patio);
-        A.Auditoria.registrar('VEICULO_SAIDA', { placa: registro.placa, valor: registro.valor, minutos: registro.minutos, pagamento: registro.pagamento });
-
-        saidaPendente = null;
-        $('modal-saida').classList.add('hidden');
-        UI.toast('Saída registrada: ' + R.formatarMoeda(registro.valor) + ' (' + registro.pagamento + ')');
-        A.App.renderizar();
-        atualizarSugestoesNomes();
-        mostrarComprovante(registro);
+            valorRecebido: pagamento === 'Dinheiro' && !isNaN(recebido) ? recebido : null
+        }).then(function (registro) {
+            saidaPendente = null;
+            $('modal-saida').classList.add('hidden');
+            UI.toast('Saída registrada: ' + R.formatarMoeda(registro.valor) + ' (' + registro.pagamento + ')');
+            A.App.renderizar();
+            atualizarSugestoesNomes();
+            mostrarComprovante(registro);
+        }).catch(function (erro) {
+            UI.erroOperacao(erro);
+            if (/saiu do pátio/.test(erro.message)) { saidaPendente = null; UI.fecharModais(); A.App.renderizar(); }
+        }).then(function () { botao.disabled = false; });
     }
 
     /** Monta o comprovante (único conteúdo impresso) e abre o modal. */
@@ -327,10 +309,10 @@
         if (!v) return;
         UI.confirmar('Excluir lançamento?', 'O veículo ' + R.formatarPlaca(v.placa) + ' será removido do pátio sem cobrança. Use apenas para lançamentos feitos por engano. A exclusão fica na auditoria.', function () {
             if (!A.Sessao.exigir('patio.excluir')) return;
-            A.Dados.salvar(A.Dados.CHAVES.patio, A.Dados.patio().filter(function (x) { return x.id !== id; }));
-            A.Auditoria.registrar('VEICULO_EXCLUIDO', { placa: v.placa, motorista: v.nome, entrada: v.entrada });
-            UI.toast('Lançamento excluído.', 'info');
-            A.App.renderizar();
+            A.Repo.excluirVeiculo(id).then(function () {
+                UI.toast('Lançamento excluído.', 'info');
+                A.App.renderizar();
+            }).catch(UI.erroOperacao);
         }, { rotulo: 'Excluir' });
     }
 
@@ -355,6 +337,7 @@
         focarNovaEntrada: focarNovaEntrada,
         /** Descarta a saída em andamento (ao fechar o modal). */
         cancelarSaida: function () { saidaPendente = null; },
+        atualizarSugestoesNomes: atualizarSugestoesNomes,
 
         iniciar: function () {
             $('ent-hora').value = D.paraInputDataHora(new Date());

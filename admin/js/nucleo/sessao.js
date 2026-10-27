@@ -19,6 +19,12 @@
  *     desativar um usuário, ele perde o acesso na hora).
  *   - Cada ação restrita passa por Sessao.exigir('permissao').
  *
+ * MODO SERVIDOR (banco de dados): login, bloqueio, sessão e usuário
+ *   padrão são feitos pelo servidor (servidor/lib/repositorio.js) com as
+ *   mesmas regras. Aqui as funções só repassam para Admin.RepoServidor e
+ *   leem o usuário logado do estado recebido. As permissões vêm de
+ *   permissoes.js, o mesmo arquivo que o servidor usa.
+ *
  * Perfis:
  *   admin    - dono do estacionamento: tudo
  *   operador - funcionário: pátio (entrada/saída) e histórico do dia
@@ -35,19 +41,23 @@
     var MAX_TENTATIVAS = 5;
     var BLOQUEIOS_MIN = [5, 15, 60];
 
-    /** O que cada perfil pode fazer. */
-    var PERMISSOES = {
-        admin: ['painel', 'patio.ver', 'patio.entrada', 'patio.saida', 'patio.excluir',
-                'historico.ver', 'historico.todas_datas', 'historico.excluir', 'historico.exportar',
-                'usuarios.gerenciar', 'config.alterar', 'config.backup', 'auditoria.ver', 'auditoria.exportar',
-                'relatorios.ver', 'senha.propria'],
-        operador: ['painel', 'patio.ver', 'patio.entrada', 'patio.saida', 'historico.ver', 'senha.propria']
-    };
+    /** O que cada perfil pode fazer (fonte única em permissoes.js, usada também pelo servidor). */
+    var PERMISSOES = raiz.Admin.Permissoes.PERMISSOES;
 
     /** Atalhos para os outros módulos (resolvidos na hora do uso, pois carregam depois). */
     var Dados = function () { return raiz.Admin.Dados; };
     var Seg = function () { return raiz.Admin.Seguranca; };
     var Aud = function () { return raiz.Admin.Auditoria; };
+    var Srv = function () { return raiz.Admin.RepoServidor; };
+    var emServidor = function () { return Dados().emServidor(); };
+    var INATIVIDADE_MS = INATIVIDADE_MIN * 60000;
+    var DURACAO_MS = DURACAO_MAX_HORAS * 3600000;
+
+    /** Prazo da sessão no modo servidor (espelho do que o servidor controla). */
+    function espelhoValido() {
+        var e = Srv().espelho;
+        return !!e && !!Srv().cache.eu && Date.now() - e.ultimoUso < INATIVIDADE_MS && Date.now() - e.inicio < DURACAO_MS;
+    }
 
     /* ---------------- sessão ---------------- */
 
@@ -95,6 +105,7 @@
          * (admin / admin). Promise que resolve quando terminar.
          */
         garantirAdminPadrao: function () {
+            if (emServidor()) return Promise.resolve(false); // o servidor cria ao iniciar
             if (Dados().usuarios().length) return Promise.resolve(false);
             return this.criarUsuario('Administrador', this.LOGIN_PADRAO, this.SENHA_PADRAO, 'admin', false).then(function (u) {
                 if (Dados().usuarios().length) return false; // outra aba criou antes
@@ -107,6 +118,7 @@
 
         /** Usuário logado agora, ou null. Sempre relido do cadastro. */
         usuarioAtual: function () {
+            if (emServidor()) return espelhoValido() ? JSON.parse(JSON.stringify(Srv().cache.eu)) : null;
             var s = lerSessao();
             if (!sessaoValida(s)) return null;
             var u = Dados().usuarios().find(function (x) { return x.id === s.userId; });
@@ -115,12 +127,18 @@
 
         /** Sessão existia mas venceu (para avisar "sessão expirada"). */
         expirou: function () {
+            if (emServidor()) return Srv().sessaoPerdida || (!!Srv().espelho && !espelhoValido());
             var s = lerSessao();
             return !!s && !sessaoValida(s);
         },
 
         /** Segundos até a sessão expirar por inatividade (0 se não há sessão válida). */
         segundosRestantes: function () {
+            if (emServidor()) {
+                if (!espelhoValido()) return 0;
+                var e = Srv().espelho;
+                return Math.max(0, Math.floor(Math.min(e.ultimoUso + INATIVIDADE_MS - Date.now(), e.inicio + DURACAO_MS - Date.now()) / 1000));
+            }
             var s = lerSessao();
             if (!sessaoValida(s)) return 0;
             var porInatividade = s.ultimoUso + INATIVIDADE_MIN * 60000 - Date.now();
@@ -130,6 +148,7 @@
 
         /** Chamado a cada clique/tecla: empurra o prazo de inatividade. */
         renovar: function () {
+            if (emServidor()) { if (espelhoValido()) Srv().marcarUso(); return; }
             var s = lerSessao();
             if (sessaoValida(s)) { s.ultimoUso = Date.now(); gravarSessao(s); }
         },
@@ -155,6 +174,7 @@
          * Tenta entrar. Promise<{ok, msg, usuario, trocarSenha}>
          */
         entrar: function (login, senha) {
+            if (emServidor()) return Srv().entrar(login, senha).catch(function (e) { return { ok: false, msg: e.message }; });
             var loginNorm = String(login || '').trim().toLowerCase();
             var bloq = situacaoBloqueio(loginNorm);
             var agora = Date.now();
@@ -209,6 +229,7 @@
 
         /** Sai do painel. motivo: 'LOGOUT' (clique) ou 'SESSAO_EXPIRADA'. */
         sair: function (motivo) {
+            if (emServidor()) { Srv().sair(motivo); return; }
             var s = lerSessao();
             if (s) {
                 var u = Dados().usuarios().find(function (x) { return x.id === s.userId; });
@@ -247,6 +268,7 @@
 
         /** Minutos restantes de bloqueio para um login (0 = livre). Usado nos testes e na tela. */
         minutosBloqueado: function (login) {
+            if (emServidor()) return 0; // o bloqueio fica no banco (tabela bloqueios_login)
             var b = situacaoBloqueio(login);
             return b.ate > Date.now() ? Math.ceil((b.ate - Date.now()) / 60000) : 0;
         }
