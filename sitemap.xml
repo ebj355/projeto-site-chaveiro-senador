@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lista das páginas públicas para o Google. Atualize lastmod quando mudar uma página. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://chaveirosenador.com.br/chaveiro-em-santo-andre.html</loc>
+        <lastmod>2026-10-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://chaveirosenador.com.br/chaveiro-abc.html</loc>
+        <lastmod>2026-10-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://chaveirosenador.com.br/chaveiro-sao-bernardo-do-campo.html</loc>
+        <lastmod>2026-10-28</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://chaveirosenador.com.br/chaveiro-santo-andre.html</loc>
+        <lastmod>2026-10-28</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://chaveirosenador.com.br/chaveiro-maua.html</loc>
+        <lastmod>2026-10-28</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://chaveirosenador.com.br/chaveiro-diadema.html</loc>
+        <lastmod>2026-10-28</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+</urlset>

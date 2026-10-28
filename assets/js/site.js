@@ -21,6 +21,7 @@
  *   7. Catalogo        - abre o serviço do endereço (#servico) na grade
  *   8. BuscaModelos    - busca de marca/modelo nas chaves codificadas;
  *                        no celular as marcas ficam recolhidas (toque abre)
+ *   9. AnoAtual        - ano do copyright do rodapé
  *
  * Limpeza (out/2026): o arquivo antigo tinha ~1.800 linhas com sliders,
  * formulários e efeitos que não existem mais nas páginas. Foi reescrito
@@ -216,6 +217,8 @@
         reiniciarTimer: function () {
             var self = this;
             this.pararTimer();
+            // Quem pediu "reduzir movimento" no aparelho troca as marcas só pelas setas (roteiro ACE-07)
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
             this.timer = setInterval(function () { self.irPara(self.atual + 1); }, this.INTERVALO_MS);
         }
     };
@@ -259,11 +262,14 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 var dados = new FormData(form);
+                // No e-mail vai o nome do serviço como aparece na lista ("Manutenção"), não o código ("manutencao")
+                var lista = document.getElementById('cta-service');
+                var opcao = lista && lista.selectedIndex > 0 ? lista.options[lista.selectedIndex].text : '';
                 var campos = {
                     nome: String(dados.get('name') || '').trim(),
                     telefone: String(dados.get('phone') || '').trim(),
                     email: String(dados.get('email') || '').trim(),
-                    servico: String(dados.get('service') || '').trim(),
+                    servico: String(opcao || dados.get('service') || '').trim(),
                     mensagem: String(dados.get('message') || '').trim().slice(0, self.LIMITE_MENSAGEM)
                 };
 
@@ -274,7 +280,9 @@
                 }
 
                 self.enviarPorEmail(campos);
-                Notificacao.mostrar('Formulário enviado com sucesso! Entraremos em contato em breve.', 'success');
+                // O site não tem servidor de e-mail: ele abre o programa de e-mail do visitante com a
+                // mensagem pronta. O aviso diz isso, para ninguém achar que já enviou (roteiro FRM-14).
+                Notificacao.mostrar('Abrimos o seu e-mail com a mensagem pronta: é só tocar em Enviar. Se preferir, chame no WhatsApp.', 'success');
                 form.reset();
                 if (contador) self.atualizarContador({ value: '' }, contador);
             });
@@ -390,17 +398,32 @@
             };
             /** Quantas "páginas" de cartões existem para a largura atual. */
             var totalPaginas = function () { return Math.max(1, Math.ceil(cartoes().length / porPagina())); };
+            /** Distância entre o início de um cartão e o do seguinte (largura + espaço). */
+            var passo = function () {
+                var c = cartoes();
+                return c.length > 1 ? c[1].offsetLeft - c[0].offsetLeft : (c[0] ? c[0].getBoundingClientRect().width : 1);
+            };
+            /**
+             * Página visível agora. Correção (out/2026, roteiro de testes SRV-09):
+             * antes a conta usava a proporção da rolagem e, com 7 cartões em
+             * páginas de 3, a seta "próximo" pulava a última página e a seta
+             * "anterior" travava. Agora a página sai da posição dos cartões e,
+             * encostado no fim, é sempre a última.
+             */
             var paginaAtual = function () {
                 var max = trilho.scrollWidth - trilho.clientWidth;
                 if (max <= 0) return 0;
-                return Math.round((trilho.scrollLeft / max) * (totalPaginas() - 1));
+                if (trilho.scrollLeft >= max - 2) return totalPaginas() - 1;
+                return Math.min(totalPaginas() - 1, Math.round(trilho.scrollLeft / (passo() * porPagina())));
             };
             /** Rola suavemente até a página n (dá a volta no início/fim). */
             var irParaPagina = function (n) {
                 var total = totalPaginas();
                 n = (n + total) % total; // dá a volta no fim
                 var alvo = cartoes()[Math.min(n * porPagina(), cartoes().length - 1)];
-                trilho.scrollTo({ left: alvo.offsetLeft - trilho.offsetLeft - 4, behavior: 'smooth' });
+                var max = trilho.scrollWidth - trilho.clientWidth;
+                var esquerda = Math.max(0, Math.min(max, alvo.offsetLeft - trilho.offsetLeft - 4));
+                trilho.scrollTo({ left: esquerda, behavior: 'smooth' });
             };
 
             // Bolinhas: refeitas quando muda o número de páginas (ex.: girar o celular)
@@ -627,7 +650,16 @@
     /* =================================================================
        INICIALIZAÇÃO
        ================================================================= */
+    /** Ano do copyright do rodapé sempre atualizado (<span data-ano-atual>). */
+    var AnoAtual = {
+        iniciar: function () {
+            var ano = String(new Date().getFullYear());
+            document.querySelectorAll('[data-ano-atual]').forEach(function (el) { el.textContent = ano; });
+        }
+    };
+
     document.addEventListener('DOMContentLoaded', function () {
+        AnoAtual.iniciar();
         MenuMobile.iniciar();
         CarrosselMarcas.iniciar();
         Formulario.iniciar();

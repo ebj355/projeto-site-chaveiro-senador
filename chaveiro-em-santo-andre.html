@@ -34,10 +34,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <!-- SEO Meta Tags - Otimizadas para busca local em Santo André e ABC -->
-        <title>Chaveiro em Santo André | Chaveiro Senador - Serviços Residenciais e Automotivos</title>
+        <title>Chaveiro em Santo André | Chaveiro Senador - Residencial e Automotivo</title>
         <meta
             name="description"
-            content="Chaveiro Senador em Santo André oferece serviços profissionais de chaveiro no ABC. Chaves codificadas, abertura de portas, troca de fechadura, instalação de fechadura, chave automotiva, fechadura digital e carimbos personalizados. Atendemos São Bernardo, Mauá, Diadema e São Caetano. Ligue (11) 4994-2568."
+            content="Chaveiro em Santo André há 46 anos: chave codificada, abertura de portas, troca de fechadura, fechadura digital e carimbos. Atendemos todo o ABC."
         />
         <meta
             name="keywords"
@@ -61,7 +61,7 @@
             property="og:description"
             content="Chaveiro Senador oferece serviços profissionais de chaveiro em Santo André e região do ABC. Chaves codificadas, abertura de portas, troca de fechadura, chave automotiva e fechadura digital. Atendemos São Bernardo, Mauá, Diadema e São Caetano."
         />
-        <meta property="og:image" content="https://chaveirosenador.com.br/og-image.jpg" />
+        <meta property="og:image" content="https://chaveirosenador.com.br/imagens/banner/chaveiro-em-santo-andre-banner-principal.webp" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
@@ -71,7 +71,7 @@
             property="twitter:description"
             content="Chaveiro Senador oferece serviços profissionais de chaveiro em Santo André e região do ABC. Chaves codificadas, abertura de portas, troca de fechadura, chave automotiva e fechadura digital."
         />
-        <meta property="twitter:image" content="https://chaveirosenador.com.br/og-image.jpg" />
+        <meta property="twitter:image" content="https://chaveirosenador.com.br/imagens/banner/chaveiro-em-santo-andre-banner-principal.webp" />
 
         <!-- Structured Data - LocalBusiness Schema -->
         <script type="application/ld+json">
@@ -80,7 +80,7 @@
                 "@type": "LocalBusiness",
                 "name": "Chaveiro Senador",
                 "alternateName": "Chaveiro em Santo André",
-                "image": "https://chaveirosenador.com.br/logo.jpg",
+                "image": "https://chaveirosenador.com.br/imagens/logo-site/chaveiro-e-carimbos-em-santo-andre-logo-901x1264.webp",
                 "description": "Chaveiro Senador oferece serviços profissionais de chaveiro em Santo André e região do ABC. Especialistas em chaves codificadas, abertura de portas, troca de fechadura, instalação de fechadura, chave automotiva, fechadura digital, afiação e carimbos personalizados. Atendemos São Bernardo do Campo, Mauá, Diadema e São Caetano do Sul.",
                 "address": {
                     "@type": "PostalAddress",
@@ -157,10 +157,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-        <!-- Tailwind CSS -->
-        <script src="https://cdn.tailwindcss.com"></script>
-
         <link rel="stylesheet" href="assets/css/site.css" />
+        <!-- Tailwind CSS gerado (npm run build:css). Vem depois do site.css, na mesma ordem em que a
+             antiga CDN injetava os estilos, para as classes do Tailwind continuarem valendo por cima. -->
+        <link rel="stylesheet" href="assets/css/tailwind.css" />
     </head>
     <body>
         <!-- Container Principal do Site -->
@@ -233,6 +233,16 @@
                                 class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
                                 >Contato</a
                             >
+                            <a
+                                href="chaveiro-maua.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >FAQ</a
+                            >
+                            <a
+                                href="chaveiro-diadema.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >Dicas</a
+                            >
                         </nav>
                         <!-- Ações à direita -->
                         <div
@@ -262,24 +272,34 @@
                 <nav class="flex flex-col" aria-label="Menu mobile">
                     <a
                         href="chaveiro-em-santo-andre.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         aria-current="page"
                         >Início</a
                     >
                     <a
                         href="chaveiro-santo-andre.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Quem Somos</a
                     >
                     <a
                         href="chaveiro-abc.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Nossos Serviços</a
                     >
                     <a
                         href="chaveiro-sao-bernardo-do-campo.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Contato</a
+                    >
+                    <a
+                        href="chaveiro-maua.html"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        >FAQ</a
+                    >
+                    <a
+                        href="chaveiro-diadema.html"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold"
+                        >Dicas</a
                     >
                 </nav>
             </div>
@@ -328,6 +348,16 @@
                                 >
                                     Atendimento Rápido e Confiável
                                 </p>
+                                <!-- Botão "Ligar agora" no topo, só no celular/tablet: sem ele o visitante precisava
+                                     rolar a página para achar como ligar (roteiro de testes RSP-08). No computador
+                                     o cartão "Atendimento rápido" ao lado já mostra o botão sem rolar. -->
+                                <a
+                                    href="tel:+551149942568"
+                                    class="lg:hidden inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-base px-6 py-3 rounded-full shadow-lg mb-4 sm:mb-6 min-h-[48px]"
+                                    aria-label="Ligar agora para a loja"
+                                >
+                                    <i class="ri-phone-fill text-lg" aria-hidden="true"></i>Ligar agora
+                                </a>
                                 <p class="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed px-2">
                                     Profissionais especializados em chaveiro em Santo André, prontos para resolver suas necessidades com
                                     qualidade, segurança e eficiência. Atendemos toda a região do ABC com serviços residenciais, automotivos
@@ -346,7 +376,7 @@
                                         >
                                             <i class="ri-speed-fill text-lg sm:text-xl text-white"></i>
                                         </div>
-                                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-gray-900">Atendimento rápido</h3>
+                                        <h2 class="text-base sm:text-lg md:text-xl font-bold text-gray-900">Atendimento rápido</h2>
                                     </div>
                                     <p class="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 leading-relaxed text-left md:text-justify">
                                         Serviços de chaveiro em Santo André com agilidade e conveniência. Atendimento rápido para suas
@@ -401,7 +431,7 @@
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-20">
                             <div class="relative h-64 sm:h-96 lg:h-full lg:min-h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-                                <img
+                                <img loading="lazy"
                                     alt="Profissional Trabalhando com Precisão e Dedicação"
                                     class="w-full h-full object-cover object-top"
                                     src="imagens/sobre-nos/chaveiro-em-santo-andre-profissional-trabalhando.jpg"
@@ -719,7 +749,7 @@
                             <!-- Seta Esquerda -->
                             <button
                                 id="brands-carousel-prev"
-                                class="absolute left-0 sm:-left-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110"
+                                class="absolute left-0 lg:-left-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110"
                                 aria-label="Slide anterior"
                             >
                                 <i class="ri-arrow-left-s-line text-2xl"></i>
@@ -727,7 +757,7 @@
                             <!-- Seta Direita -->
                             <button
                                 id="brands-carousel-next"
-                                class="absolute right-0 sm:-right-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110"
+                                class="absolute right-0 lg:-right-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110"
                                 aria-label="Próximo slide"
                             >
                                 <i class="ri-arrow-right-s-line text-2xl"></i>
@@ -741,7 +771,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Toyota"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-toyota.png"
@@ -753,7 +783,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Honda"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-honda.png"
@@ -765,7 +795,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Renault"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-renault.png"
@@ -777,7 +807,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Nissan"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-nissan.png"
@@ -789,7 +819,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Peugeot"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-peugeot.png"
@@ -801,7 +831,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Citroën"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-citroen.png"
@@ -818,7 +848,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Volkswagen"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-volkswagen.png"
@@ -830,7 +860,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Fiat"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-fiat.png"
@@ -842,7 +872,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Chevrolet"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-chevrolet.png"
@@ -854,7 +884,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Ford"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-ford.png"
@@ -866,7 +896,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Hyundai"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-hyundai.png"
@@ -878,7 +908,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Kia"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-kia.png"
@@ -895,7 +925,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Mercedes-Benz"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-mercedes.png"
@@ -907,7 +937,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Audi"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-audi.png"
@@ -919,7 +949,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Mitsubishi"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-mitsubishi.png"
@@ -931,7 +961,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo BMW"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-bmw.png"
@@ -943,7 +973,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Jeep"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-jeep.png"
@@ -955,7 +985,7 @@
                                                 class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center border-2 border-gray-100 hover:border-blue-400 hover:-translate-y-2 cursor-pointer"
                                             >
                                                 <div class="w-24 h-24 flex items-center justify-center mb-3">
-                                                    <img
+                                                    <img loading="lazy"
                                                         alt="Logo Volvo"
                                                         class="max-w-full max-h-full object-contain"
                                                         src="imagens/logos-carros/chaveiro-em-santo-andre-logo-volvo.png"
@@ -1007,7 +1037,7 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                             <div class="space-y-6">
                                 <div class="relative h-80 rounded-3xl overflow-hidden shadow-2xl mb-8">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro em Santo André - Parcerias comerciais para empresas e condomínios"
                                         class="w-full h-full object-cover object-top"
                                         src="imagens/parcerias/chaveiro-em-santo-andre-parcerias-comerciais-empresas.webp"
@@ -1096,7 +1126,7 @@
                                     Oferecemos benefícios exclusivos para parceiros. Entre em contato e saiba mais!
                                 </p>
                                 <a
-                                    href="mailto:contato@chaveirosenador.com.br?subject=Solicitação%20de%20Parceria&body=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20parcerias%20com%20o%20Chaveiro%20Senador."
+                                    href="mailto:chaveirosenadorltda@outlook.com?subject=Solicitação%20de%20Parceria&body=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20parcerias%20com%20o%20Chaveiro%20Senador."
                                     class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-10 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 cursor-pointer sm:whitespace-nowrap shadow-xl w-full justify-center"
                                 >
                                     <i class="ri-shake-hands-fill text-2xl"></i>Iniciar Parceria
@@ -1232,7 +1262,7 @@
                                 class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-400"
                             >
                                 <div class="aspect-[4/3] overflow-hidden relative">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro em Santo André - Serviço automotivo profissional com chave codificada e programação de chave automotiva"
                                         class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
                                         src="imagens/galeria/chaveiro-em-santo-andre-servico-automotivo-chave-codificada.webp"
@@ -1255,7 +1285,7 @@
                                 class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-400"
                             >
                                 <div class="aspect-[4/3] overflow-hidden relative">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro em Santo André - Chave codificada automotiva e chave com chip para todas as marcas"
                                         class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
                                         src="imagens/galeria/chaveiro-em-santo-andre-chave-codificada-automotiva.webp"
@@ -1278,7 +1308,7 @@
                                 class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-400"
                             >
                                 <div class="aspect-[4/3] overflow-hidden relative">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro em Santo André - Instalação de fechadura digital e fechadura eletrônica para residências e empresas"
                                         class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
                                         src="imagens/galeria/chaveiro-em-santo-andre-fechadura-digital-instalacao.jpg"
@@ -1301,7 +1331,7 @@
                                 class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-400"
                             >
                                 <div class="aspect-[4/3] overflow-hidden relative">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro em Santo André - Ferramentas profissionais para serviços de chaveiro residencial, automotivo e comercial"
                                         class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
                                         src="imagens/galeria/chaveiro-em-santo-andre-ferramentas-profissionais.jpg"
@@ -1324,7 +1354,7 @@
                                 class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-400"
                             >
                                 <div class="aspect-[4/3] overflow-hidden relative">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro em Santo André - Carimbos personalizados com precisão para empresas e uso pessoal"
                                         class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
                                         src="imagens/galeria/chaveiro-em-santo-andre-carimbos-personalizados.jpg"
@@ -1347,7 +1377,7 @@
                                 class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-400"
                             >
                                 <div class="aspect-[4/3] overflow-hidden relative">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro em Santo André - Serviço de afiação profissional de facas, tesouras e ferramentas"
                                         class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
                                         src="imagens/galeria/chaveiro-em-santo-andre-afiacao-profissional.jpg"
@@ -1462,7 +1492,7 @@
                         <div class="border-t border-gray-800 pt-6">
                             <div class="text-center">
                                 <p class="text-gray-400 text-sm">
-                                    Copyright © 2025 Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os
+                                    Copyright © <span data-ano-atual>2026</span> Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os
                                     direitos reservados.
                                 </p>
                             </div>

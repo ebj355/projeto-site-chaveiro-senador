@@ -19,9 +19,13 @@ Site do **Chaveiro Senador** (Santo André/SP, 46 anos de mercado), com foco em 
 ├── chaveiro-maua.html                  FAQ (sanfona)
 ├── chaveiro-diadema.html               Dicas (sanfona)
 ├── package.json                        Atalhos: npm run servidor / npm test / npm run test:e2e...
+├── robots.txt / sitemap.xml            Instruções e lista de páginas para o Google (o painel fica de fora)
+├── tailwind.config.js                  Classes do Tailwind usadas no site (npm run build:css gera assets/css/tailwind.css)
+├── tailwind.admin.config.js            Idem para o painel (gera admin/css/tailwind.css)
 │
 ├── assets/
-│   ├── css/site.css         Estilos próprios do site, em 15 seções numeradas (o resto é Tailwind)
+│   ├── css/site.css         Estilos próprios do site, em 16 seções numeradas (o resto é Tailwind)
+│   ├── css/tailwind.css     Tailwind gerado (não editar; npm run build:css)
 │   ├── js/site.js           Notificação, menu mobile, carrosséis, formulário, FAQ, catálogo, busca de modelos
 │   └── vendor/remixicon/    Ícones RemixIcon 3.5 (cópia local, funciona sem CDN)
 │
@@ -63,7 +67,7 @@ Site do **Chaveiro Senador** (Santo André/SP, 46 anos de mercado), com foco em 
 │   └── dados/               O banco (estacionamento.db) e as cópias — fora do Git
 │
 ├── imagens/                 Imagens do site (nomes otimizados para SEO, sem espaços)
-├── docs/                    BANCO-DE-DADOS.md, ROTEIRO-DE-TESTES.md, SEGURANCA.md e listas de SEO
+├── docs/                    BANCO-DE-DADOS.md, ROTEIRO-DE-TESTES.md, ROTEIRO-TESTES-SITE.md, RELATORIO-TESTES-SITE.md, SEGURANCA.md e listas de SEO
 ├── testes/                  Testes automáticos (unitários, banco/API e navegador)
 └── scripts/                 push-git.ps1 / pull-git.ps1 (PowerShell)
 ```
@@ -108,6 +112,8 @@ Já usava o painel no navegador? Baixe o backup em Configurações e rode `npm r
 | --- | --- |
 | [docs/BANCO-DE-DADOS.md](docs/BANCO-DE-DADOS.md) | Como ligar, tabelas, regras do banco, visões, API, segurança, cópias e próximos passos |
 | [docs/ROTEIRO-DE-TESTES.md](docs/ROTEIRO-DE-TESTES.md) | Testes automáticos e roteiro manual de 72 passos para conferir se está tudo funcionando |
+| [docs/ROTEIRO-TESTES-SITE.md](docs/ROTEIRO-TESTES-SITE.md) | Roteiro de testes do site público: 91 casos de navegação e funções, conferência manual e teste de usabilidade com usuários reais |
+| [docs/RELATORIO-TESTES-SITE.md](docs/RELATORIO-TESTES-SITE.md) | Relatório da execução do roteiro do site: resultados, defeitos corrigidos e requisitos refinados |
 | [servidor/consultas-uteis.sql](servidor/consultas-uteis.sql) | Consultas prontas: faturamento, clientes frequentes, exclusões, logins com erro |
 
 Sem o servidor (arquivo aberto direto, GitHub Pages), o painel continua funcionando no **modo local**, com os dados no navegador.
@@ -162,13 +168,17 @@ npm test                               # regras, segurança e auditoria (40) + b
 python testes/e2e-admin.py             # painel no navegador, modo local, inclusive no celular (68 verificações; requer Playwright)
 python testes/e2e-servidor.py          # painel + servidor + banco, com dois aparelhos ao mesmo tempo (33 verificações)
 python testes/e2e-site.py              # site público em 320/360 px e 1280 px (189 verificações)
+python testes/e2e-navegacao.py         # roteiro do site: navegação, formulário, celular, acessibilidade, SEO e desempenho (235 verificações)
 ```
 
-Roteiro completo (automático + manual): [docs/ROTEIRO-DE-TESTES.md](docs/ROTEIRO-DE-TESTES.md).
+Roteiros completos (automático + manual):
+
+- Painel e banco de dados: [docs/ROTEIRO-DE-TESTES.md](docs/ROTEIRO-DE-TESTES.md)
+- Site público e navegação, com teste de usabilidade para usuários reais: [docs/ROTEIRO-TESTES-SITE.md](docs/ROTEIRO-TESTES-SITE.md). Resultado da execução e correções: [docs/RELATORIO-TESTES-SITE.md](docs/RELATORIO-TESTES-SITE.md)
 
 ## Tecnologias
 
-HTML5 · Tailwind CSS (CDN) · JavaScript puro · RemixIcon · Google Fonts (Inter) · Schema.org (LocalBusiness, FAQPage) · Node.js 22+ com SQLite embutido (`node:sqlite`) no servidor.
+HTML5 · Tailwind CSS 3.4 (CSS gerado com `npm run build:css`, sem CDN) · JavaScript puro · RemixIcon · Google Fonts (Inter) · Schema.org (LocalBusiness, FAQPage) · Node.js 22+ com SQLite embutido (`node:sqlite`) no servidor.
 
 ## SEO
 
@@ -181,6 +191,7 @@ HTML5 · Tailwind CSS (CDN) · JavaScript puro · RemixIcon · Google Fonts (Int
 
 ## Publicação
 
+- **Antes de publicar:** se mudou alguma classe do Tailwind num HTML ou JS, rode `npm run build:css` para gerar de novo `assets/css/tailwind.css` e `admin/css/tailwind.css`.
 - **Só o site:** qualquer hospedagem estática (Netlify, Vercel, GitHub Pages, FTP). Envie a pasta inteira mantendo a estrutura (o painel funciona no modo local).
 - **Site + painel com banco de dados:** um servidor com Node.js 22+ (VPS ou serviço com Node), rodando `npm run servidor` atrás de HTTPS, com `COOKIE_SEGURO=1` e `CONFIAR_PROXY=1`. Nunca envie a pasta `servidor/dados/` para hospedagem estática.
 

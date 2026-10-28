@@ -29,14 +29,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <!-- SEO Meta Tags -->
-        <title>Quem Somos | Chaveiro Senador - Chaveiro em Santo André com 46 Anos de Experiência</title>
+        <title>Quem Somos | Chaveiro Senador - 46 Anos em Santo André</title>
         <meta
             name="description"
-            content="Conheça o Chaveiro Senador em Santo André. 46 anos de experiência em serviços de chaveiro residencial, automotivo e comercial. Profissionais qualificados e equipamentos de última geração."
+            content="Conheça o Chaveiro Senador: 46 anos de chaveiro residencial, automotivo e comercial em Santo André, com profissionais qualificados em todo o ABC."
         />
         <meta name="keywords" content="chaveiro em santo andré, chaveiro senador, sobre nós, história chaveiro, experiência chaveiro" />
         <meta name="author" content="Chaveiro Senador" />
         <link rel="canonical" href="https://chaveirosenador.com.br/chaveiro-santo-andre.html" />
+        <!-- Cartão de compartilhamento (WhatsApp, Facebook...) -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://chaveirosenador.com.br/chaveiro-santo-andre.html" />
+        <meta property="og:title" content="Quem Somos | Chaveiro Senador - 46 Anos em Santo André" />
+        <meta property="og:description" content="Conheça o Chaveiro Senador: 46 anos de chaveiro residencial, automotivo e comercial em Santo André, com profissionais qualificados em todo o ABC." />
+        <meta property="og:image" content="https://chaveirosenador.com.br/imagens/banner/chaveiro-em-santo-andre-banner-principal.webp" />
+        <meta property="og:locale" content="pt_BR" />
 
         <!-- Remix Icon -->
         <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
@@ -46,10 +53,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-        <!-- Tailwind CSS -->
-        <script src="https://cdn.tailwindcss.com"></script>
-
         <link rel="stylesheet" href="assets/css/site.css" />
+        <!-- Tailwind CSS gerado (npm run build:css). Vem depois do site.css, na mesma ordem em que a
+             antiga CDN injetava os estilos, para as classes do Tailwind continuarem valendo por cima. -->
+        <link rel="stylesheet" href="assets/css/tailwind.css" />
     </head>
     <body>
         <div id="root">
@@ -121,6 +128,16 @@
                                 class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
                                 >Contato</a
                             >
+                            <a
+                                href="chaveiro-maua.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >FAQ</a
+                            >
+                            <a
+                                href="chaveiro-diadema.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >Dicas</a
+                            >
                         </nav>
                         <!-- Ações à direita -->
                         <div
@@ -150,24 +167,34 @@
                 <nav class="flex flex-col" aria-label="Menu mobile">
                     <a
                         href="chaveiro-em-santo-andre.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Início</a
                     >
                     <a
                         href="chaveiro-santo-andre.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         aria-current="page"
                         >Quem Somos</a
                     >
                     <a
                         href="chaveiro-abc.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Nossos Serviços</a
                     >
                     <a
                         href="chaveiro-sao-bernardo-do-campo.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Contato</a
+                    >
+                    <a
+                        href="chaveiro-maua.html"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        >FAQ</a
+                    >
+                    <a
+                        href="chaveiro-diadema.html"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold"
+                        >Dicas</a
                     >
                 </nav>
             </div>
@@ -211,7 +238,7 @@
                             <div class="space-y-8 relative">
                                 <!-- Background com chaves (opcional, pode usar uma imagem de fundo) -->
                                 <div class="space-y-6">
-                                    <p class="text-yellow-400 font-bold text-sm uppercase tracking-wider">SOBRE NÓS</p>
+                                    <p class="text-yellow-800 font-bold text-sm uppercase tracking-wider">SOBRE NÓS</p>
                                     <h2 class="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight uppercase">
                                         CHAVEIRO RESIDENCIAL E AUTOMOTIVO EM SANTO ANDRÉ
                                     </h2>
@@ -223,7 +250,7 @@
                                     </p>
                                     <a
                                         href="chaveiro-sao-bernardo-do-campo.html"
-                                        class="inline-flex items-center gap-3 bg-yellow-400 hover:bg-yellow-500 text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 cursor-pointer whitespace-nowrap shadow-xl"
+                                        class="inline-flex items-center gap-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 cursor-pointer whitespace-nowrap shadow-xl"
                                     >
                                         CONTATO
                                     </a>
@@ -234,7 +261,7 @@
                             <div class="relative">
                                 <!-- Foto Principal do Profissional -->
                                 <div class="relative h-64 sm:h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl mb-8">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro profissional trabalhando em Santo André"
                                         class="w-full h-full object-cover object-center"
                                         src="imagens/sobre-nos/chaveiro-em-santo-andre-profissional-trabalhando.jpg"
@@ -249,7 +276,7 @@
                                             <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
                                                 <i class="ri-eye-fill text-2xl text-white"></i>
                                             </div>
-                                            <h3 class="text-xl sm:text-2xl font-bold text-yellow-400">Visão</h3>
+                                            <h3 class="text-xl sm:text-2xl font-bold text-yellow-700">Visão</h3>
                                         </div>
                                         <p class="text-gray-700 leading-relaxed text-left md:text-justify">
                                             Ser uma empresa reconhecida pela sua excelência de desempenho, comprometida com a melhoria da
@@ -264,7 +291,7 @@
                                             <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
                                                 <i class="ri-rocket-fill text-2xl text-white"></i>
                                             </div>
-                                            <h3 class="text-xl sm:text-2xl font-bold text-yellow-400">Valores</h3>
+                                            <h3 class="text-xl sm:text-2xl font-bold text-yellow-700">Valores</h3>
                                         </div>
                                         <p class="text-gray-700 leading-relaxed text-left md:text-justify">
                                             Nossa conduta deve refletir os mais altos padrões de ética. Nosso relacionamento com nossos
@@ -302,7 +329,7 @@
                                         <!-- Imagem à Esquerda -->
                                         <div class="w-full md:w-1/2 flex justify-center md:justify-end relative">
                                             <div class="relative z-30 w-full max-w-md">
-                                                <img
+                                                <img loading="lazy"
                                                     alt="Chaveiro em Santo André - Chave codificada automotiva e serviços de chaveiro"
                                                     class="w-full h-56 sm:h-auto rounded-2xl shadow-xl object-cover"
                                                     src="imagens/servicos/chaveiro-em-santo-andre-chave-codificada-automotiva-servicos.jpg"
@@ -345,7 +372,7 @@
                                         <!-- Imagem à Direita -->
                                         <div class="w-full md:w-1/2 flex justify-center md:justify-start relative order-1 md:order-2">
                                             <div class="relative z-30 w-full max-w-md">
-                                                <img
+                                                <img loading="lazy"
                                                     alt="Chaveiro em Santo André - Afiação profissional de facas, tesouras e ferramentas"
                                                     class="w-full h-56 sm:h-auto rounded-2xl shadow-xl object-cover"
                                                     src="imagens/nossa-visao/chaveiro-em-santo-andre-afiacao-profissional-qualidade.jpeg"
@@ -366,7 +393,7 @@
                                         <!-- Imagem à Esquerda -->
                                         <div class="w-full md:w-1/2 flex justify-center md:justify-end relative">
                                             <div class="relative z-30 w-full max-w-md">
-                                                <img
+                                                <img loading="lazy"
                                                     alt="Chaveiro em Santo André - Carimbos personalizados com precisão para empresas e uso pessoal"
                                                     class="w-full h-56 sm:h-auto rounded-2xl shadow-xl object-cover"
                                                     src="imagens/nossa-visao/chaveiro-em-santo-andre-carimbos-personalizados-precisao.jpg"
@@ -441,7 +468,7 @@
 
                             <!-- Lado Direito - Imagem -->
                             <div class="relative h-80 lg:h-96 rounded-2xl overflow-hidden shadow-2xl">
-                                <img
+                                <img loading="lazy"
                                     alt="Chaveiro em Santo André - Fechadura com chave e chaveiro"
                                     class="w-full h-full object-cover object-center"
                                     src="imagens/servicos/chaveiro-em-santo-andre-troca-de-segredo-fechadura.jpg"
@@ -465,7 +492,7 @@
                             <div class="flex justify-center lg:justify-start">
                                 <div class="relative w-80 h-80 md:w-96 md:h-96">
                                     <div class="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-8 border-yellow-400">
-                                        <img
+                                        <img loading="lazy"
                                             alt="Chaveiro profissional trabalhando com chaves em Santo André"
                                             class="w-full h-full object-cover"
                                             src="imagens/servicos/chaveiro-em-santo-andre-chave-codificada-automotiva-servicos.jpg"
@@ -477,7 +504,7 @@
                             <!-- Lado Direito - Texto e Serviços -->
                             <div class="space-y-8">
                                 <div>
-                                    <p class="text-yellow-400 font-bold text-sm uppercase tracking-wider mb-3">O QUE FAZEMOS</p>
+                                    <p class="text-yellow-800 font-bold text-sm uppercase tracking-wider mb-3">O QUE FAZEMOS</p>
                                     <h2 class="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
                                         Serviços de Chaveiro em Santo André. Profissional pronto para te atender
                                     </h2>
@@ -723,7 +750,7 @@
                         <div class="border-t border-gray-800 pt-6">
                             <div class="text-center">
                                 <p class="text-gray-400 text-sm">
-                                    Copyright © 2025 Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os
+                                    Copyright © <span data-ano-atual>2026</span> Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os
                                     direitos reservados.
                                 </p>
                             </div>

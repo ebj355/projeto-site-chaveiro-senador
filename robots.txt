@@ -1,0 +1,9 @@
+# Chaveiro Senador - instruções para buscadores (Google, Bing...)
+# A Área Restrita (painel interno) e os arquivos técnicos não devem aparecer nas buscas.
+User-agent: *
+Disallow: /admin/
+Disallow: /servidor/
+Disallow: /testes/
+Disallow: /docs/
+
+Sitemap: https://chaveirosenador.com.br/sitemap.xml

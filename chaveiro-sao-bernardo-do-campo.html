@@ -38,6 +38,13 @@
         <meta name="keywords" content="contato chaveiro santo andré, telefone chaveiro, whatsapp chaveiro, endereço chaveiro santo andré" />
         <meta name="author" content="Chaveiro Senador" />
         <link rel="canonical" href="https://chaveirosenador.com.br/chaveiro-sao-bernardo-do-campo.html" />
+        <!-- Cartão de compartilhamento (WhatsApp, Facebook...) -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://chaveirosenador.com.br/chaveiro-sao-bernardo-do-campo.html" />
+        <meta property="og:title" content="Contato | Chaveiro Senador - Chaveiro em Santo André" />
+        <meta property="og:description" content="Entre em contato com o Chaveiro Senador em Santo André. Telefone (11) 4994-2568, WhatsApp (11) 99977-6208. Atendemos toda a região do ABC." />
+        <meta property="og:image" content="https://chaveirosenador.com.br/imagens/banner/chaveiro-em-santo-andre-banner-principal.webp" />
+        <meta property="og:locale" content="pt_BR" />
 
         <!-- Remix Icon -->
         <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
@@ -47,10 +54,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-        <!-- Tailwind CSS -->
-        <script src="https://cdn.tailwindcss.com"></script>
-
         <link rel="stylesheet" href="assets/css/site.css" />
+        <!-- Tailwind CSS gerado (npm run build:css). Vem depois do site.css, na mesma ordem em que a
+             antiga CDN injetava os estilos, para as classes do Tailwind continuarem valendo por cima. -->
+        <link rel="stylesheet" href="assets/css/tailwind.css" />
     </head>
     <body>
         <div id="root">
@@ -122,6 +129,16 @@
                                 aria-current="page"
                                 >Contato</a
                             >
+                            <a
+                                href="chaveiro-maua.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >FAQ</a
+                            >
+                            <a
+                                href="chaveiro-diadema.html"
+                                class="text-base xl:text-lg transition-colors hover:text-yellow-300 text-white whitespace-nowrap"
+                                >Dicas</a
+                            >
                         </nav>
                         <!-- Ações à direita -->
                         <div
@@ -151,24 +168,34 @@
                 <nav class="flex flex-col" aria-label="Menu mobile">
                     <a
                         href="chaveiro-em-santo-andre.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Início</a
                     >
                     <a
                         href="chaveiro-santo-andre.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Quem Somos</a
                     >
                     <a
                         href="chaveiro-abc.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         >Nossos Serviços</a
                     >
                     <a
                         href="chaveiro-sao-bernardo-do-campo.html"
-                        class="mobile-menu-link px-8 py-6 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
                         aria-current="page"
                         >Contato</a
+                    >
+                    <a
+                        href="chaveiro-maua.html"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors border-b border-[#34495e] text-lg font-semibold"
+                        >FAQ</a
+                    >
+                    <a
+                        href="chaveiro-diadema.html"
+                        class="mobile-menu-link px-8 py-4 text-white hover:bg-[#34495e] hover:text-yellow-300 transition-colors text-lg font-semibold"
+                        >Dicas</a
                     >
                 </nav>
             </div>
@@ -189,7 +216,7 @@
                         <div class="relative flex items-center pl-5 sm:pl-8 md:pl-12 pr-5 sm:pr-8">
                             <div class="text-white z-10">
                                 <h1 class="text-[2rem] leading-tight sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4">Fale Conosco</h1>
-                                <p class="text-lg md:text-xl text-white/90">Precisa de ajuda? procure um chaveiro especializado no abc</p>
+                                <p class="text-lg md:text-xl text-white/90">Precisa de ajuda? Procure um chaveiro especializado no ABC.</p>
                             </div>
                             <!-- Linha Amarela Vertical Separadora -->
                             <div class="absolute right-0 top-0 bottom-0 w-1 bg-yellow-400 z-20"></div>
@@ -235,7 +262,7 @@
 
                                 <p class="text-lg text-gray-700 leading-relaxed text-left md:text-justify">
                                     Ficou interessado? Conheça nossos
-                                    <a href="chaveiro-abc.html" class="text-yellow-500 hover:text-yellow-600 font-bold underline"
+                                    <a href="chaveiro-abc.html" class="text-yellow-800 hover:text-yellow-900 font-bold underline"
                                         ><strong>serviços</strong></a
                                     >
                                     agora mesmo!
@@ -245,7 +272,7 @@
                             <!-- Lado Direito - Imagem -->
                             <div class="flex justify-center lg:justify-end">
                                 <div class="relative w-full max-w-md">
-                                    <img
+                                    <img loading="lazy"
                                         alt="Chaveiro automotivo em Santo André - Chave codificada e serviços automotivos"
                                         class="w-full h-56 sm:h-auto rounded-2xl shadow-xl object-cover"
                                         src="imagens/servicos/chaveiro-em-santo-andre-chave-codificada-automotiva-servicos.jpg"
@@ -591,7 +618,7 @@
                         <div class="border-t border-gray-800 pt-6">
                             <div class="text-center">
                                 <p class="text-gray-400 text-sm">
-                                    Copyright © 2025 Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os
+                                    Copyright © <span data-ano-atual>2026</span> Chaveiro Senador - Chaveiro em Santo André com atendimento em todo ABC. Todos os
                                     direitos reservados.
                                 </p>
                             </div>

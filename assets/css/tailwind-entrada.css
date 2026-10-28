@@ -1,0 +1,4 @@
+/* Entrada do Tailwind: o "npm run build:css" lê este arquivo e gera tailwind.css (site) e admin/css/tailwind.css (painel). Não edite os gerados. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

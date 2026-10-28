@@ -45,10 +45,10 @@
         <meta name="robots" content="noindex, nofollow, noarchive" />
         <!-- Não envia o endereço do painel para outros sites ao clicar em links -->
         <meta name="referrer" content="no-referrer" />
-        <!-- Política de segurança de conteúdo: só scripts do próprio site e do Tailwind -->
+        <!-- Política de segurança de conteúdo: só scripts do próprio site (o Tailwind agora é um CSS local, sem CDN) -->
         <meta
             http-equiv="Content-Security-Policy"
-            content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+            content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
         />
 
         <title>Painel Administrativo | Chaveiro Senador</title>
@@ -59,8 +59,9 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="css/admin.css" />
+        <!-- Tailwind CSS gerado (npm run build:css), depois do admin.css como a antiga CDN fazia -->
+        <link rel="stylesheet" href="css/tailwind.css" />
 
         <!-- Proteção contra abrir o painel dentro de um iframe (carrega antes de tudo) -->
         <script src="js/nucleo/seguranca.js"></script>

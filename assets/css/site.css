@@ -433,9 +433,13 @@ footer {
 @media (min-width: 1280px) { .carrossel-anterior { left: -24px; } .carrossel-proximo { right: -24px; } }
 
 /* Bolinhas de posição */
-.carrossel-pontos { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
-.carrossel-pontos button { width: 10px; height: 10px; border-radius: 9999px; background: #cbd5e1; transition: all 0.3s; }
-.carrossel-pontos button.ativo { width: 28px; background: #2563eb; }
+/* Cada bolinha é um botão de 24x24 px (área de toque mínima da WCAG 2.5.8);
+   o desenho da bolinha (10 px, ou 28 px quando ativa) é o ::before. */
+.carrossel-pontos { display: flex; justify-content: center; gap: 0; margin-top: 4px; }
+.carrossel-pontos button { width: 24px; height: 24px; padding: 0; border-radius: 9999px; background: transparent; display: inline-flex; align-items: center; justify-content: center; transition: width 0.3s; }
+.carrossel-pontos button::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 9999px; background: #cbd5e1; transition: all 0.3s; }
+.carrossel-pontos button.ativo { width: 36px; }
+.carrossel-pontos button.ativo::before { width: 28px; background: #2563eb; }
 
 /* =====================================================================
    9. BOTÃO FLUTUANTE DO WHATSAPP (todas as páginas)
@@ -696,7 +700,7 @@ section.bg-gradient-to-b:not(.bg-cover) {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 .busca-modelos input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); }
-.busca-modelos-resultado { margin-top: 0.6rem; text-align: center; font-size: 0.85rem; color: #6b7280; }
+.busca-modelos-resultado { margin-top: 0.6rem; text-align: center; font-size: 0.85rem; color: #4b5563; } /* contraste AA sobre o fundo cinza */
 
 /* Grade: 1 / 2 / 3 / 4 por linha */
 .grade-marcas {
@@ -798,7 +802,14 @@ section.bg-gradient-to-b:not(.bg-cover) {
 
 /* Áreas de toque de pelo menos 44px (recomendação de acessibilidade) */
 .servico-detalhes summary { min-height: 44px; padding: 0.4rem 0; }
-.brand-indicator { position: relative; }
+/* Bolinhas do carrossel de montadoras: cada uma ocupa 24x24 px (área de toque mínima, WCAG 2.5.8)
+   e o desenho (12 px, ou pílula de 32 px quando ativa) é o ::before. O !important vence as classes
+   w-3/h-3/bg-* do HTML e a largura que o site.js põe no style. */
+.brand-indicator { position: relative; width: 24px !important; height: 24px !important; background-color: transparent !important; display: inline-flex; align-items: center; justify-content: center; }
+.brand-indicator::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 9999px; background: #d1d5db; transition: all 0.3s; }
+.brand-indicator:hover::before { background: #9ca3af; }
+.brand-indicator.active { width: 40px !important; }
+.brand-indicator.active::before { width: 32px; background: #2563eb; }
 .brand-indicator::after { content: ''; position: absolute; inset: -16px -8px; } /* aumenta a área clicável sem mudar o desenho */
 .carrossel-pontos button { position: relative; }
 .carrossel-pontos button::after { content: ''; position: absolute; inset: -16px -4px; }
@@ -847,7 +858,7 @@ h1, h2, h3, h4 { overflow-wrap: break-word; } /* sem hifenização: ela partia n
     #brands-carousel .grid > div:hover { transform: none; }
     #brands-carousel .w-24.h-24 { width: 3.25rem; height: 3.25rem; margin-bottom: 0.35rem; }
     /* nomes longos (Volkswagen, Mercedes-Benz) quebram a linha em vez de estourar o cartão */
-    #brands-carousel h4 { font-size: 0.7rem; line-height: 1.2; text-align: center; max-width: 100%; overflow-wrap: anywhere; }
+    #brands-carousel h4 { font-size: 0.75rem; line-height: 1.2; text-align: center; max-width: 100%; overflow-wrap: anywhere; }
     #brands-carousel-prev, #brands-carousel-next { width: 2.5rem; height: 2.5rem; }
 
     /* Parcerias: etiquetas de parceiros menores, duas por linha */
@@ -901,3 +912,19 @@ h1, h2, h3, h4 { overflow-wrap: break-word; } /* sem hifenização: ela partia n
     footer .rodape-botao { font-size: 0.82rem; gap: 6px; }
     footer .rodape-botao i { width: 28px; height: 28px; }
 }
+
+/* =====================================================================
+   16. PÁGINA ATUAL NO MENU (ajuste do roteiro de testes, out/2026)
+   ---------------------------------------------------------------------
+   O link da página aberta (aria-current="page") fica amarelo e com um
+   traço embaixo no menu do computador; no menu do celular ganha um
+   fundo amarelado. Assim o visitante sabe onde está.
+   ===================================================================== */
+header nav a[aria-current="page"] { color: #facc15; font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.mobile-menu-link[aria-current="page"] { color: #facc15; background-color: rgba(250, 204, 21, 0.12); }
+
+/* Menu do computador com 6 itens (FAQ e Dicas entraram no topo): espaçamentos
+   menores que os do "nav a" genérico (margem 25px + recuo 24px), para tudo caber
+   a partir de 1024px sem cortar o último item. */
+header nav a { margin: 0 2px; padding: 10px 12px; }
+@media (min-width: 1280px) { header nav a { margin: 0 4px; padding: 10px 18px; } }
